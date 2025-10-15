@@ -29,8 +29,8 @@ export class TagsController {
 
   // GET /tags
   @Get()
-  findAll(@Request() req): Promise<Tag[]> {
-    return this.tagsService.findAll(req.user.userId);
+  findAll(@Request() req): Promise<any[]> {
+    return this.tagsService.findAllWithNoteCounts(req.user.userId);
   }
 
   // PATCH /tags/:id (Use PATCH for partial update of the name)
