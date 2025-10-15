@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 import { Tag } from '../../tags/schemas/tag.schema';
 
 // Interface for type safety
-export type NoteDocument = Note & Document;
+export type NoteDocument = HydratedDocument<Note>;
 
 @Schema({ timestamps: true }) // 'timestamps: true' adds 'createdAt' and 'updatedAt' fields
 export class Note {
