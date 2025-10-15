@@ -29,7 +29,20 @@ export class NotesService {
   async findAllActive(userId: Types.ObjectId): Promise<Note[]> {
     return this.noteModel
       .find({ userId, isTrash: false, isArchived: false }) // Filter for active notes
+      .populate('tags', 'name')
       .sort({ isPinned: -1, orderIndex: 1 })
+      .lean()
+      .exec();
+  }
+
+  /**
+   * Main Read: Finds one ACTIVE note (not archived, not trashed).
+   */
+  async findOne(userId: Types.ObjectId, noteId: string): Promise<Note | null> {
+    return this.noteModel
+      .findOne({ _id: noteId, userId })
+      .populate('tags', 'name')
+      .lean()
       .exec();
   }
 
@@ -59,6 +72,7 @@ export class NotesService {
   async findArchived(userId: Types.ObjectId): Promise<Note[]> {
     return this.noteModel
       .find({ userId, isArchived: true, isTrash: false })
+      .populate('tags', 'name')
       .sort({ updatedAt: -1 }) // Sort by most recently archived/updated
       .exec();
   }

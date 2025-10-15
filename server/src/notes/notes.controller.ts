@@ -22,17 +22,29 @@ import { UpdateNoteDto } from './dto/update-note.dto';
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
-  // --- Standard CRUD ---
-
+  /**
+   * POST /notes - Create a note
+   */
   @Post()
   create(@Request() req, @Body() createNoteDto: CreateNoteDto): Promise<Note> {
     return this.notesService.create(req.user.userId, createNoteDto);
   }
 
+  /**
+   * GET /notes - Find all active notes (not archived, not trashed)
+   */
   @Get()
   findAll(@Request() req): Promise<Note[]> {
     // Finds active notes (not archived, not trashed)
     return this.notesService.findAllActive(req.user.userId);
+  }
+
+  /**
+   * GET /notes/:id - Find one active notes (not archived, not trashed)
+   */
+  @Get(':id')
+  findOne(@Request() req, @Param('id') id: string): Promise<Note | null> {
+    return this.notesService.findOne(req.user.userId, id);
   }
 
   /**
