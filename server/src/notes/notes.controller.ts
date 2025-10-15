@@ -9,6 +9,7 @@ import {
   Request,
   Delete,
   HttpCode,
+  Patch,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { NotesService } from './notes.service';
@@ -37,7 +38,7 @@ export class NotesController {
   /**
    * PUT /notes/:id - Update content, color, pin status, labels, or order index.
    */
-  @Put(':id')
+  @Patch(':id')
   update(
     @Request() req,
     @Param('id') id: string,
