@@ -4,6 +4,7 @@ import { Model, Types } from 'mongoose';
 import { Note, NoteDocument } from './schemas/note.schema';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Injectable()
 export class NotesService {
@@ -23,16 +24,93 @@ export class NotesService {
   }
 
   /**
-   * Main Read: Finds all ACTIVE notes (not archived, not trashed).
-   * Sorted by isPinned (pinned first) and orderIndex.
+   * Main Read: Finds all ACTIVE notes (not archived, not trashed) with pagination, filter and search.
+   * * Returns the paginated data along with total count and navigation flags.
    */
-  async findAllActive(userId: Types.ObjectId): Promise<Note[]> {
-    return this.noteModel
-      .find({ userId, isTrash: false, isArchived: false }) // Filter for active notes
-      .populate('tags', 'name')
-      .sort({ isPinned: -1, orderIndex: 1 })
+  async findAllActive(
+    userId: Types.ObjectId,
+    pagination: PaginationDto,
+  ): Promise<{
+    total: number;
+    limit: number;
+    page: number;
+    result: Note[];
+    hasNext: boolean;
+    hasPrev: boolean;
+  }> {
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'orderIndex',
+      sortOrder = 'asc',
+      search,
+      tagIds,
+    } = pagination;
+
+    const skip = (page - 1) * limit;
+
+    // 1. Base Filter
+    // This filter must contain all conditions (user ID, not trashed/archived)
+    // Mongoose queries use $and for combining multiple conditions implicitly.
+    const filter: any = {
+      userId,
+      isTrash: false,
+      isArchived: false,
+    };
+
+    // 2. Apply Search Filter (by title or description)
+    if (search) {
+      const searchRegex = new RegExp(search, 'i'); // 'i' for case-insensitive
+
+      // Use $or to search across multiple fields
+      filter['$or'] = [
+        { title: { $regex: searchRegex } },
+        { description: { $regex: searchRegex } },
+      ];
+    }
+
+    // 3. Apply Tag Filter
+    if (tagIds && tagIds.length > 0) {
+      // Converts string IDs from the client/DTO into Mongoose ObjectIds
+      const objectIdTags = tagIds.map((id) => new Types.ObjectId(id));
+
+      // Use $in to find notes where the 'tags' array contains ANY of the provided IDs.
+      // Use $all if you want to find notes that must contain ALL of the provided IDs.
+      filter['tags'] = { $in: objectIdTags };
+    }
+
+    // 4. Sorting logic remains the same
+    const sort: Record<string, 1 | -1> = {
+      isPinned: -1,
+      [sortBy]: sortOrder === 'asc' ? 1 : (-1 as 1 | -1),
+    };
+
+    const limitValue = limit;
+    const skipValue = skip;
+
+    // Execute the two queries using the combined dynamic filter
+    const total = await this.noteModel.countDocuments(filter).exec();
+
+    const notes = await this.noteModel
+      .find(filter)
+      .sort(sort)
+      .skip(skipValue)
+      .limit(limitValue)
       .lean()
       .exec();
+
+    const totalPages = Math.ceil(total / limitValue);
+    const hasNext = page < totalPages;
+    const hasPrev = page > 1;
+
+    return {
+      total,
+      limit: limitValue,
+      page,
+      result: notes as Note[],
+      hasNext,
+      hasPrev,
+    };
   }
 
   /**

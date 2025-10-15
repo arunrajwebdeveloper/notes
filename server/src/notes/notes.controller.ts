@@ -10,12 +10,15 @@ import {
   Delete,
   HttpCode,
   Patch,
+  Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { Note } from './schemas/note.schema';
 import { UpdateNoteDto } from './dto/update-note.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('notes')
@@ -31,12 +34,23 @@ export class NotesController {
   }
 
   /**
-   * GET /notes - Find all active notes (not archived, not trashed)
+   * GET /notes - Finds active notes with pagination
+   * Example: /notes?page=2&limit=5
    */
   @Get()
-  findAll(@Request() req): Promise<Note[]> {
-    // Finds active notes (not archived, not trashed)
-    return this.notesService.findAllActive(req.user.userId);
+  findAll(
+    @Request() req,
+    @Query(new ValidationPipe({ transform: true }))
+    paginationDto: PaginationDto,
+  ): Promise<{
+    total: number;
+    limit: number;
+    page: number;
+    result: Note[];
+    hasNext: boolean;
+    hasPrev: boolean;
+  }> {
+    return this.notesService.findAllActive(req.user.userId, paginationDto);
   }
 
   /**
