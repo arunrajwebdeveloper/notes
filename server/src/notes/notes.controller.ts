@@ -19,6 +19,7 @@ import { CreateNoteDto } from './dto/create-note.dto';
 import { Note } from './schemas/note.schema';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { PaginationDto } from './dto/pagination.dto';
+import { RemoveSingleTagDto } from './dto/remove-single-tag.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('notes')
@@ -71,6 +72,23 @@ export class NotesController {
     @Body() updateNoteDto: UpdateNoteDto,
   ): Promise<Note> {
     return this.notesService.update(req.user.userId, id, updateNoteDto);
+  }
+
+  /**
+   * PATCH /notes/:noteId/tags/:tagId - Removes a single specific tag from a note.
+   * We pass the noteId in the URL path and the tagId in the body for clarity.
+   */
+  @Patch(':noteId/tags')
+  async removeTag(
+    @Request() req,
+    @Param('noteId') noteId: string,
+    @Body() removeTagDto: RemoveSingleTagDto,
+  ): Promise<void> {
+    await this.notesService.removeSingleTagFromNote(
+      req.user.userId,
+      noteId,
+      removeTagDto.tagId,
+    );
   }
 
   // --- Archiving Endpoints ---

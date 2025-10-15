@@ -127,42 +127,6 @@ export class NotesService {
   /**
    * Main Update: Used for editing content (title, description, labels, color) or a single order update.
    */
-  // async update(
-  //   userId: Types.ObjectId,
-  //   noteId: string,
-  //   updateNoteDto: UpdateNoteDto,
-  // ): Promise<Note> {
-  //   // Convert string IDs in the DTO to Mongoose ObjectIds for the database
-  //   const updateData: any = updateNoteDto;
-
-  //   if (updateNoteDto?.tags && updateNoteDto.tags?.length !== 0) {
-  //     const note = await this.noteModel.findById(noteId).exec();
-  //     if (!note) throw new NotFoundException('Note not found');
-
-  //     updateData.tags = [
-  //       ...new Set([
-  //         ...updateNoteDto?.tags.map((id) => new Types.ObjectId(id)),
-  //         ...note?.tags,
-  //       ]),
-  //     ];
-  //   }
-
-  //   // const updatedNote = await this.noteModel
-  //   //   .findOneAndUpdate({ _id: noteId, userId }, updateNoteDto, { new: true })
-  //   //   .exec();
-
-  //   const updatedNote = await this.noteModel
-  //     .findOneAndUpdate({ _id: noteId, userId }, updateData, { new: true })
-  //     .exec();
-
-  //   if (!updatedNote) {
-  //     throw new NotFoundException(
-  //       `Note with ID ${noteId} not found or doesn't belong to the user.`,
-  //     );
-  //   }
-
-  //   return updatedNote;
-  // }
 
   async update(
     userId: Types.ObjectId,
@@ -207,6 +171,33 @@ export class NotesService {
     }
 
     return updatedNote;
+  }
+
+  /**
+   * Removes a single specific tag ID from a note using the $pull operator.
+   */
+  async removeSingleTagFromNote(
+    userId: Types.ObjectId,
+    noteId: string,
+    tagId: string,
+  ): Promise<void> {
+    // Convert the string tag ID to a Mongoose ObjectId
+    const objectIdTagToRemove = new Types.ObjectId(tagId);
+
+    const result = await this.noteModel
+      .updateOne(
+        { _id: noteId, userId },
+        // $pull removes all instances of the specified value from the array.
+        { $pull: { tags: objectIdTagToRemove } },
+      )
+      .exec();
+
+    // Check if the note was found and updated
+    if (result.matchedCount === 0) {
+      throw new NotFoundException(
+        `Note with ID ${noteId} not found or doesn't belong to the user.`,
+      );
+    }
   }
 
   // --- Archive Management ---
