@@ -127,4 +127,19 @@ export class NotesService {
       );
     }
   }
+
+  /**
+   *  Permanently deletes ALL notes for a user that are in the trash bin.
+   */
+  async emptyTrash(userId: Types.ObjectId): Promise<{ deletedCount: number }> {
+    const result = await this.noteModel
+      .deleteMany({
+        userId, // Filter by the current user
+        isTrash: true, // Filter for notes that are marked as trash
+      })
+      .exec();
+
+    // Return the count of deleted documents
+    return { deletedCount: result.deletedCount };
+  }
 }

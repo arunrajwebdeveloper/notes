@@ -96,4 +96,13 @@ export class NotesController {
   deletePermanent(@Request() req, @Param('id') id: string): Promise<void> {
     return this.notesService.deletePermanent(req.user.userId, id);
   }
+
+  /**
+   * DELETE /notes/trash - Permanently deletes ALL trashed notes for the user.
+   */
+  @Delete('trash')
+  @HttpCode(200) // Or 204 No Content, but 200 with the count is often helpful.
+  async emptyTrash(@Request() req): Promise<{ deletedCount: number }> {
+    return this.notesService.emptyTrash(req.user.userId);
+  }
 }
