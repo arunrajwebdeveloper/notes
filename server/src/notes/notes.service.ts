@@ -10,7 +10,7 @@ import { PaginationDto } from './dto/pagination.dto';
 export class NotesService {
   constructor(@InjectModel(Note.name) private noteModel: Model<NoteDocument>) {}
 
-  // --- CRUD (C and U for Content/Order) ---
+  // Create note
 
   async create(
     userId: Types.ObjectId,
