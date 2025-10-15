@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { Tag } from '../../tags/schemas/tag.schema';
 
 // Interface for type safety
 export type NoteDocument = Note & Document;
@@ -32,8 +33,8 @@ export class Note {
   @Prop({ default: false })
   isPinned: boolean;
 
-  @Prop({ type: [String], default: [] }) // Array of strings for tags/labels
-  labels: string[];
+  @Prop({ type: [{ type: Types.ObjectId, ref: Tag.name }], default: [] })
+  tags: Types.ObjectId[];
 
   // --- Advanced Fields (Good to Have) ---
 

@@ -8,7 +8,7 @@ import { NotesService } from './notes.service';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Note.name, schema: NoteSchema }]),
-    AuthModule, // Ensures JWT functionality is available
+    AuthModule,
   ],
   controllers: [NotesController],
   providers: [NotesService],
