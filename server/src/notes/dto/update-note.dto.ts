@@ -1,4 +1,10 @@
-import { IsOptional, IsNumber, IsString, IsBoolean } from 'class-validator';
+import {
+  IsOptional,
+  IsNumber,
+  IsBoolean,
+  IsArray,
+  IsMongoId,
+} from 'class-validator';
 import { CreateNoteDto } from './create-note.dto';
 import { PartialType } from '@nestjs/mapped-types';
 
@@ -19,4 +25,9 @@ export class UpdateNoteDto extends PartialType(CreateNoteDto) {
   @IsOptional()
   @IsBoolean()
   isTrash?: boolean; // Used for soft deletion/restoring
+
+  @IsOptional()
+  @IsArray()
+  @IsMongoId({ each: true })
+  tags?: string[];
 }
