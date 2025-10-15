@@ -289,4 +289,50 @@ export class NotesService {
     // Return the count of deleted documents
     return { deletedCount: result.deletedCount };
   }
+
+  /**
+   * Removes a specific tag ID from the 'tags' array in ALL notes that use it.
+   * This is called for data cleanup when a tag is deleted.
+   */
+  async removeTagFromAllNotes(tagId: string): Promise<void> {
+    const objectIdTag = new Types.ObjectId(tagId);
+
+    // Use updateMany to safely modify all documents in a single atomic operation
+    await this.noteModel
+      .updateMany(
+        // Filter: Find all notes where the 'tags' array contains this tag ID
+        { tags: objectIdTag },
+
+        // Update: Pull (remove) that specific ID from the 'tags' array
+        { $pull: { tags: objectIdTag } },
+
+        // No need for { new: true } as we don't need the result documents
+      )
+      .exec();
+  }
+
+  /**
+   * Removes multiple tag IDs from the 'tags' array in ALL notes that use it.
+   * This is called for data cleanup when a tags were deleted.
+   */
+
+  async removeTagsFromAllNotes(
+    tagIds: (string | Types.ObjectId)[],
+  ): Promise<void> {
+    // Ensure all IDs are Types.ObjectId before using them in the query
+    const objectIdsToRemove = tagIds.map((id) =>
+      id instanceof Types.ObjectId ? id : new Types.ObjectId(id),
+    );
+
+    // Use updateMany to safely modify all documents in a single atomic operation
+    await this.noteModel
+      .updateMany(
+        // Filter: Find all notes where the 'tags' array contains ANY of these tag IDs
+        { tags: { $in: objectIdsToRemove } },
+
+        // Update: $pullAll removes ALL matching IDs from the 'tags' array
+        { $pullAll: { tags: objectIdsToRemove } },
+      )
+      .exec();
+  }
 }

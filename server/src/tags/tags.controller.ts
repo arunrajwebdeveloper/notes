@@ -15,6 +15,7 @@ import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Tag } from './schemas/tag.schema';
+import { DeleteManyTagsDto } from './dto/delete-many-tags.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('tags')
@@ -48,5 +49,17 @@ export class TagsController {
   @HttpCode(204) // Standard response for successful deletion
   delete(@Request() req, @Param('id') id: string): Promise<void> {
     return this.tagsService.delete(req.user.userId, id);
+  }
+
+  // DELETE /tags
+  @Delete()
+  async deleteManyTags(
+    @Request() req,
+    @Body() deleteManyTagsDto: DeleteManyTagsDto,
+  ): Promise<void> {
+    await this.tagsService.deleteManyTags(
+      req.user.userId,
+      deleteManyTagsDto.tagIds,
+    );
   }
 }

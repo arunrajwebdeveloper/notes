@@ -9,13 +9,14 @@ import { Tag, TagDocument } from './schemas/tag.schema';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { Note, NoteDocument } from './../notes/schemas/note.schema';
+import { NotesService } from 'src/notes/notes.service';
 
 @Injectable()
 export class TagsService {
   // Rename: LabelsService to TagsService
   constructor(
     @InjectModel(Tag.name) private tagModel: Model<TagDocument>,
-    @InjectModel(Note.name) private noteModel: Model<NoteDocument>,
+    private notesService: NotesService,
   ) {}
 
   // 1. CREATE Tag
@@ -126,14 +127,49 @@ export class TagsService {
   }
 
   // 4. DELETE Tag
-  async delete(userId: Types.ObjectId, tagId: string): Promise<void> {
-    // Update variable
-    const result = await this.tagModel.deleteOne({ _id: tagId, userId }).exec();
 
-    if (result.deletedCount === 0) {
+  async delete(userId: Types.ObjectId, tagId: string): Promise<void> {
+    // 1. Delete the Tag document
+    const deletedTag = await this.tagModel
+      .findOneAndDelete({ _id: tagId, userId })
+      .exec();
+
+    if (!deletedTag) {
       throw new NotFoundException(
         `Tag with ID ${tagId} not found or doesn't belong to the user.`,
       );
     }
+
+    // 2. Perform the cascading cleanup in the Notes collection
+    await this.notesService.removeTagFromAllNotes(tagId);
+  }
+
+  // DELETE  multiple tags deletions
+
+  async deleteManyTags(
+    userId: Types.ObjectId,
+    tagIds: string[],
+  ): Promise<void> {
+    // Convert string IDs to ObjectIds for the query
+    const objectIdsToDelete = tagIds.map((id) => new Types.ObjectId(id));
+
+    // 1. Delete the Tag documents owned by the user
+    const deleteResult = await this.tagModel
+      .deleteMany({
+        _id: { $in: objectIdsToDelete }, // Match any ID in the provided array
+        userId,
+      })
+      .exec();
+
+    // Optional: Check if any tags were actually deleted
+    if (deleteResult.deletedCount === 0) {
+      throw new NotFoundException(
+        `No tags found with the provided IDs or they don't belong to the user.`,
+      );
+    }
+
+    // 2. Perform the cascading cleanup in the Notes collection
+    // Call the method to remove all deleted tag IDs from all notes that reference them.
+    await this.notesService.removeTagsFromAllNotes(objectIdsToDelete);
   }
 }
