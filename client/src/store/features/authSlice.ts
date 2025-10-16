@@ -1,4 +1,3 @@
-// src/store/slices/authSlice.ts
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import {
   setToken,

@@ -1,4 +1,3 @@
-// src/hooks/useAuth.ts (Updated with direct API call)
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
