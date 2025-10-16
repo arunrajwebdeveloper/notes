@@ -13,7 +13,7 @@ function NoteList({
   return (
     <div className="mt-6 mb-10">
       <div className="text-left">
-        <h1 className="font-medium text-5xl">My Notes</h1>
+        <h1 className="font-medium text-4xl xl:text-5xl">My Notes</h1>
       </div>
 
       <div className="mt-10 flex flex-col lg:flex-row flex-wrap">

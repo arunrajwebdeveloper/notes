@@ -16,11 +16,13 @@ function NoteItem({
   updatedAt,
 }: Note) {
   return (
-    <div className="basis-1 lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4 p-2 flex">
+    <div className="basis-1 lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4 p-2 xl:p-3 flex">
       <div className="p-8 bg-lime-400 rounded-2xl overflow-hidden flex flex-col justify-between cursor-pointer w-full">
         <div>
-          <h2 className="text-3xl mb-4">{trimText(title, 80)}</h2>
-          <p>{trimText(description, 150)}</p>
+          <h2 className="text-2xl xl:text-3xl mb-4">{trimText(title, 80)}</h2>
+          <p className="m-0 text-black text-sm xl:text-base">
+            {trimText(description, 150)}
+          </p>
         </div>
         <div className="mt-6">
           {tags?.length !== 0 && (
