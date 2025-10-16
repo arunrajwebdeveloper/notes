@@ -1,6 +1,6 @@
 function Note() {
   return (
-    <div className="">
+    <div className="font-medium text-5xl">
       <h1>Designs</h1>
     </div>
   );

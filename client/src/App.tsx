@@ -1,14 +1,16 @@
 import { Provider } from "react-redux";
-import NoteList from "./components/NoteList";
-import MainLayout from "./layout/MainLayout";
+import MainView from "./view/MainView";
 import { store } from "./store/store";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <Provider store={store}>
-      <MainLayout>
-        <NoteList />
-      </MainLayout>
+      <QueryClientProvider client={queryClient}>
+        <MainView />
+      </QueryClientProvider>
     </Provider>
   );
 }
