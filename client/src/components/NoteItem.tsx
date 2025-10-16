@@ -33,7 +33,7 @@ function NoteItem({
               {tags?.map((tag) => (
                 <span
                   key={tag._id}
-                  className="bg-white/70 text-black text-xs font-medium me-2 py-2 px-4 rounded-full"
+                  className="bg-black/10 text-black text-xs font-medium me-2 py-2 px-4 rounded-full"
                 >
                   {tag.name}
                 </span>
