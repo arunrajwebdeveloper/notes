@@ -1,11 +1,14 @@
-import { useNotes } from "../hooks/useNotes";
-import type { Note } from "../types/note.types";
+import type { Note, NotesResponse } from "../types/note.types";
 import NoteItem from "./NoteItem";
 
-function NoteList() {
-  const { notes, isLoadingNotes } = useNotes({ enabled: true });
-
-  if (isLoadingNotes) return <h3>Loading...</h3>;
+function NoteList({
+  notes,
+  isLoading,
+}: {
+  notes: NotesResponse;
+  isLoading: boolean;
+}) {
+  if (isLoading) return <h3 className="px-6">Loading...</h3>;
 
   return (
     <div className="px-6">
