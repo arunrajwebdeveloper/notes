@@ -28,9 +28,7 @@ export class UserController {
       throw new NotFoundException('Authenticated user not found.');
     }
 
-    const userObject = user.toObject();
-    // delete userObject.password; // Assuming your schema has a 'password' field
-
+    const { password, ...userObject } = user?.toObject();
     return userObject as UserDocument;
   }
 }

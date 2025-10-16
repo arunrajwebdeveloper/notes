@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const RegisterPage = () => {
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,7 +19,7 @@ const RegisterPage = () => {
       return;
     }
 
-    register({ name, email, password });
+    register({ firstName, lastName, email, password });
   };
 
   return (
@@ -43,15 +44,29 @@ const RegisterPage = () => {
           )}
 
           <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-2">
-              Full Name
+            <label htmlFor="fname" className="block text-sm font-medium mb-2">
+              First Name
             </label>
             <input
-              id="name"
+              id="fname"
               type="text"
               required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="lname" className="block text-sm font-medium mb-2">
+              Last Name
+            </label>
+            <input
+              id="lname"
+              type="text"
+              required
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
