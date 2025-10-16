@@ -26,3 +26,7 @@ export interface NotesResponse {
   hasNext: boolean;
   hasPrev: boolean;
 }
+
+export interface TagItem extends Tag {
+  noteCount: number;
+}

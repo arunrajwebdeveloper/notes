@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../api/endpoints/auth.api";
 import {
@@ -8,13 +7,15 @@ import {
   setLoading,
   setUserData,
 } from "../store/features/authSlice";
-import type { RootState } from "../store/store";
+import { useAppDispatch } from "./hooks";
+import { useAppSelector } from "../hooks";
 
 export const useAuth = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
-  const { user, token, isAuthenticated, loading } = useSelector(
-    (state: RootState) => state.auth
+  const { user, token, isAuthenticated, loading } = useAppSelector(
+    (state) => state.auth
   );
 
   // Login mutation - SOLUTION 1: Direct API call

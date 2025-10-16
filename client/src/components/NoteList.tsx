@@ -11,12 +11,12 @@ function NoteList({
   if (isLoading) return <h3 className="px-6">Loading...</h3>;
 
   return (
-    <div className="px-6">
-      <div className="text-left mb-4">
+    <div className="mt-6 mb-10">
+      <div className="text-left">
         <h1 className="font-medium text-5xl">My Notes</h1>
       </div>
 
-      <div>
+      <div className="mt-10 flex flex-col lg:flex-row flex-wrap">
         {notes?.result?.map((note: Note) => {
           return <NoteItem key={note?._id} {...note} />;
         })}

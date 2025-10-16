@@ -2,9 +2,9 @@ import { Search } from "lucide-react";
 
 function Header() {
   return (
-    <header className="w-full h-14 px-6 my-6">
-      <div className="flex items-center h-full">
-        <div className="relative w-xl">
+    <header className="w-full h-20 top-0 sticky bg-white flex items-center">
+      <div className="flex items-center h-14 w-full max-w-xl">
+        <div className="relative w-full">
           <Search className="absolute z-10 left-0 top-1/2 transform -translate-y-1/2 pointer-events-none" />
           <input
             type="text"

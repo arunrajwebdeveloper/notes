@@ -6,20 +6,7 @@ import {
   getToken,
   getUser,
 } from "../../utils/storage";
-
-interface User {
-  _id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-}
-
-interface AuthState {
-  user: User | null;
-  token: string | null;
-  isAuthenticated: boolean;
-  loading: boolean;
-}
+import type { AuthState, User } from "../../types/auth.types";
 
 const initialState: AuthState = {
   user: getUser(),
