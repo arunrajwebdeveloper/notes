@@ -93,6 +93,7 @@ export class NotesService {
 
     const notes = await this.noteModel
       .find(filter)
+      .populate('tags', '_id name')
       .sort(sort)
       .skip(skipValue)
       .limit(limitValue)
