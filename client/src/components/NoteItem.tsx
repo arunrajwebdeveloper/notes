@@ -22,9 +22,11 @@ function NoteItem({
         className="p-8 rounded-2xl overflow-hidden flex flex-col justify-between cursor-pointer w-full"
       >
         <div>
-          <h2 className="text-2xl xl:text-3xl mb-4">{trimText(title, 80)}</h2>
+          <h2 className="text-2xl xl:text-3xl mb-6">
+            {trimText(title || "", 80)}
+          </h2>
           <p className="m-0 text-black text-sm xl:text-base">
-            {trimText(description, 150)}
+            {trimText(description || "", 150)}
           </p>
         </div>
         <div className="mt-6">

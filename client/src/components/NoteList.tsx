@@ -16,7 +16,7 @@ function NoteList({
         <h1 className="font-medium text-4xl xl:text-5xl">My Notes</h1>
       </div>
 
-      <div className="mt-10 flex flex-col lg:flex-row flex-wrap">
+      <div className="mt-10 flex flex-col lg:flex-row flex-wrap -mx-2 xl:-mx-3">
         {notes?.result?.map((note: Note) => {
           return <NoteItem key={note?._id} {...note} />;
         })}
