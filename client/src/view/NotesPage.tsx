@@ -16,21 +16,14 @@ function NotesPage() {
   return (
     <div className="flex h-dvh w-full">
       <Sidebar />
-      <div className="flex w-full">
+      <div className="w-full flex-1">
         <Header />
-        {/* <div className="">
-        </div> */}
-        {/* <h2>Count: {count}</h2>
-        <button onClick={() => dispatch(increment())}>+</button>
-        <button onClick={() => dispatch(decrement())}>-</button> */}
-        <div>
-          <NoteList />
-        </div>
+        <NoteList />
       </div>
 
       {/* MODAL */}
 
-      <NoteModal />
+      {/* <NoteModal /> */}
     </div>
   );
 }
