@@ -19,7 +19,15 @@ function NotesPage() {
       <div className="h-dvh w-[340px] flex-none hidden lg:block">
         <Sidebar tags={tags} isLoadingTags={isLoadingTags} user={user} />
       </div>
-      <div className="w-full lg:w-[calc(100%-340px)] flex-1 overflow-y-auto px-10 transition duration-300">
+      <div
+        className="w-full lg:w-[calc(100%-340px)] flex-1 overflow-y-auto px-10 transition duration-300 
+      [&::-webkit-scrollbar]:w-2
+    [&::-webkit-scrollbar-track]:bg-gray-100
+    [&::-webkit-scrollbar-thumb]:bg-gray-400
+    dark:[&::-webkit-scrollbar-track]:bg-neutral-400
+    dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
+      "
+      >
         <Header />
         <NoteList notes={notes} isLoading={isLoadingNotes} />
       </div>

@@ -13,7 +13,15 @@ function Sidebar({
 }) {
   return (
     <aside className="h-dvh w-full flex flex-col justify-between">
-      <div className="my-6 space-y-10 overflow-y-auto overflow-x-hidden px-6 w-full h-[calc(100%-80px)]">
+      <div
+        className="my-6 space-y-10 overflow-y-auto overflow-x-hidden px-6 w-full h-[calc(100%-80px)]
+      [&::-webkit-scrollbar]:w-2
+    [&::-webkit-scrollbar-track]:bg-gray-100
+    [&::-webkit-scrollbar-thumb]:bg-gray-400
+    dark:[&::-webkit-scrollbar-track]:bg-neutral-400
+    dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
+      "
+      >
         {/* Logo */}
         <div className="">
           <h2 className="text-2xl font-semibold text-black m-0 select-none">
