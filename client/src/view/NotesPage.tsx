@@ -3,11 +3,11 @@ import Sidebar from "../components/Sidebar";
 import NoteList from "../components/NoteList";
 import { useNotes } from "../hooks/useNotes";
 import NoteModal from "../components/modal/NoteModal";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useAppSelector } from "../hooks";
+import { Plus } from "lucide-react";
 
 function NotesPage() {
   const { user } = useAppSelector((state) => state.auth);
-  // const dispatch = useAppDispatch();
 
   const {
     notes,
@@ -25,12 +25,7 @@ function NotesPage() {
   return (
     <div className="flex h-dvh w-full overflow-hidden">
       <div className="h-dvh w-[340px] flex-none hidden lg:block">
-        <Sidebar
-          tags={tags}
-          isLoadingTags={isLoadingTags}
-          user={user}
-          onCreateNote={openNoteModal}
-        />
+        <Sidebar tags={tags} isLoadingTags={isLoadingTags} user={user} />
       </div>
       <div
         className="w-full lg:w-[calc(100%-340px)] flex-1 overflow-y-auto px-10 transition duration-300 
@@ -51,6 +46,14 @@ function NotesPage() {
         onHide={() => closeNoteModal()}
         createNoteMutation={createNoteMutation}
       />
+
+      {/* Create Button */}
+      <button
+        onClick={openNoteModal}
+        className="bg-black w-20 h-20 fixed bottom-6 right-6 z-50 font-medium cursor-pointer text-white flex justify-center items-center gap-1 rounded-full"
+      >
+        <Plus className="m-auto" />
+      </button>
     </div>
   );
 }
