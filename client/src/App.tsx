@@ -8,6 +8,7 @@ import LoginPage from "./view/LoginPage";
 import RegisterPage from "./view/RegisterPage";
 import ProfilePage from "./view/ProfilePage";
 import UnauthorizedPage from "./view/UnauthorizedPage";
+import OfflineModal from "./components/modal/OfflineModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,6 +61,7 @@ function App() {
             <Route path="*" element={<Navigate to="/notes" replace />} />
           </Routes>
         </BrowserRouter>
+        <OfflineModal />
       </QueryClientProvider>
     </Provider>
   );

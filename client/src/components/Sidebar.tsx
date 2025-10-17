@@ -6,10 +6,12 @@ function Sidebar({
   tags,
   isLoadingTags,
   user,
+  onCreateNote,
 }: {
   tags: TagItem[];
   isLoadingTags: boolean;
   user: User | null;
+  onCreateNote: () => void;
 }) {
   return (
     <aside className="h-dvh w-full flex flex-col justify-between">
@@ -30,7 +32,10 @@ function Sidebar({
         </div>
         {/* Add */}
         <div className="">
-          <button className="bg-black font-medium cursor-pointer text-white flex justify-center items-center gap-1 h-14 rounded-full">
+          <button
+            onClick={onCreateNote}
+            className="bg-black font-medium cursor-pointer text-white flex justify-center items-center gap-1 h-14 rounded-full"
+          >
             <div className="w-14 h-full flex">
               <Plus className="m-auto" />
             </div>

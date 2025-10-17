@@ -1,7 +1,14 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { notesAPI } from "../api/endpoints/notes.api";
 
 export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
+  const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
+
+  const toggleNoteModal = () => {
+    setIsOpenNoteModal((prev) => !prev);
+  };
+
   const {
     data: notes,
     isLoading: isLoadingNotes,
@@ -27,5 +34,7 @@ export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
     tags,
     isLoadingNotes: isLoadingNotes || isFetchingNotes,
     isLoadingTags: isLoadingTags || isFetchingTags,
+    isOpenNoteModal,
+    toggleNoteModal,
   };
 };
