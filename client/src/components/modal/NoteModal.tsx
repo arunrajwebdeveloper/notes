@@ -72,7 +72,7 @@ function NoteModal({ isShow = false, tags = [], onClose }: NoteModalProps) {
               className={`w-12 h-12 relative border border-slate-300 group flex items-center justify-center rounded-full cursor-pointer transition-all
                 ${isPinned ? " text-blue-600" : " text-slate-500"}`}
             >
-              <Pin size={24} />
+              <Pin size={24} fill={isPinned ? "currentColor" : "none"} />
               <Tooltip
                 content={isPinned ? "Unpin Note" : "Pin Note"}
                 position="top"

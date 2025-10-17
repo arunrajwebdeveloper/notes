@@ -24,7 +24,7 @@ function Sidebar({
     dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
       "
       >
-        <div className="sticky top-0 space-y-10 bg-white pb-6">
+        <div className="sticky top-0 space-y-10 bg-white pb-6 pt-6">
           {/* Logo */}
           <div className="">
             <h2 className="text-2xl font-semibold text-black m-0 select-none">
