@@ -16,35 +16,37 @@ function Sidebar({
   return (
     <aside className="h-dvh w-full flex flex-col justify-between">
       <div
-        className="my-6 space-y-10 overflow-y-auto overflow-x-hidden px-6 w-full h-[calc(100%-80px)]
-      [&::-webkit-scrollbar]:w-2
+        className="space-y-10 overflow-y-auto overflow-x-hidden px-6 w-full h-[calc(100%-80px)]
+      [&::-webkit-scrollbar]:w-1
     [&::-webkit-scrollbar-track]:bg-gray-100
     [&::-webkit-scrollbar-thumb]:bg-gray-400
     dark:[&::-webkit-scrollbar-track]:bg-neutral-400
     dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
       "
       >
-        {/* Logo */}
-        <div className="">
-          <h2 className="text-2xl font-semibold text-black m-0 select-none">
-            NOTI
-          </h2>
+        <div className="sticky top-0 space-y-10 bg-white pb-6">
+          {/* Logo */}
+          <div className="">
+            <h2 className="text-2xl font-semibold text-black m-0 select-none">
+              NOTI
+            </h2>
+          </div>
+          {/* Add */}
+          <div className="">
+            <button
+              onClick={onCreateNote}
+              className="bg-black font-medium cursor-pointer text-white flex justify-center items-center gap-1 h-14 rounded-full"
+            >
+              <div className="w-14 h-full flex">
+                <Plus className="m-auto" />
+              </div>
+              <div className="pe-8">
+                <span>Create Note</span>
+              </div>
+            </button>
+          </div>
         </div>
-        {/* Add */}
-        <div className="">
-          <button
-            onClick={onCreateNote}
-            className="bg-black font-medium cursor-pointer text-white flex justify-center items-center gap-1 h-14 rounded-full"
-          >
-            <div className="w-14 h-full flex">
-              <Plus className="m-auto" />
-            </div>
-            <div className="pe-8">
-              <span>Create Note</span>
-            </div>
-          </button>
-        </div>
-        <div className="">
+        <div className="mb-6">
           <div className="flex justify-between items-center">
             <h2 className="text-lg text-black font-medium">Tags</h2>
             <button className="bg-slate-100 text-slate-600 text-base rounded-full py-1 px-3 cursor-pointer">
@@ -58,9 +60,12 @@ function Sidebar({
                 return (
                   <button
                     key={tag?._id}
-                    className="flex items-center justify-between w-full cursor-pointer py-1 text-base text-black hover:text-amber-500 transition duration-300"
+                    className="flex items-center justify-between gap-4 w-full cursor-pointer py-1 text-base text-black hover:text-amber-500 transition duration-300"
                   >
-                    <span> {tag?.name}</span>
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                      {" "}
+                      {tag?.name}
+                    </span>
                     {tag?.noteCount !== 0 && (
                       <span className="rounded-full min-w-7 h-7 bg-blue-200 text-blue-800 flex justify-center items-center text-sm">
                         {tag?.noteCount}

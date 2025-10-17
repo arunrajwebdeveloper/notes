@@ -1,6 +1,5 @@
 import type { Note } from "../types/note.types";
 import { dateFormatter, trimText } from "../utils";
-import { noteColors } from "../utils/constants";
 
 function NoteItem({
   _id,
@@ -19,7 +18,7 @@ function NoteItem({
           backgroundColor: color,
           border: color === "#ffffff" ? "1px solid #eee" : "0",
         }}
-        className="p-8 rounded-2xl overflow-hidden flex flex-col justify-between cursor-pointer w-full"
+        className="p-8 rounded-2xl overflow-hidden flex flex-col justify-between cursor-default w-full"
       >
         <div>
           <h2 className="text-2xl xl:text-3xl mb-6">
@@ -35,7 +34,7 @@ function NoteItem({
               {tags?.map((tag) => (
                 <span
                   key={tag._id}
-                  className="bg-black/10 text-black text-xs font-medium me-2 py-2 px-4 rounded-full"
+                  className="bg-black/10 text-black max-w-40 text-xs font-medium me-2 py-2 px-4 rounded-full whitespace-nowrap overflow-hidden text-ellipsis"
                 >
                   {tag.name}
                 </span>
@@ -47,19 +46,6 @@ function NoteItem({
               {dateFormatter(createdAt)}
             </span>
           </div>
-
-          {/* <div className="flex gap-1 flex-wrap mt-6">
-            {noteColors?.map((color: string) => (
-              <div
-                key={color}
-                style={{
-                  backgroundColor: color,
-                  border: color === "#ffffff" ? "1px solid #eee" : "0",
-                }}
-                className="w-8 h-8 rounded-full cursor-pointer"
-              ></div>
-            ))}
-          </div> */}
         </div>
       </div>
     </div>
