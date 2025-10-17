@@ -1,14 +1,18 @@
+import { Suspense, lazy } from "react";
 import { Provider } from "react-redux";
-import NotesPage from "./view/NotesPage";
 import { store } from "./store/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute, PublicRoute } from "./components/auth/ProtectedRoute";
-import LoginPage from "./view/LoginPage";
-import RegisterPage from "./view/RegisterPage";
-import ProfilePage from "./view/ProfilePage";
-import UnauthorizedPage from "./view/UnauthorizedPage";
 import OfflineModal from "./components/modal/OfflineModal";
+
+// Lazy load pages
+const NotesPage = lazy(() => import("./view/NotesPage"));
+const LoginPage = lazy(() => import("./view/LoginPage"));
+const RegisterPage = lazy(() => import("./view/RegisterPage"));
+const ProfilePage = lazy(() => import("./view/ProfilePage"));
+const UnauthorizedPage = lazy(() => import("./view/UnauthorizedPage"));
+// const AdminPage = lazy(() => import("./view/AdminPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,41 +29,45 @@ function App() {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <Routes>
-            {/* Public routes */}
-            <Route
-              path="/login"
-              element={
-                <PublicRoute>
-                  <LoginPage />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <PublicRoute>
-                  <RegisterPage />
-                </PublicRoute>
-              }
-            />
+          <Suspense
+            fallback={<div className="text-center mt-10">Loading...</div>}
+          >
+            <Routes>
+              {/* Public routes */}
+              <Route
+                path="/login"
+                element={
+                  <PublicRoute>
+                    <LoginPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <PublicRoute>
+                    <RegisterPage />
+                  </PublicRoute>
+                }
+              />
 
-            {/* Protected routes */}
-            <Route element={<ProtectedRoute />}>
-              <Route path="/notes" element={<NotesPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-            </Route>
+              {/* Protected routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/notes" element={<NotesPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+              </Route>
 
-            {/* Admin only route */}
-            {/* <Route element={<ProtectedRoute requiredRole="admin" />}>
-              <Route path="/admin" element={<AdminPage />} />
-            </Route> */}
+              {/* Admin only route */}
+              {/* <Route element={<ProtectedRoute requiredRole="admin" />}>
+                <Route path="/admin" element={<AdminPage />} />
+              </Route> */}
 
-            {/* Error routes */}
-            <Route path="/unauthorized" element={<UnauthorizedPage />} />
-            <Route path="/" element={<Navigate to="/notes" replace />} />
-            <Route path="*" element={<Navigate to="/notes" replace />} />
-          </Routes>
+              {/* Error routes */}
+              <Route path="/unauthorized" element={<UnauthorizedPage />} />
+              <Route path="/" element={<Navigate to="/notes" replace />} />
+              <Route path="*" element={<Navigate to="/notes" replace />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
         <OfflineModal />
       </QueryClientProvider>

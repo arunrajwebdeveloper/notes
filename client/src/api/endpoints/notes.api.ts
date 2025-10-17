@@ -9,4 +9,8 @@ export const notesAPI = {
     const response = await apiClient.get("/tags");
     return response.data;
   },
+  createNote: async (payload: any) => {
+    const response = await apiClient.post("/notes", payload);
+    return response.data;
+  },
 };

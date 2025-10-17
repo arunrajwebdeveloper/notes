@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { ReactNode, MouseEvent } from "react";
+import type { ReactNode, MouseEvent, CSSProperties } from "react";
 
 // Type definitions
 interface ModalProps {
@@ -20,6 +20,8 @@ interface ModalTitleProps {
 
 interface ModalBodyProps {
   children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
 }
 
 interface ModalFooterProps {
@@ -145,7 +147,11 @@ Modal.Title = ({ children }: ModalTitleProps) => (
   <h4 className="text-lg font-semibold text-gray-800">{children}</h4>
 );
 
-Modal.Body = ({ children }: ModalBodyProps) => <div>{children}</div>;
+Modal.Body = ({ children, className = "", style }: ModalBodyProps) => (
+  <div className={className} style={style}>
+    {children}
+  </div>
+);
 
 Modal.Footer = ({ children }: ModalFooterProps) => (
   <div className="flex gap-4 justify-start py-4 px-6">{children}</div>

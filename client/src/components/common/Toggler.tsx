@@ -35,7 +35,9 @@ interface TogglerProps {
   className?: string; // Tailwind classes for the wrapper div
 }
 
-interface ToggleProps extends ComponentProps {}
+interface ToggleProps extends ComponentProps {
+  isLoading?: boolean;
+}
 interface MenuProps extends ComponentProps {}
 
 // Create the Context
@@ -57,7 +59,11 @@ const useTogglerContext = () => {
 // ====================================================================
 
 // Toggler.Toggle: The switch/button content
-const Toggle: React.FC<ToggleProps> = ({ children, className = "" }) => {
+const Toggle: React.FC<ToggleProps> = ({
+  children,
+  className = "",
+  isLoading = false,
+}) => {
   const { isOpen, toggleOpen, setIsOpen } = useTogglerContext();
 
   // Utility function to close the menu
@@ -74,6 +80,7 @@ const Toggle: React.FC<ToggleProps> = ({ children, className = "" }) => {
 
   return (
     <button
+      disabled={isLoading}
       onClick={toggleOpen}
       className={`transition relative duration-300 ease-in-out ${className}`}
     >

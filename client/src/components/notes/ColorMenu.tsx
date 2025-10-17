@@ -7,11 +7,13 @@ import { Palette } from "lucide-react";
 interface ColorMenuProps {
   currentColor?: string;
   onSelect?: (color: string) => void;
+  isLoading?: boolean;
 }
 
 export default function ColorMenu({
   currentColor = "#ffffff",
   onSelect,
+  isLoading = false,
 }: ColorMenuProps) {
   const [selectedColor, setSelectedColor] = useState(currentColor);
 
@@ -24,7 +26,7 @@ export default function ColorMenu({
   return (
     <Toggler>
       {/* Toggle button */}
-      <Toggler.Toggle>
+      <Toggler.Toggle isLoading={isLoading}>
         {({ isOpen }) => (
           <div className="relative group">
             <div
@@ -33,7 +35,9 @@ export default function ColorMenu({
             >
               <Palette size={24} />
             </div>
-            {!isOpen && <Tooltip content="Choose Color" position="top" />}
+            {!isOpen && !isLoading && (
+              <Tooltip content="Choose Color" position="top" />
+            )}
           </div>
         )}
       </Toggler.Toggle>

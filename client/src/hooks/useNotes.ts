@@ -1,12 +1,18 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { notesAPI } from "../api/endpoints/notes.api";
 
 export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
+  const queryClient = useQueryClient();
+
   const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
 
-  const toggleNoteModal = () => {
-    setIsOpenNoteModal((prev) => !prev);
+  const openNoteModal = () => {
+    setIsOpenNoteModal(true);
+  };
+
+  const closeNoteModal = () => {
+    setIsOpenNoteModal(false);
   };
 
   const {
@@ -29,12 +35,32 @@ export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
     enabled: enabled,
   });
 
+  const createNoteMutation = useMutation({
+    mutationFn: notesAPI.createNote,
+    onSuccess: async (data) => {
+      if (data) {
+        queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+      }
+    },
+    onError: (error: any) => {
+      console.error(
+        "Note creation failed:",
+        error.response?.data?.message || error.message
+      );
+    },
+    onSettled: () => {
+      closeNoteModal();
+    },
+  });
+
   return {
     notes,
     tags,
     isLoadingNotes: isLoadingNotes || isFetchingNotes,
     isLoadingTags: isLoadingTags || isFetchingTags,
     isOpenNoteModal,
-    toggleNoteModal,
+    openNoteModal,
+    closeNoteModal,
+    createNoteMutation,
   };
 };

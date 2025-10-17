@@ -7,9 +7,15 @@ interface TagsMenuProps {
   tags: TagType[];
   selectedTags: TagType[];
   onChange: (tags: TagType[]) => void;
+  isLoading?: boolean;
 }
 
-function TagsMenu({ tags = [], selectedTags = [], onChange }: TagsMenuProps) {
+function TagsMenu({
+  tags = [],
+  selectedTags = [],
+  onChange,
+  isLoading = false,
+}: TagsMenuProps) {
   const onChooseTag = (tag: TagType) => {
     // Check if tag is already selected
     const isAlreadySelected = selectedTags.some((t) => t._id === tag._id);
@@ -23,14 +29,16 @@ function TagsMenu({ tags = [], selectedTags = [], onChange }: TagsMenuProps) {
 
   return (
     <Toggler>
-      <Toggler.Toggle>
+      <Toggler.Toggle isLoading={isLoading}>
         {({ isOpen }) => (
           <div
             className={`w-12 h-12 border border-slate-300 group flex items-center justify-center rounded-full cursor-pointer transition-all
                 ${isOpen ? " text-blue-600" : " text-slate-500"}`}
           >
             <Tag size={24} />
-            {!isOpen && <Tooltip content="Choose Tags" position="top" />}
+            {!isOpen && !isLoading && (
+              <Tooltip content="Choose Tags" position="top" />
+            )}
           </div>
         )}
       </Toggler.Toggle>

@@ -15,7 +15,9 @@ function NotesPage() {
     isLoadingNotes,
     isLoadingTags,
     isOpenNoteModal,
-    toggleNoteModal,
+    openNoteModal,
+    closeNoteModal,
+    createNoteMutation,
   } = useNotes({
     enabled: true,
   });
@@ -27,7 +29,7 @@ function NotesPage() {
           tags={tags}
           isLoadingTags={isLoadingTags}
           user={user}
-          onCreateNote={toggleNoteModal}
+          onCreateNote={openNoteModal}
         />
       </div>
       <div
@@ -46,9 +48,8 @@ function NotesPage() {
       <NoteModal
         isShow={isOpenNoteModal}
         tags={tags}
-        onClose={() => {
-          toggleNoteModal();
-        }}
+        onHide={() => closeNoteModal()}
+        createNoteMutation={createNoteMutation}
       />
     </div>
   );

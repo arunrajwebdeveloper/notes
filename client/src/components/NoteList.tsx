@@ -17,9 +17,13 @@ function NoteList({
       </div>
 
       <div className="mt-10 flex flex-col lg:flex-row flex-wrap -mx-2 xl:-mx-3">
-        {notes?.result?.map((note: Note) => {
-          return <NoteItem key={note?._id} {...note} />;
-        })}
+        {notes?.result?.length !== 0 ? (
+          notes?.result?.map((note: Note) => {
+            return <NoteItem key={note?._id} {...note} />;
+          })
+        ) : (
+          <p className="p-2 xl:p-3 text-lg text-slate-500 ">No notes found.</p>
+        )}
       </div>
     </div>
   );
