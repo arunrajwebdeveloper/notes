@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Pin } from "lucide-react";
-import type { Tag } from "../../types/note.types";
+import { Archive, Pin } from "lucide-react";
+import type { Note, Tag } from "../../types/note.types";
 import { Modal } from "../common/Modal";
 import ColorMenu from "../notes/ColorMenu";
 import TagsMenu from "../notes/TagsMenu";
@@ -14,6 +14,16 @@ interface NoteModalProps {
 
 function NoteModal({ isShow = false, tags = [], onClose }: NoteModalProps) {
   const [isPinned, setIsPinned] = useState<boolean>(false);
+  const [isArchived, setIsArchived] = useState<boolean>(false);
+
+  const [newNote, setNewNote] = useState<Note>({
+    title: "",
+    description: "",
+    color: "",
+    isPinned,
+    tags: [],
+    isArchived,
+  });
 
   const togglePinned = () => {
     setIsPinned((prev) => !prev);
@@ -65,6 +75,20 @@ function NoteModal({ isShow = false, tags = [], onClose }: NoteModalProps) {
                 onChange={(e) => console.log("Selected Tags: ", e)}
               />
             </div>
+          </div>
+
+          <div className="flex-none">
+            <button
+              onClick={togglePinned}
+              className={`w-12 h-12 relative border border-slate-300 group flex items-center justify-center rounded-full cursor-pointer transition-all
+                ${isArchived ? " text-blue-600" : " text-slate-500"}`}
+            >
+              <Archive size={24} fill={isArchived ? "currentColor" : "none"} />
+              <Tooltip
+                content={isArchived ? "Unarchive" : "Archive"}
+                position="top"
+              />
+            </button>
           </div>
           <div className="flex-none">
             <button

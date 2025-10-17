@@ -11,7 +11,7 @@ function NoteList({
   if (isLoading) return <h3 className="px-6">Loading...</h3>;
 
   return (
-    <div className="mt-6 mb-10">
+    <div className="mt-10 mb-10">
       <div className="text-left">
         <h1 className="font-medium text-4xl xl:text-5xl">My Notes</h1>
       </div>
