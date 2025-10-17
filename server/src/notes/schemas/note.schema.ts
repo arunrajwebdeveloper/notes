@@ -27,7 +27,7 @@ export class Note {
 
   // --- Optional/Utility Fields ---
 
-  @Prop({ default: 'white' }) // Example: 'red', 'blue', 'green', hex codes, etc.
+  @Prop({ default: '#ffffff' })
   color: string;
 
   @Prop({ default: false })

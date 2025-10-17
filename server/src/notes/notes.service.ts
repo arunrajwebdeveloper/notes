@@ -16,10 +16,25 @@ export class NotesService {
     userId: Types.ObjectId,
     createNoteDto: CreateNoteDto,
   ): Promise<Note> {
+    // Find the highest existing orderIndex for the current user's notes
+    const lastNote = await this.noteModel
+      .findOne({ userId })
+      .sort({ orderIndex: -1 }) // Sort descending to get the highest index
+      .select('orderIndex') // Only retrieve the index field
+      .exec();
+
+    // Calculate the new orderIndex
+    // If no notes exist, start at 0 (or 1, based on preference).
+    // If notes exist, use the max index + 1.
+    const newOrderIndex = (lastNote?.orderIndex || 0) + 1;
+
+    // 3Create the new note object
     const createdNote = new this.noteModel({
       ...createNoteDto,
       userId,
+      orderIndex: newOrderIndex,
     });
+
     return createdNote.save();
   }
 
@@ -93,6 +108,7 @@ export class NotesService {
 
     const notes = await this.noteModel
       .find(filter)
+      .populate('tags', '_id name')
       .sort(sort)
       .skip(skipValue)
       .limit(limitValue)
