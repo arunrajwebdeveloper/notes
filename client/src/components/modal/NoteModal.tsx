@@ -29,7 +29,7 @@ function NoteModal({
   const initialState = {
     title: "",
     description: "",
-    color: "",
+    color: "#ffffff",
     isPinned: false,
     tags: [],
     isArchived: false,
@@ -104,6 +104,7 @@ function NoteModal({
               placeholder="Title"
               className="border-0 text-gray-900 text-2xl rounded-lg outline-0 block w-full py-3"
               onChange={onChangeHandler}
+              disabled={isLoading}
             />
           </div>
           <div>
@@ -114,6 +115,7 @@ function NoteModal({
               rows={8}
               className="border-0 max-h-92 text-gray-900 text-xl rounded-lg outline-0 block w-full py-3"
               onChange={onChangeHandler}
+              disabled={isLoading}
             />
           </div>
 
@@ -125,12 +127,13 @@ function NoteModal({
                   className="bg-black/30 p-1 flex items-center justify-between gap-2 text-white text-sm rounded-full"
                 >
                   <span className="ps-2">{tag.name}</span>
-                  <div
+                  <button
+                    disabled={isLoading}
                     onClick={() => onRemoveLabel(tag?._id)}
                     className="rounded-full w-6 h-6 flex cursor-pointer bg-black/30"
                   >
                     <X size={16} className="m-auto" />
-                  </div>
+                  </button>
                 </div>
               ))}
             </div>
