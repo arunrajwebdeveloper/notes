@@ -3,7 +3,7 @@ import type { User } from "../types/auth.types";
 
 function Header({ user }: { user: User | null }) {
   return (
-    <header className="w-full h-20 top-0 sticky bg-white flex items-center justify-between">
+    <header className="w-full h-20 top-0 sticky bg-white flex items-center justify-between z-50">
       <div className="flex items-center h-14 w-full max-w-lg">
         <div className="relative w-full">
           <Search className="absolute text-gray-900 z-10 left-4 top-1/2 transform -translate-y-1/2 pointer-events-none" />
