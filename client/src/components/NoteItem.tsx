@@ -1,3 +1,4 @@
+import { Pin } from "lucide-react";
 import type { Note } from "../types/note.types";
 import { dateFormatter, trimText } from "../utils";
 
@@ -18,9 +19,17 @@ function NoteItem({
           backgroundColor: color,
           border: color === "#ffffff" ? "1px solid #eee" : "0",
         }}
-        className="p-8 rounded-2xl overflow-hidden flex flex-col justify-between cursor-default w-full"
+        className="p-8 relative rounded-2xl overflow-hidden flex flex-col justify-between cursor-default w-full"
       >
         <div>
+          {isPinned && (
+            <button
+              disabled
+              className="absolute z-10 top-4 right-4 text-gray-700"
+            >
+              <Pin size={22} fill="currentColor" className="rotate-45" />
+            </button>
+          )}
           <h2 className="text-2xl xl:text-3xl mb-6">
             {trimText(title || "", 80)}
           </h2>
