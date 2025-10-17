@@ -1,31 +1,33 @@
 import type { TagItem } from "../types/note.types";
-import type { User } from "../types/auth.types";
 import { Plus } from "lucide-react";
 
 function Sidebar({
   tags,
   isLoadingTags,
-  user,
 }: {
   tags: TagItem[];
   isLoadingTags: boolean;
-  user: User | null;
 }) {
   return (
     <aside className="h-dvh w-full flex flex-col justify-between">
-      <div
-        className="space-y-10 overflow-y-auto overflow-x-hidden w-full h-full
-      [&::-webkit-scrollbar]:w-1
-    [&::-webkit-scrollbar-track]:bg-gray-100
-    [&::-webkit-scrollbar-thumb]:bg-gray-400
-    dark:[&::-webkit-scrollbar-track]:bg-neutral-400
+      {/* 
+      // Add if needed dark theme
+        dark:[&::-webkit-scrollbar-track]:bg-neutral-400
     dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
+      */}
+      <div
+        className="space-y-10 overflow-y-auto overflow-x-hidden w-full h-full transition duration-300
+      [&::-webkit-scrollbar]:w-2
+    [&::-webkit-scrollbar-track]:bg-white
+    [&::-webkit-scrollbar-thumb]:bg-white
+    hover:[&::-webkit-scrollbar-track]:bg-gray-100
+    hover:[&::-webkit-scrollbar-thumb]:bg-gray-400
       "
       >
         <div className="sticky top-0 space-y-10 bg-white pb-6 pt-6">
           {/* Logo */}
           <div className="px-6">
-            <h2 className="text-2xl font-semibold text-black m-0 select-none">
+            <h2 className="text-3xl font-semibold text-black m-0 select-none">
               NOTI
             </h2>
           </div>

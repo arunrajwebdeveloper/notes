@@ -96,8 +96,17 @@ export class NotesService {
 
     // 4. Sorting logic remains the same
     const sort: Record<string, 1 | -1> = {
+      // Primary Sort: Pinned notes always come first (true > false)
       isPinned: -1,
-      [sortBy]: sortOrder === 'asc' ? 1 : (-1 as 1 | -1),
+
+      // Secondary Sort (Tie-breaker for Pinned Notes):
+      // Latest update/creation date first within the pinned group.
+      updatedAt: -1, // Use -1 (descending) to show latest note first
+      // [sortBy]: sortOrder === 'asc' ? 1 : (-1 as 1 | -1),
+
+      // Tertiary/Dynamic Sort: Used as the final fallback,
+      //    or when the user specifically requests a different sort (e.g., A-Z title).
+      [sortBy]: sortOrder === 'asc' ? 1 : -1,
     };
 
     const limitValue = limit;
