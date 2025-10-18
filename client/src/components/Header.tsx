@@ -3,21 +3,29 @@ import type { User } from "../types/auth.types";
 
 function Header({ user }: { user: User | null }) {
   return (
-    <header className="w-full h-20 top-0 sticky bg-white flex items-center justify-between z-50">
-      <div className="flex items-center h-14 w-full max-w-lg">
-        <div className="relative w-full">
-          <Search className="absolute text-gray-900 z-10 left-4 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+    <header className="w-full h-16 md:h-20 top-0 sticky bg-white flex items-center justify-between z-50 gap-4">
+      <div className="flex items-center h-10 md:h-14 w-full gap-6 lg:gap-0">
+        {/* Logo */}
+        <div className="block lg:hidden">
+          <h2 className="text-2xl md:text-3xl font-semibold text-black m-0 select-none">
+            NOTI
+          </h2>
+        </div>
+
+        {/* Search bar */}
+        <div className="relative w-full max-w-lg">
+          <Search className="absolute w-5 h-5 text-gray-900 z-10 left-2 md:left-4 top-1/2 transform -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             placeholder="Search Notes"
-            className=" border-0 rounded-lg bg-slate-100 text-gray-900 text-lg outline-0 block w-full ps-12 p-3"
+            className=" border-0 rounded-lg bg-slate-100 text-gray-900 text-md md:text-lg outline-0 block w-full h-12 ps-10 md:ps-12 pe-3"
           />
         </div>
       </div>
 
       {/* User Menu */}
-      <div className="h-[80px] flex flex-none items-center px-6">
-        <button className="flex items-center gap-4 text-left cursor-pointer w-12 h-12 border-3 border-slate-300 hover:border-t-blue-500 hover:border-l-blue-500 hover:border-r-amber-400 hover:border-b-amber-400  rounded-full transition duration-300">
+      <div className="flex flex-none items-center">
+        <button className="flex items-center gap-4 text-left cursor-pointer w-10 h-10 md:w-12 md:h-12 border-3 border-slate-300 hover:border-t-blue-500 hover:border-l-blue-500 hover:border-r-amber-400 hover:border-b-amber-400  rounded-full transition duration-300">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 128 128"

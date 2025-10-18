@@ -19,6 +19,10 @@ function NotesPage() {
     openNoteModal,
     closeNoteModal,
     createNoteMutation,
+    updateNoteMutation,
+    selectedNoteId,
+    noteDetails,
+    isLoadingNoteDetails,
   } = useNotes({
     enabled: true,
   });
@@ -29,7 +33,7 @@ function NotesPage() {
         <Sidebar tags={tags} isLoadingTags={isLoadingTags} />
       </div>
       <div
-        className="w-full lg:w-[calc(100%-340px)] flex-1 overflow-y-auto px-10 transition duration-300 
+        className="w-full lg:w-[calc(100%-340px)] flex-1 overflow-y-auto px-4 sm:px-6 md:px-10 transition duration-300 
       [&::-webkit-scrollbar]:w-2
     [&::-webkit-scrollbar-track]:bg-gray-100
     [&::-webkit-scrollbar-thumb]:bg-gray-400
@@ -38,19 +42,27 @@ function NotesPage() {
       "
       >
         <Header user={user} />
-        <NoteList notes={notes} isLoading={isLoadingNotes} />
+        <NoteList
+          notes={notes}
+          isLoading={isLoadingNotes}
+          onEdit={(noteId) => openNoteModal(noteId)}
+        />
       </div>
       {/* NOTE MODAL */}
       <NoteModal
         isShow={isOpenNoteModal}
+        mode={selectedNoteId ? "edit" : "create"}
         tags={tags}
-        onHide={() => closeNoteModal()}
+        onHide={closeNoteModal}
         createNoteMutation={createNoteMutation}
+        updateNoteMutation={updateNoteMutation}
+        noteDetails={noteDetails}
+        isLoadingNoteDetails={isLoadingNoteDetails}
       />
 
       {/* Create Button */}
       <button
-        onClick={openNoteModal}
+        onClick={() => openNoteModal(null)}
         className="bg-black w-20 h-20 group fixed bottom-6 right-6 z-50 font-medium cursor-pointer text-white flex justify-center items-center gap-1 rounded-full"
       >
         <Plus className="m-auto group-hover:rotate-90 transition duration-300 origin-center" />

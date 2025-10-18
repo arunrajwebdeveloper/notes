@@ -1,6 +1,6 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { Archive, Pin, X } from "lucide-react";
-import type { NewNoteState, Tag } from "../../types/note.types";
+import type { NewNoteState, Note, Tag } from "../../types/note.types";
 import { Modal } from "../common/Modal";
 import ColorMenu from "../notes/ColorMenu";
 import TagsMenu from "../notes/TagsMenu";
@@ -10,6 +10,7 @@ import CircleSpinner from "../common/CircleSpinner";
 
 interface NoteModalProps {
   isShow: boolean;
+  mode: "create" | "edit";
   tags: Tag[];
   onHide: () => void;
   createNoteMutation: UseMutationResult<
@@ -18,13 +19,24 @@ interface NoteModalProps {
     any, // TVariables → argument type passed to mutate() : eg: Note
     unknown // TContext → optional rollback context
   >;
+  updateNoteMutation: UseMutationResult<
+    any,
+    unknown,
+    { id: string; payload: any }
+  >;
+  noteDetails?: Note;
+  isLoadingNoteDetails: boolean;
 }
 
 function NoteModal({
-  isShow = false,
-  tags = [],
-  onHide,
+  isShow,
+  mode,
+  tags,
+  noteDetails,
+  isLoadingNoteDetails,
   createNoteMutation,
+  updateNoteMutation,
+  onHide,
 }: NoteModalProps) {
   const initialState = {
     title: "",
@@ -41,15 +53,30 @@ function NoteModal({
     setNewNote(initialState);
   }, [isShow]);
 
-  const isLoading = createNoteMutation.isPending;
-  const valideNote =
-    newNote?.title?.trim()?.length !== 0 &&
-    newNote?.description?.trim()?.length !== 0;
+  // When opening modal, reset or fill
+  useEffect(() => {
+    if (mode === "edit" && noteDetails) {
+      setNewNote(noteDetails);
+    } else {
+      setNewNote(initialState);
+    }
+  }, [isShow, mode, noteDetails]);
 
-  const onSubmitNote = () => {
-    if (valideNote) {
-      const tagIds = newNote?.tags?.map((n) => n?._id) || [];
-      createNoteMutation.mutate({ ...newNote, tags: tagIds });
+  const isLoading =
+    createNoteMutation.isPending ||
+    updateNoteMutation.isPending ||
+    isLoadingNoteDetails;
+
+  const isValid = newNote.title.trim() && newNote.description.trim();
+
+  const handleSubmit = () => {
+    const tagIds = newNote?.tags?.map((n) => n?._id);
+    const payload = { ...newNote, tags: tagIds };
+
+    if (mode === "edit" && noteDetails?._id) {
+      updateNoteMutation.mutate({ id: noteDetails?._id, payload });
+    } else {
+      createNoteMutation.mutate(payload);
     }
   };
 
@@ -126,7 +153,9 @@ function NoteModal({
                   key={tag._id}
                   className="bg-black/30 p-1 flex items-center justify-between gap-2 text-white text-sm rounded-full"
                 >
-                  <span className="ps-2">{tag.name}</span>
+                  <span className="ps-2 max-w-24 whitespace-nowrap overflow-hidden text-ellipsis">
+                    {tag.name}
+                  </span>
                   <button
                     disabled={isLoading}
                     onClick={() => onRemoveLabel(tag?._id)}
@@ -194,17 +223,19 @@ function NoteModal({
             </div>
             <div className="flex items-center justify-end">
               <button
-                onClick={onSubmitNote}
-                disabled={isLoading || !valideNote}
+                onClick={handleSubmit}
+                disabled={isLoading || !isValid}
                 className="bg-green-600 hover:bg-green-700 disabled:opacity-70 disabled:cursor-default transition duration-300 text-white h-12 px-4 rounded-md cursor-pointer text-sm"
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">
                     <CircleSpinner size={20} className="text-white" />
-                    <span>Creating...</span>
+                    <span>
+                      {mode === "edit" ? "Updating..." : "Creating..."}
+                    </span>
                   </div>
                 ) : (
-                  <span>Create Note</span>
+                  <span>{mode === "edit" ? "Update Note" : "Create Note"}</span>
                 )}
               </button>
             </div>

@@ -6,13 +6,16 @@ export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
   const queryClient = useQueryClient();
 
   const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
+  const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
 
-  const openNoteModal = () => {
+  const openNoteModal = (noteId?: string | null) => {
+    setSelectedNoteId(noteId || null);
     setIsOpenNoteModal(true);
   };
 
   const closeNoteModal = () => {
     setIsOpenNoteModal(false);
+    setSelectedNoteId(null);
   };
 
   const {
@@ -23,6 +26,12 @@ export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
     queryKey: ["get_notes"],
     queryFn: notesAPI.getNotes,
     enabled: enabled,
+  });
+
+  const { data: noteDetails, isLoading: isLoadingNoteDetails } = useQuery({
+    queryKey: ["get_note_by_id", selectedNoteId],
+    queryFn: () => notesAPI.getNoteById(selectedNoteId as string),
+    enabled: enabled && !!selectedNoteId,
   });
 
   const {
@@ -37,10 +46,8 @@ export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
 
   const createNoteMutation = useMutation({
     mutationFn: notesAPI.createNote,
-    onSuccess: async (data) => {
-      if (data) {
-        queryClient.invalidateQueries({ queryKey: ["get_notes"] });
-      }
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes"] });
     },
     onError: (error: any) => {
       console.error(
@@ -53,14 +60,32 @@ export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
     },
   });
 
+  const updateNoteMutation = useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: any }) =>
+      notesAPI.updateNote(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+      queryClient.invalidateQueries({
+        queryKey: ["get_note_by_id", selectedNoteId],
+      });
+    },
+    onSettled: () => {
+      closeNoteModal();
+    },
+  });
+
   return {
     notes,
     tags,
     isLoadingNotes: isLoadingNotes || isFetchingNotes,
     isLoadingTags: isLoadingTags || isFetchingTags,
+    noteDetails,
+    isLoadingNoteDetails,
     isOpenNoteModal,
     openNoteModal,
     closeNoteModal,
     createNoteMutation,
+    updateNoteMutation,
+    selectedNoteId,
   };
 };
