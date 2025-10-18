@@ -1,5 +1,5 @@
 import type { InfiniteData } from "@tanstack/react-query";
-import type { Note, NotesResponse } from "../types/note.types";
+import type { Note, NotesResponse } from "../../types/note.types";
 import NoteItem from "./NoteItem";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer"; // Used for scroll detection

@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import NoteList from "../components/NoteList";
+import NoteList from "../components/notes/NoteList";
 import { useNotes } from "../hooks/useNotes";
 import NoteModal from "../components/modal/NoteModal";
 import { useAppSelector } from "../hooks";

@@ -1,6 +1,6 @@
 import { Pin } from "lucide-react";
-import type { Note } from "../types/note.types";
-import { dateFormatter, trimText } from "../utils";
+import type { Note } from "../../types/note.types";
+import { dateFormatter, trimText } from "../../utils";
 
 function NoteItem({
   note,
