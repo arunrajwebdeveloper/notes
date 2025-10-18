@@ -19,6 +19,7 @@ function TagRowComponent({
       <span className="whitespace-nowrap overflow-hidden text-ellipsis">
         {tag?.name}
       </span>
+
       {tag?.noteCount !== 0 && (
         <span className="rounded-full min-w-7 h-7 bg-slate-200 text-slate-800 flex justify-center items-center text-sm">
           {tag?.noteCount}
