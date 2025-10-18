@@ -31,3 +31,23 @@
     background-color: #f9f9f9;
   }
 } */
+
+.virtualized-list > div[role="list"]::-webkit-scrollbar {
+  width: 8px;
+}
+.virtualized-list > div[role="list"]::-webkit-scrollbar-track {
+  background-color: #ffffff;
+}
+.virtualized-list > div[role="list"]::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+}
+.virtualized-list:hover > div[role="list"]::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+}
+.virtualized-list:hover > div[role="list"]::-webkit-scrollbar-thumb {
+  background-color: #99a1af;
+}
+.virtualized-list > div[role="list"] {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
