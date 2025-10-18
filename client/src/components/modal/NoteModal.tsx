@@ -151,8 +151,9 @@ function NoteModal({
               {newNote?.tags?.map((tag) => (
                 <div
                   key={tag._id}
-                  className="bg-black/30 p-1 flex items-center justify-between gap-2 text-white text-sm rounded-full"
+                  className="bg-black/30 relative p-1 group flex items-center justify-between gap-2 text-white text-sm rounded-full"
                 >
+                  <Tooltip content={tag.name} position="top" />
                   <span className="ps-2 max-w-24 whitespace-nowrap overflow-hidden text-ellipsis">
                     {tag.name}
                   </span>
