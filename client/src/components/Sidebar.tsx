@@ -35,8 +35,11 @@ function Sidebar({
         <div className="mb-8">
           <div className="flex justify-between items-center px-6">
             <h2 className="text-xl text-black font-medium">Tags</h2>
-            <button className="bg-slate-200 text-slate-800 flex gap-2 items-center text-base rounded-full py-1 px-3 cursor-pointer">
-              <Plus size={20} />
+            <button className="bg-slate-200 text-slate-800 group flex gap-2 items-center text-base rounded-full py-1 px-3 transition duration-300 cursor-pointer border-3 border-slate-200 hover:border-t-blue-500 hover:border-l-blue-500 hover:border-r-amber-400 hover:border-b-amber-400">
+              <Plus
+                size={20}
+                className="group-hover:rotate-90 transition duration-300 origin-center"
+              />
               <span>Create Tag</span>
             </button>
           </div>

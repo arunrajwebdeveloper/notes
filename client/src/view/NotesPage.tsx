@@ -63,7 +63,7 @@ function NotesPage() {
       {/* Create Button */}
       <button
         onClick={() => openNoteModal(null)}
-        className="bg-black w-20 h-20 group fixed bottom-6 right-6 z-50 font-medium cursor-pointer text-white flex justify-center items-center gap-1 rounded-full"
+        className="bg-black w-16 h-16 lg:w-20 lg:h-20 group border-3 border-black hover:border-t-blue-500 hover:border-l-blue-500 hover:border-r-amber-400 hover:border-b-amber-400 fixed bottom-6 right-6 z-50 font-medium cursor-pointer text-white flex justify-center items-center gap-1 rounded-full transition duration-300"
       >
         <Plus className="m-auto group-hover:rotate-90 transition duration-300 origin-center" />
         <Tooltip content="Create Note" position="left" />
