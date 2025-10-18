@@ -192,8 +192,12 @@ function NoteModal({
                 <button
                   onClick={toggleArchived}
                   disabled={isLoading}
-                  className={`w-12 h-12 relative border border-slate-300 group flex items-center justify-center rounded-full cursor-pointer transition-all
-                ${newNote?.isArchived ? " text-blue-600" : " text-slate-500"}`}
+                  className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
+                ${
+                  newNote?.isArchived
+                    ? " bg-blue-600 text-white"
+                    : " text-slate-500 bg-slate-200"
+                }`}
                 >
                   <Archive size={24} />
                   {!isLoading && (
@@ -208,8 +212,12 @@ function NoteModal({
                 <button
                   onClick={togglePinned}
                   disabled={isLoading}
-                  className={`w-12 h-12 relative border border-slate-300 group flex items-center justify-center rounded-full cursor-pointer transition-all
-                ${newNote?.isPinned ? " text-blue-600" : " text-slate-500"}`}
+                  className={`w-12 h-12 relative  group flex items-center justify-center rounded-full cursor-pointer transition duration-300
+                ${
+                  newNote?.isPinned
+                    ? " bg-blue-600 text-white"
+                    : " text-slate-500 bg-slate-200"
+                }`}
                 >
                   <Pin size={24} />
                   {!isLoading && (
