@@ -11,3 +11,15 @@ export interface AuthState {
   isAuthenticated: boolean;
   loading: boolean;
 }
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export interface RegisterData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}

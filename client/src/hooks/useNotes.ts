@@ -1,8 +1,23 @@
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type InfiniteData,
+} from "@tanstack/react-query";
 import { notesAPI } from "../api/endpoints/notes.api";
+import type { NotesResponse } from "../types/note.types";
 
-export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
+type NoteQueryKey = ["get_notes", { limit: number }];
+
+export const useNotes = ({
+  enabled = false,
+  limit = 10,
+}: {
+  enabled: boolean;
+  limit?: number;
+}) => {
   const queryClient = useQueryClient();
 
   const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
@@ -18,14 +33,31 @@ export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
     setSelectedNoteId(null);
   };
 
-  const {
-    data: notes,
-    isLoading: isLoadingNotes,
-    isFetching: isFetchingNotes,
-  } = useQuery({
-    queryKey: ["get_notes"],
-    queryFn: notesAPI.getNotes,
-    enabled: enabled,
+  const notes = useInfiniteQuery<
+    NotesResponse, // TQueryFnData: Single page data type
+    Error, // TError
+    InfiniteData<NotesResponse, number>, // TData: The CORRECT type for the 'data' property
+    NoteQueryKey, // TQueryKey
+    number // TPageParam
+  >({
+    queryKey: ["get_notes", { limit }],
+    initialPageParam: 1,
+    queryFn: ({ pageParam = 1, queryKey }) => {
+      const [, { limit: queryLimit }] = queryKey;
+      return notesAPI.getNotes({
+        page: pageParam,
+        limit: queryLimit,
+      });
+    },
+
+    getNextPageParam: (lastPage: NotesResponse) => {
+      if (lastPage.hasNext) {
+        return lastPage.page + 1;
+      }
+      return undefined;
+    },
+
+    // staleTime: 1000 * 60 * 5,
   });
 
   const { data: noteDetails, isLoading: isLoadingNoteDetails } = useQuery({
@@ -47,12 +79,12 @@ export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
   const createNoteMutation = useMutation({
     mutationFn: notesAPI.createNote,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+      queryClient.invalidateQueries({ queryKey: ["get_notes", { limit }] });
     },
     onError: (error: any) => {
       console.error(
         "Note creation failed:",
-        error.response?.data?.message || error.message
+        error.response?.data?.result?.message || error.message
       );
     },
     onSettled: () => {
@@ -64,7 +96,7 @@ export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
     mutationFn: ({ id, payload }: { id: string; payload: any }) =>
       notesAPI.updateNote(id, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+      queryClient.invalidateQueries({ queryKey: ["get_notes", { limit }] });
       queryClient.invalidateQueries({
         queryKey: ["get_note_by_id", selectedNoteId],
       });
@@ -77,7 +109,6 @@ export const useNotes = ({ enabled = false }: { enabled: boolean }) => {
   return {
     notes,
     tags,
-    isLoadingNotes: isLoadingNotes || isFetchingNotes,
     isLoadingTags: isLoadingTags || isFetchingTags,
     noteDetails,
     isLoadingNoteDetails,

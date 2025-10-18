@@ -11,9 +11,8 @@ function NotesPage() {
   const { user } = useAppSelector((state) => state.auth);
 
   const {
-    notes,
+    notes: notesData,
     tags,
-    isLoadingNotes,
     isLoadingTags,
     isOpenNoteModal,
     openNoteModal,
@@ -26,6 +25,15 @@ function NotesPage() {
   } = useNotes({
     enabled: true,
   });
+
+  const {
+    data,
+    isPending: isLoadingNotes,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = notesData;
 
   return (
     <div className="flex h-dvh w-full overflow-hidden">
@@ -43,8 +51,12 @@ function NotesPage() {
       >
         <Header user={user} />
         <NoteList
-          notes={notes}
+          data={data}
           isLoading={isLoadingNotes}
+          error={error}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
           onEdit={(noteId) => openNoteModal(noteId)}
         />
       </div>
