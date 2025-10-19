@@ -174,6 +174,7 @@ function NoteModal({
         </div>
 
         {/* Note Modal Footer */}
+
         <div className="bg-white rounded-b-lg">
           <div className="flex gap-2 items-center justify-between px-6 py-4 border-t border-t-slate-800/10">
             <div className="flex gap-3 items-center">
