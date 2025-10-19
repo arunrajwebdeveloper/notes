@@ -48,13 +48,6 @@ function NoteList({
     );
   }
 
-  // if (isLoading && allNotes.length === 0)
-  //   return <h3 className="px-6">Loading...</h3>;
-
-  // {[...Array(8)].map((_, index) => (
-  //         <UserListSkeleton key={`initial-profiles-skel-${index}`} />
-  //       ))}
-
   return (
     <div className=" mt-8 md:mt-10 mb-10">
       <div className="text-left">
