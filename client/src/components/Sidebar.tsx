@@ -1,4 +1,4 @@
-import type { TagItem } from "../types/note.types";
+import type { NoteFilterState, TagItem } from "../types/note.types";
 import { Plus } from "lucide-react";
 import { List, type RowComponentProps } from "react-window";
 
@@ -6,15 +6,25 @@ function TagRowComponent({
   index,
   style,
   tags,
+  isLoadingNotes,
+  handleTagSelect,
+  filterState,
 }: RowComponentProps<{
   tags: TagItem[];
+  isLoadingNotes: boolean;
+  handleTagSelect: (tagId: string) => void;
+  filterState: NoteFilterState;
 }>) {
   const tag = tags[index];
 
   return (
     <button
+      disabled={isLoadingNotes}
       style={style}
-      className="flex items-center justify-between gap-4 px-6 w-full cursor-pointer text-base text-black hover:bg-slate-100 hover:text-blue-500 transition duration-300"
+      onClick={() => handleTagSelect(tag._id)}
+      className={`flex items-center justify-between gap-4 px-6 w-full cursor-pointer text-base text-black transition duration-300 ${
+        filterState?.tagId === tag?._id ? "bg-blue-200" : "hover:bg-slate-100"
+      }`}
     >
       <span className="whitespace-nowrap overflow-hidden text-ellipsis">
         {tag?.name}
@@ -32,9 +42,15 @@ function TagRowComponent({
 function Sidebar({
   tags,
   isLoadingTags,
+  isLoadingNotes,
+  handleTagSelect,
+  filterState,
 }: {
   tags: TagItem[];
   isLoadingTags: boolean;
+  isLoadingNotes: boolean;
+  handleTagSelect: (tagId: string) => void;
+  filterState: NoteFilterState;
 }) {
   return (
     <aside className="h-dvh w-full flex flex-col justify-between">
@@ -79,7 +95,12 @@ function Sidebar({
                 rowComponent={TagRowComponent}
                 rowCount={tags?.length || 0}
                 rowHeight={56}
-                rowProps={{ tags }}
+                rowProps={{
+                  tags,
+                  isLoadingNotes,
+                  filterState,
+                  handleTagSelect,
+                }}
                 style={{ height: "calc(100dvh - 200px)", width: "100%" }}
               />
             )}

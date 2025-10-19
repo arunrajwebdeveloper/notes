@@ -1,7 +1,18 @@
 import { Search } from "lucide-react";
-import type { User } from "../types/auth.types";
+import type { User } from "../types/user.types";
+import type { ChangeEvent } from "react";
 
-function Header({ user }: { user: User | null }) {
+function Header({
+  user,
+  handleSearchChange,
+  isLoading,
+  localSearch,
+}: {
+  user: User | null;
+  handleSearchChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  isLoading: boolean;
+  localSearch: string;
+}) {
   return (
     <header className="w-full h-16 md:h-20 top-0 sticky bg-white flex items-center justify-between z-50 gap-4">
       <div className="flex items-center h-10 md:h-14 w-full gap-6 lg:gap-0">
@@ -19,6 +30,9 @@ function Header({ user }: { user: User | null }) {
             type="text"
             placeholder="Search Notes"
             className=" border-0 rounded-lg bg-slate-100 text-gray-900 text-md md:text-lg outline-0 block w-full h-12 md:h-14 ps-10 md:ps-12 pe-3"
+            onChange={handleSearchChange}
+            disabled={isLoading}
+            value={localSearch}
           />
         </div>
       </div>

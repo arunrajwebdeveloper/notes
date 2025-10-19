@@ -1,11 +1,16 @@
 import type { InfiniteData } from "@tanstack/react-query";
-import type { Note, NotesResponse } from "../../types/note.types";
+import type {
+  Note,
+  NoteFilterState,
+  NotesResponse,
+} from "../../types/note.types";
 import NoteItem from "./NoteItem";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer"; // Used for scroll detection
 
 export interface BaseProps {
   onEdit: (id: string) => void;
+  filterState: NoteFilterState;
 }
 export interface InfiniteMatchListProps extends BaseProps {
   data: InfiniteData<NotesResponse, number> | undefined;
@@ -24,6 +29,7 @@ function NoteList({
   hasNextPage,
   isFetchingNextPage,
   onEdit,
+  filterState,
 }: InfiniteMatchListProps) {
   // 1. Intersection Observer Hook
   const { ref, inView } = useInView();
@@ -70,7 +76,14 @@ function NoteList({
       <div className="mt-10 flex flex-col sm:flex-row flex-wrap -mx-2 xl:-mx-3">
         {!isLoading && allNotes?.length !== 0
           ? allNotes?.map((note: Note) => {
-              return <NoteItem key={note?._id} note={note} onEdit={onEdit} />;
+              return (
+                <NoteItem
+                  key={note?._id}
+                  note={note}
+                  onEdit={onEdit}
+                  searchTest={filterState?.search}
+                />
+              );
             })
           : !isLoading && (
               <p className="p-2 xl:p-3 text-lg text-slate-500 select-none">

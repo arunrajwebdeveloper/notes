@@ -59,7 +59,7 @@ export class NotesService {
       sortBy = 'orderIndex',
       sortOrder = 'asc',
       search,
-      tagIds,
+      tagId,
     } = pagination;
 
     const skip = (page - 1) * limit;
@@ -85,13 +85,8 @@ export class NotesService {
     }
 
     // 3. Apply Tag Filter
-    if (tagIds && tagIds.length > 0) {
-      // Converts string IDs from the client/DTO into Mongoose ObjectIds
-      const objectIdTags = tagIds.map((id) => new Types.ObjectId(id));
-
-      // Use $in to find notes where the 'tags' array contains ANY of the provided IDs.
-      // Use $all if you want to find notes that must contain ALL of the provided IDs.
-      filter['tags'] = { $in: objectIdTags };
+    if (tagId) {
+      filter['tags'] = { $in: tagId };
     }
 
     // 4. Sorting logic remains the same

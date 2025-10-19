@@ -22,6 +22,10 @@ function NotesPage() {
     selectedNoteId,
     noteDetails,
     isLoadingNoteDetails,
+    handleSearchChange,
+    handleTagSelect,
+    filterState,
+    localSearch,
   } = useNotes({
     enabled: true,
   });
@@ -38,7 +42,13 @@ function NotesPage() {
   return (
     <div className="flex h-dvh w-full overflow-hidden">
       <div className="h-dvh w-[340px] flex-none hidden lg:block">
-        <Sidebar tags={tags} isLoadingTags={isLoadingTags} />
+        <Sidebar
+          tags={tags}
+          isLoadingTags={isLoadingTags}
+          isLoadingNotes={isLoadingNotes}
+          handleTagSelect={handleTagSelect}
+          filterState={filterState}
+        />
       </div>
       <div
         className="w-full lg:w-[calc(100%-340px)] flex-1 overflow-y-auto px-4 sm:px-6 md:px-10 transition duration-300 
@@ -49,7 +59,12 @@ function NotesPage() {
     dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
       "
       >
-        <Header user={user} />
+        <Header
+          user={user}
+          handleSearchChange={handleSearchChange}
+          isLoading={isLoadingNotes}
+          localSearch={localSearch}
+        />
         <NoteList
           data={data}
           isLoading={isLoadingNotes}
@@ -58,6 +73,7 @@ function NotesPage() {
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
           onEdit={(noteId) => openNoteModal(noteId)}
+          filterState={filterState}
         />
       </div>
       {/* NOTE MODAL */}

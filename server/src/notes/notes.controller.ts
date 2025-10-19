@@ -51,6 +51,7 @@ export class NotesController {
     hasNext: boolean;
     hasPrev: boolean;
   }> {
+    console.log('paginationDto :>> ', paginationDto);
     return this.notesService.findAllActive(req.user.userId, paginationDto);
   }
 

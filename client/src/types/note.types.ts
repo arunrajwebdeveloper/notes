@@ -39,3 +39,11 @@ export interface NewNoteState {
   tags: Tag[];
   isArchived: boolean;
 }
+
+export interface NoteFilterState {
+  limit: number;
+  search: string;
+  tagId: string | null;
+  sortBy: string;
+  sortOrder: "asc" | "desc";
+}

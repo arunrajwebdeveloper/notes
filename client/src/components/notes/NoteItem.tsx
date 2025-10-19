@@ -1,14 +1,18 @@
 import { Pin } from "lucide-react";
 import type { Note } from "../../types/note.types";
 import { dateFormatter, trimText } from "../../utils";
+import { highlightText } from "../../utils/highlightText";
 
 function NoteItem({
   note,
   onEdit,
+  searchTest,
 }: {
   note: Note;
   onEdit: (id: string) => void;
+  searchTest: string;
 }) {
+  const currentSearch = searchTest;
   const { _id, title, description, color, isPinned, tags, createdAt } = note;
   return (
     <div className="basis-1 sm:basis-1/2 xl:basis-1/3 2xl:basis-1/4 p-2 xl:p-3 flex">
@@ -30,10 +34,10 @@ function NoteItem({
             </button>
           )}
           <h2 className="text-2xl xl:text-3xl mb-6 break-all">
-            {trimText(title || "", 80)}
+            {highlightText(trimText(title || "", 80), currentSearch)}
           </h2>
           <p className="m-0 text-black text-sm xl:text-base break-all">
-            {trimText(description || "", 150)}
+            {highlightText(trimText(description || "", 150), currentSearch)}
           </p>
         </div>
         <div className="mt-6">

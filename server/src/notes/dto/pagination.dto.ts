@@ -38,7 +38,6 @@ export class PaginationDto {
 
   // Array of tag IDs to filter by
   @IsOptional()
-  @IsArray()
-  @IsMongoId({ each: true }) // Validates that each item in the array is a valid Mongo ID
-  tagIds?: string[];
+  @IsString()
+  tagId?: string;
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useInfiniteQuery,
   useMutation,
@@ -7,9 +7,10 @@ import {
   type InfiniteData,
 } from "@tanstack/react-query";
 import { notesAPI } from "../api/endpoints/notes.api";
-import type { NotesResponse } from "../types/note.types";
+import type { NoteFilterState, NotesResponse } from "../types/note.types";
+import { useDebounce } from "../utils/useDebounce";
 
-type NoteQueryKey = ["get_notes", { limit: number }];
+type NoteQueryKey = ["get_notes", NoteFilterState];
 
 export const useNotes = ({
   enabled = false,
@@ -20,8 +21,27 @@ export const useNotes = ({
 }) => {
   const queryClient = useQueryClient();
 
+  const [filterState, setFilterState] = useState<NoteFilterState>({
+    limit: 10,
+    search: "",
+    tagId: null,
+    sortBy: "orderIndex",
+    sortOrder: "asc",
+  });
+  const [localSearch, setLocalSearch] = useState(filterState.search);
   const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
   const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
+
+  const debouncedSearch = useDebounce(localSearch, 600);
+
+  useEffect(() => {
+    if (debouncedSearch !== filterState.search) {
+      setFilterState((prev) => ({
+        ...prev,
+        search: debouncedSearch,
+      }));
+    }
+  }, [debouncedSearch, filterState.search]);
 
   const openNoteModal = (noteId?: string | null) => {
     setSelectedNoteId(noteId || null);
@@ -33,6 +53,30 @@ export const useNotes = ({
     setSelectedNoteId(null);
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchValue = event.target.value;
+    setLocalSearch(newSearchValue);
+    // If the user starts typing, immediately clear the selected tag.
+    if (newSearchValue !== "" && filterState.tagId !== null) {
+      setFilterState((prev) => ({
+        ...prev,
+        tagId: null,
+      }));
+    }
+  };
+
+  const handleTagSelect = (tagId: string) => {
+    const newSelectedTagId = filterState.tagId === tagId ? null : tagId;
+
+    setFilterState((prev) => ({
+      ...prev,
+      tagId: newSelectedTagId,
+      search: "",
+    }));
+
+    setLocalSearch("");
+  };
+
   const notes = useInfiniteQuery<
     NotesResponse, // TQueryFnData: Single page data type
     Error, // TError
@@ -40,13 +84,14 @@ export const useNotes = ({
     NoteQueryKey, // TQueryKey
     number // TPageParam
   >({
-    queryKey: ["get_notes", { limit }],
+    queryKey: ["get_notes", filterState],
     initialPageParam: 1,
     queryFn: ({ pageParam = 1, queryKey }) => {
-      const [, { limit: queryLimit }] = queryKey;
+      // Destructure the filter state from the second element of the queryKey
+      const [, filters] = queryKey;
       return notesAPI.getNotes({
         page: pageParam,
-        limit: queryLimit,
+        ...filters,
       });
     },
 
@@ -119,5 +164,9 @@ export const useNotes = ({
     createNoteMutation,
     updateNoteMutation,
     selectedNoteId,
+    handleSearchChange,
+    handleTagSelect,
+    filterState,
+    localSearch,
   };
 };
