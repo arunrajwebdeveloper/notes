@@ -1,5 +1,6 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { Archive, Pin, X } from "lucide-react";
+import { isEqual } from "lodash";
 import type { NewNoteState, Note, Tag } from "../../types/note.types";
 import { Modal } from "../common/Modal";
 import ColorMenu from "../notes/ColorMenu";
@@ -46,21 +47,23 @@ function NoteModal({
     tags: [],
     isArchived: false,
   };
-
+  const [originalNote, setOriginalNote] = useState<NewNoteState | null>(null);
   const [newNote, setNewNote] = useState<NewNoteState>(initialState);
+  const [isChanged, setIsChanged] = useState(false);
 
-  useEffect(() => {
-    setNewNote(initialState);
-  }, [isShow]);
-
-  // When opening modal, reset or fill
   useEffect(() => {
     if (mode === "edit" && noteDetails) {
+      setOriginalNote(noteDetails);
       setNewNote(noteDetails);
     } else {
       setNewNote(initialState);
     }
   }, [isShow, mode, noteDetails]);
+
+  useEffect(() => {
+    if (!originalNote) return;
+    setIsChanged(!isEqual(newNote, originalNote));
+  }, [newNote, originalNote]);
 
   const isLoading =
     createNoteMutation.isPending ||
@@ -233,7 +236,9 @@ function NoteModal({
             <div className="flex items-center justify-end">
               <button
                 onClick={handleSubmit}
-                disabled={isLoading || !isValid}
+                disabled={
+                  isLoading || !isValid || (mode === "edit" && !isChanged)
+                }
                 className="bg-green-600 hover:bg-green-700 disabled:opacity-70 disabled:cursor-default transition duration-300 text-white h-12 px-4 rounded-md cursor-pointer text-sm"
               >
                 {isLoading ? (
