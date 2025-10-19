@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute, PublicRoute } from "./components/auth/ProtectedRoute";
 import OfflineModal from "./components/modal/OfflineModal";
+import CircleSpinner from "./components/common/CircleSpinner";
 
 // Lazy load pages
 const NotesPage = lazy(() => import("./view/NotesPage"));
@@ -30,7 +31,11 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Suspense
-            fallback={<div className="text-center mt-10">Loading...</div>}
+            fallback={
+              <div className="text-center h-screen w-full bg-white text-blue-600 flex justify-center items-center">
+                <CircleSpinner size={36} />
+              </div>
+            }
           >
             <Routes>
               {/* Public routes */}
