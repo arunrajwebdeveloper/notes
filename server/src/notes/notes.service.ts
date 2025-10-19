@@ -158,33 +158,34 @@ export class NotesService {
     noteId: string,
     updateNoteDto: UpdateNoteDto,
   ): Promise<Note> {
-    // 1. Separate tags from other fields for atomic update
-    const { tags, ...otherUpdateFields } = updateNoteDto;
+    // // 1. Separate tags from other fields for atomic update
+    // const { tags, ...otherUpdateFields } = updateNoteDto;
 
-    // 2. Build the Mongoose update object
-    const mongoUpdate: any = { $set: {} };
+    // // 2. Build the Mongoose update object
+    // const mongoUpdate: any = { $set: {} };
 
-    // 3. Handle other fields: Use $set for direct replacement (title, color, etc.)
-    if (Object.keys(otherUpdateFields).length > 0) {
-      // If the DTO includes other fields, add them to $set
-      mongoUpdate.$set = otherUpdateFields;
-    }
+    // // 3. Handle other fields: Use $set for direct replacement (title, color, etc.)
+    // if (Object.keys(otherUpdateFields).length > 0) {
+    //   // If the DTO includes other fields, add them to $set
+    //   mongoUpdate.$set = otherUpdateFields;
+    // }
 
-    // 4. Handle tags: Use $addToSet for non-duplicate addition
-    if (tags && tags.length > 0) {
-      // Convert string IDs from DTO to Mongoose ObjectIds
-      const objectIdTags = tags.map((id) => new Types.ObjectId(id));
+    // // 4. Handle tags: Use $addToSet for non-duplicate addition
+    // if (tags && tags.length > 0) {
+    //   // Convert string IDs from DTO to Mongoose ObjectIds
+    //   const objectIdTags = tags.map((id) => new Types.ObjectId(id));
 
-      // Use $addToSet with $each to add IDs only if they don't already exist.
-      // This is atomic and prevents duplicates without reading the note first.
-      mongoUpdate.$addToSet = { tags: { $each: objectIdTags } };
-    }
+    //   // Use $addToSet with $each to add IDs only if they don't already exist.
+    //   // This is atomic and prevents duplicates without reading the note first.
+    //   mongoUpdate.$addToSet = { tags: { $each: objectIdTags } };
+    // }
 
     // 5. Execute the update
     const updatedNote = await this.noteModel
       .findOneAndUpdate(
         { _id: noteId, userId },
-        mongoUpdate, // <-- Uses $addToSet for tags, and $set for other fields
+        updateNoteDto,
+        //mongoUpdate, // <-- Uses $addToSet for tags, and $set for other fields
         { new: true },
       )
       .exec();
