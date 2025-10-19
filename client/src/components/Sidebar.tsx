@@ -21,8 +21,8 @@ function TagRowComponent({
       </span>
 
       {tag?.noteCount !== 0 && (
-        <span className="rounded-full min-w-7 h-7 bg-slate-200 text-slate-800 flex justify-center items-center text-sm">
-          {tag?.noteCount}
+        <span className="rounded-full min-w-7 h-7 px-2 bg-slate-200 text-slate-800 flex justify-center items-center text-sm">
+          {tag?.noteCount < 10 ? tag?.noteCount : "10+"}
         </span>
       )}
     </button>

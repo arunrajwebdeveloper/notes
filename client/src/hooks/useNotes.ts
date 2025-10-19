@@ -97,6 +97,7 @@ export const useNotes = ({
       notesAPI.updateNote(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get_notes", { limit }] });
+      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
       queryClient.invalidateQueries({
         queryKey: ["get_note_by_id", selectedNoteId],
       });

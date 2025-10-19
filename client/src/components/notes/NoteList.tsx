@@ -48,8 +48,8 @@ function NoteList({
     );
   }
 
-  if (isLoading && allNotes.length === 0)
-    return <h3 className="px-6">Loading...</h3>;
+  // if (isLoading && allNotes.length === 0)
+  //   return <h3 className="px-6">Loading...</h3>;
 
   // {[...Array(8)].map((_, index) => (
   //         <UserListSkeleton key={`initial-profiles-skel-${index}`} />
@@ -61,16 +61,29 @@ function NoteList({
         <h1 className="font-medium text-4xl xl:text-5xl">My Notes</h1>
       </div>
 
+      {isLoading && allNotes.length === 0 && (
+        <div className="mt-10 animate-pulse flex flex-col sm:flex-row flex-wrap -mx-2 xl:-mx-3">
+          {[...Array(8)].map((_, index) => (
+            <div
+              key={`initial-notes-skel-${index}`}
+              className="basis-1 sm:basis-1/2 xl:basis-1/3 2xl:basis-1/4 p-2 xl:p-3 flex"
+            >
+              <div className="bg-slate-200 rounded-lg h-80 w-full"></div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="mt-10 flex flex-col sm:flex-row flex-wrap -mx-2 xl:-mx-3">
-        {allNotes?.length !== 0 ? (
-          allNotes?.map((note: Note) => {
-            return <NoteItem key={note?._id} note={note} onEdit={onEdit} />;
-          })
-        ) : (
-          <p className="p-2 xl:p-3 text-lg text-slate-500 select-none">
-            No notes found.
-          </p>
-        )}
+        {!isLoading && allNotes?.length !== 0
+          ? allNotes?.map((note: Note) => {
+              return <NoteItem key={note?._id} note={note} onEdit={onEdit} />;
+            })
+          : !isLoading && (
+              <p className="p-2 xl:p-3 text-lg text-slate-500 select-none">
+                No notes found.
+              </p>
+            )}
       </div>
 
       {/* 3. Sentinel Element and Loading Indicator */}
