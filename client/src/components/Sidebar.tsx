@@ -53,8 +53,8 @@ function Sidebar({
 }) {
   return (
     <aside className="h-dvh w-full flex flex-col justify-between">
-      <div className="space-y-10 w-full h-full">
-        <div className="sticky top-0 space-y-10 bg-white pb-6 pt-6">
+      <div className="w-full h-full">
+        <div className="sticky top-0 bg-white mt-6">
           {/* Logo */}
           <div className="px-6">
             <h2 className="text-3xl font-semibold text-black m-0 select-none">
@@ -62,7 +62,7 @@ function Sidebar({
             </h2>
           </div>
         </div>
-        <div className="mb-8">
+        <div className="my-8">
           <div className="flex justify-between items-center px-6">
             <h2 className="text-xl text-black font-medium m-0">Tags</h2>
             <button className="text-blue-600 hover:text-blue-700 text-sm transition duration-300 cursor-pointer">
@@ -71,7 +71,7 @@ function Sidebar({
           </div>
 
           {isLoadingTags && (
-            <div className="mt-10 animate-pulse space-y-6">
+            <div className="mt-6 animate-pulse space-y-6">
               {[...Array(14)].map((_, index) => (
                 <div
                   key={`initial-tags-skel-${index}`}
@@ -84,7 +84,7 @@ function Sidebar({
             </div>
           )}
 
-          <div className="mt-10 virtualized-list">
+          <div className="mt-6 virtualized-list">
             {!isLoadingTags && tags?.length !== 0 && (
               <List
                 rowComponent={TagRowComponent}
@@ -96,7 +96,7 @@ function Sidebar({
                   filterState,
                   handleTagSelect,
                 }}
-                style={{ height: "calc(100dvh - 200px)", width: "100%" }}
+                style={{ height: "calc(100dvh - 144px)", width: "100%" }}
               />
             )}
           </div>
