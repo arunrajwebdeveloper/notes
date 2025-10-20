@@ -31,10 +31,10 @@ function NoteList({
   onEdit,
   filterState,
 }: InfiniteMatchListProps) {
-  // 1. Intersection Observer Hook
+  // Intersection Observer Hook
   const { ref, inView } = useInView();
 
-  // 2. Auto-fetch logic
+  // Auto-fetch logic
   useEffect(() => {
     // If the sentinel element is visible, there's a next page, and we're not currently fetching
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -42,7 +42,7 @@ function NoteList({
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // Flatten the array of pages into a single array of users
+  // Flatten the array of pages into a single array of notes
   const allNotes: Note[] =
     data?.pages?.flatMap((page: any) => page.result) || [];
 
@@ -92,26 +92,19 @@ function NoteList({
             )}
       </div>
 
-      {/* 3. Sentinel Element and Loading Indicator */}
-      <div ref={ref} className="text-center my-8 select-none">
+      <div ref={ref} className="text-center my-10 select-none">
         {isFetchingNextPage ? (
-          // Skeleton loaders for the next page fetch
           <div>
-            {/* {[...Array(3)].map((_, index) => (
-                <span>Fetching data...</span>
-              ))} */}
             <p className="text-sm text-slate-500 m-0">Fetching data...</p>
           </div>
         ) : hasNextPage ? (
-          // Fallback manual 'Load More' button
           <button
             onClick={() => fetchNextPage()}
-            className="text-slate-500 font-medium text-xs py-2 px-6 rounded-4xl inline-block bg-slate-100 hover:bg-slate-200 transition duration-300"
+            className="text-slate-500 font-medium text-sm py-2 px-6 rounded-4xl inline-block bg-slate-100 hover:bg-slate-200 transition duration-300"
           >
             Load More Notes
           </button>
         ) : (
-          // End of list
           allNotes.length > 0 && (
             <p className="text-sm text-slate-500 m-0">All Notes loaded.</p>
           )

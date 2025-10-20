@@ -1,7 +1,8 @@
 import { Pin } from "lucide-react";
 import type { Note } from "../../types/note.types";
-import { dateFormatter, trimText } from "../../utils";
+import { trimText } from "../../utils";
 import { highlightText } from "../../utils/highlightText";
+import { formatSmartTime } from "../../utils/dateFormatter";
 
 function NoteItem({
   note,
@@ -13,7 +14,8 @@ function NoteItem({
   searchTest: string;
 }) {
   const currentSearch = searchTest;
-  const { _id, title, description, color, isPinned, tags, createdAt } = note;
+  const { _id, title, description, color, isPinned, tags, updatedAt } = note;
+
   return (
     <div className="basis-1 sm:basis-1/2 xl:basis-1/3 2xl:basis-1/4 p-2 xl:p-3 flex">
       <div
@@ -55,7 +57,7 @@ function NoteItem({
           )}
           <div className="mt-4">
             <span className="text-xs text-slate-700">
-              {dateFormatter(createdAt)}
+              {`Updated at ${formatSmartTime(updatedAt)}`}
             </span>
           </div>
         </div>
