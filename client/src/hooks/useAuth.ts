@@ -76,18 +76,6 @@ export const useAuth = () => {
     retry: false,
   });
 
-  // Logout function
-  const logout = async () => {
-    try {
-      await authAPI.logout();
-    } catch (error) {
-      console.error("Logout failed:", error);
-    } finally {
-      dispatch(logoutAction());
-      navigate("/login");
-    }
-  };
-
   return {
     user,
     token,
@@ -95,7 +83,6 @@ export const useAuth = () => {
     loading: loading || isLoadingUser,
     login: loginMutation.mutate,
     register: registerMutation.mutate,
-    logout,
     isLoginLoading: loginMutation.isPending,
     isRegisterLoading: registerMutation.isPending,
     loginError: loginMutation.error,

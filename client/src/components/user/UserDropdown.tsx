@@ -1,10 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import type { User } from "../../types/user.types";
 import { LayoutGrid, LogOut, Rows2, Settings2 } from "lucide-react";
+import { useAppDispatch } from "../../hooks";
+import { logout } from "../../store/features/authSlice";
 
 function UserDropdown({ user }: { user: User | null }) {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [isShow, setIsShow] = useState(false);
+
+  const dispatch = useAppDispatch();
+
+  const logoutUser = () => {
+    dispatch(logout());
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -71,7 +79,10 @@ function UserDropdown({ user }: { user: User | null }) {
               {/* <Rows2 /> */}
               <span>Layout</span>
             </button>
-            <button className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100">
+            <button
+              onClick={logoutUser}
+              className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100"
+            >
               <LogOut size={18} />
               <span>Logout</span>
             </button>

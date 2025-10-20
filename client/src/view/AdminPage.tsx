@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import apiClient from "../api/axios.config";
 
 const AdminPage = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   // Fetch all users (admin only)
@@ -24,18 +24,12 @@ const AdminPage = () => {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Admin Panel</h1>
           <div className="flex items-center gap-4">
-            <span className="text-gray-700">Admin: {user?.name}</span>
+            <span className="text-gray-700">Admin: {user?.firstName}</span>
             <button
               onClick={() => navigate("/notes")}
               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
             >
               Dashboard
-            </button>
-            <button
-              onClick={logout}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-            >
-              Logout
             </button>
           </div>
         </div>

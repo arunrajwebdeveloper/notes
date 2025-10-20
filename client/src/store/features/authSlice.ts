@@ -6,7 +6,8 @@ import {
   getToken,
   getUser,
 } from "../../utils/storage";
-import type { AuthState, User } from "../../types/auth.types";
+import type { AuthState } from "../../types/auth.types";
+import type { User } from "../../types/user.types";
 
 const initialState: AuthState = {
   user: getUser(),
