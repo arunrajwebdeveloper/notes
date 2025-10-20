@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import type { User } from "../../types/user.types";
+import { LayoutGrid, LogOut, Rows2, Settings2 } from "lucide-react";
 
 function UserDropdown({ user }: { user: User | null }) {
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -18,10 +19,14 @@ function UserDropdown({ user }: { user: User | null }) {
   }, [isShow]);
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative select-none" ref={menuRef}>
       <button
         onClick={() => setIsShow((prev) => !prev)}
-        className="flex items-center gap-4 text-left cursor-pointer w-10 h-10 md:w-12 md:h-12 border-3 border-slate-300 hover:border-t-blue-500 hover:border-l-blue-500 hover:border-r-amber-400 hover:border-b-amber-400  rounded-full transition duration-300"
+        className={`flex items-center gap-4 text-left cursor-pointer w-10 h-10 md:w-12 md:h-12 border-3 rounded-full transition duration-300 ${
+          isShow
+            ? "border-t-blue-500 border-l-blue-500 border-r-amber-400 border-b-amber-400"
+            : "border-slate-300"
+        }`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -47,12 +52,29 @@ function UserDropdown({ user }: { user: User | null }) {
       {/* User dropdown */}
 
       {isShow && (
-        <div className="absolute top-16 right-0 bg-white shadow-sm p-6 border border-slate-100 rounded-lg z-50">
-          <div>
-            <h3 className="text-base text-black m-0 leading-4">{`${
+        <div className="absolute w-50 top-14 right-0 bg-white shadow-sm border border-slate-100 rounded-lg z-50">
+          <div className="px-4 py-2 leading-1">
+            <span className="text-sm text-black mb-0 block whitespace-nowrap overflow-hidden text-ellipsis max-w-full">{`${
               user?.firstName
-            } ${user?.lastName || ""}`}</h3>
-            <span className="text-sm text-slate-600 m-0">{user?.email}</span>
+            } ${user?.lastName || ""}`}</span>
+            <span className="text-xs text-slate-600 m-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-full block">
+              {user?.email}
+            </span>
+          </div>
+          <div className="space-y-1 py-2 mt-1 border-t border-t-slate-200">
+            <button className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100">
+              <Settings2 size={18} />
+              <span>Settings</span>
+            </button>
+            <button className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100">
+              <LayoutGrid size={18} />
+              {/* <Rows2 /> */}
+              <span>Layout</span>
+            </button>
+            <button className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100">
+              <LogOut size={18} />
+              <span>Logout</span>
+            </button>
           </div>
         </div>
       )}
