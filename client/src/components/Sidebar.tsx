@@ -1,5 +1,4 @@
 import type { NoteFilterState, TagItem } from "../types/note.types";
-import { Plus } from "lucide-react";
 import { List, type RowComponentProps } from "react-window";
 
 function TagRowComponent({
@@ -65,13 +64,9 @@ function Sidebar({
         </div>
         <div className="mb-8">
           <div className="flex justify-between items-center px-6">
-            <h2 className="text-xl text-black font-medium">Tags</h2>
-            <button className="bg-slate-200 text-slate-800 group flex gap-2 items-center text-base rounded-full py-1 px-3 transition duration-300 cursor-pointer border-3 border-slate-200 hover:border-t-blue-500 hover:border-l-blue-500 hover:border-r-amber-400 hover:border-b-amber-400">
-              <Plus
-                size={20}
-                className="group-hover:rotate-90 transition duration-300 origin-center"
-              />
-              <span>Create Tag</span>
+            <h2 className="text-xl text-black font-medium m-0">Tags</h2>
+            <button className="text-blue-600 hover:text-blue-700 text-sm transition duration-300 cursor-pointer">
+              <span>Manage Tags</span>
             </button>
           </div>
 
