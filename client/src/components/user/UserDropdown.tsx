@@ -1,6 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import type { User } from "../../types/user.types";
-import { LayoutGrid, LogOut, Rows2, Settings2 } from "lucide-react";
+import {
+  // LayoutGrid,
+  // Rows2,
+  LogOut,
+  Settings2,
+} from "lucide-react";
 import { useAppDispatch } from "../../hooks";
 import { logout } from "../../store/features/authSlice";
 
