@@ -57,31 +57,37 @@ function TagsMenu({
     dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
           "
           >
-            {tags.map(({ _id, name }) => {
-              const isSelected = selectedTags.some((t) => t._id === _id);
-              return (
-                <div
-                  key={`tags-menu-item-${_id}`}
-                  className={`flex items-center relative cursor-pointer bg-white w-full py-1.5 px-3 ps-9 rounded-lg text-sm hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 ${
-                    isSelected ? "text-blue-600" : "text-sm text-gray-800"
-                  }`}
-                  onClick={() => {
-                    onChooseTag({ _id, name });
-                    // closeMenu?.();
-                  }}
-                >
-                  <CircleCheck
-                    size={18}
-                    className={`absolute left-2 top-1/2 transform -translate-y-1/2 ${
+            {tags?.length !== 0 ? (
+              tags?.map(({ _id, name }) => {
+                const isSelected = selectedTags.some((t) => t._id === _id);
+                return (
+                  <div
+                    key={`tags-menu-item-${_id}`}
+                    className={`flex items-center relative cursor-pointer bg-white w-full py-1.5 px-3 ps-9 rounded-lg text-sm hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 ${
                       isSelected ? "text-blue-600" : "text-sm text-gray-800"
                     }`}
-                  />
-                  <span className="whitespace-nowrap overflow-hidden text-ellipsis w-full">
-                    {name}
-                  </span>
-                </div>
-              );
-            })}
+                    onClick={() => {
+                      onChooseTag({ _id, name });
+                      // closeMenu?.();
+                    }}
+                  >
+                    <CircleCheck
+                      size={18}
+                      className={`absolute left-2 top-1/2 transform -translate-y-1/2 ${
+                        isSelected ? "text-blue-600" : "text-sm text-gray-800"
+                      }`}
+                    />
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis w-full">
+                      {name}
+                    </span>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center text-sm text-slate-500">
+                <span>No tags yet</span>
+              </div>
+            )}
           </div>
         )}
       </Toggler.Menu>

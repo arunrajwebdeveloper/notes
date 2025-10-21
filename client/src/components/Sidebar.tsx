@@ -90,7 +90,7 @@ function Sidebar({
           )}
 
           <div className="mt-6 virtualized-list">
-            {!isLoadingTags && tags?.length !== 0 && (
+            {!isLoadingTags && tags?.length !== 0 ? (
               <List
                 rowComponent={TagRowComponent}
                 rowCount={tags?.length || 0}
@@ -103,6 +103,10 @@ function Sidebar({
                 }}
                 style={{ height: "calc(100dvh - 144px)", width: "100%" }}
               />
+            ) : (
+              <div className="px-6 pt-6 text-sm text-slate-500">
+                <span>No tags yet</span>
+              </div>
             )}
           </div>
         </div>
