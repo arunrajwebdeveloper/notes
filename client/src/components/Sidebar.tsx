@@ -44,12 +44,14 @@ function Sidebar({
   isLoadingNotes,
   handleTagSelect,
   filterState,
+  openTagModal,
 }: {
   tags: TagItem[];
   isLoadingTags: boolean;
   isLoadingNotes: boolean;
   handleTagSelect: (tagId: string) => void;
   filterState: NoteFilterState;
+  openTagModal: () => void;
 }) {
   return (
     <aside className="h-dvh w-full flex flex-col justify-between">
@@ -65,7 +67,10 @@ function Sidebar({
         <div className="my-8">
           <div className="flex justify-between items-center px-6">
             <h2 className="text-xl text-black font-medium m-0">Tags</h2>
-            <button className="text-blue-600 hover:text-blue-700 text-sm transition duration-300 cursor-pointer">
+            <button
+              onClick={openTagModal}
+              className="text-blue-600 hover:text-blue-700 text-sm transition duration-300 cursor-pointer"
+            >
               <span>Manage Tags</span>
             </button>
           </div>

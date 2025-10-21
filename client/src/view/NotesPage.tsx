@@ -6,6 +6,7 @@ import NoteModal from "../components/modal/NoteModal";
 import { useAppSelector } from "../hooks";
 import { Plus } from "lucide-react";
 import Tooltip from "../components/common/Tooltip";
+import TagsManageModal from "../components/modal/TagsManageModal";
 
 function NotesPage() {
   const { user } = useAppSelector((state) => state.auth);
@@ -26,6 +27,12 @@ function NotesPage() {
     handleTagSelect,
     filterState,
     localSearch,
+    isOpenTagModal,
+    openTagModal,
+    closeTagModal,
+    createTagMutation,
+    updateTagMutation,
+    deleteTagMutation,
   } = useNotes({
     enabled: true,
   });
@@ -48,6 +55,7 @@ function NotesPage() {
           isLoadingNotes={isLoadingNotes}
           handleTagSelect={handleTagSelect}
           filterState={filterState}
+          openTagModal={openTagModal}
         />
       </div>
       <div
@@ -86,6 +94,17 @@ function NotesPage() {
         updateNoteMutation={updateNoteMutation}
         noteDetails={noteDetails}
         isLoadingNoteDetails={isLoadingNoteDetails}
+      />
+
+      {/* Tags Modal */}
+
+      <TagsManageModal
+        isShow={isOpenTagModal}
+        tags={tags}
+        onHide={closeTagModal}
+        createTagMutation={createTagMutation}
+        updateTagMutation={updateTagMutation}
+        deleteTagMutation={deleteTagMutation}
       />
 
       {/* Create Button */}

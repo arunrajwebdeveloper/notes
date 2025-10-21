@@ -30,6 +30,7 @@ export const useNotes = ({
   });
   const [localSearch, setLocalSearch] = useState(filterState.search);
   const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
+  const [isOpenTagModal, setIsOpenTagModal] = useState<boolean>(false);
   const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
 
   const debouncedSearch = useDebounce(localSearch, 600);
@@ -51,6 +52,14 @@ export const useNotes = ({
   const closeNoteModal = () => {
     setIsOpenNoteModal(false);
     setSelectedNoteId(null);
+  };
+
+  const openTagModal = () => {
+    setIsOpenTagModal(true);
+  };
+
+  const closeTagModal = () => {
+    setIsOpenTagModal(false);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,6 +134,7 @@ export const useNotes = ({
     mutationFn: notesAPI.createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get_notes", { limit }] });
+      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
     },
     onError: (error: any) => {
       console.error(
@@ -152,6 +162,36 @@ export const useNotes = ({
     },
   });
 
+  const createTagMutation = useMutation({
+    mutationFn: notesAPI.createTag,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
+    },
+    onError: (error: any) => {
+      console.error(
+        "Tag creation failed:",
+        error.response?.data?.result?.message || error.message
+      );
+    },
+  });
+
+  const updateTagMutation = useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: any }) =>
+      notesAPI.editTag(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes", { limit }] });
+      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
+    },
+  });
+
+  const deleteTagMutation = useMutation({
+    mutationFn: notesAPI.deleteTag,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes", { limit }] });
+      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
+    },
+  });
+
   return {
     notes,
     tags,
@@ -168,5 +208,11 @@ export const useNotes = ({
     handleTagSelect,
     filterState,
     localSearch,
+    isOpenTagModal,
+    openTagModal,
+    closeTagModal,
+    createTagMutation,
+    updateTagMutation,
+    deleteTagMutation,
   };
 };
