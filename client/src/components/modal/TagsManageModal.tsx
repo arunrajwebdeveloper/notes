@@ -34,6 +34,8 @@ function TagsManageModal({
   const [newTagValue, setNewTagValue] = useState("");
   const [editingValue, setEditingValue] = useState<string>("");
   const [originalValue, setOriginalValue] = useState<string>("");
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   /** Focus input when editing starts */
   useEffect(() => {
@@ -67,10 +69,18 @@ function TagsManageModal({
       !isEqual(editingValue.trim(), originalValue.trim()) &&
       !!editingValue.trim()
     ) {
-      updateTagMutation.mutate({
-        id,
-        payload: { name: editingValue.trim() },
-      });
+      setUpdatingId(id);
+      updateTagMutation.mutate(
+        {
+          id,
+          payload: { name: editingValue.trim() },
+        },
+        {
+          onSettled: () => {
+            setUpdatingId(null);
+          },
+        }
+      );
     }
     setEditingId(null);
     setEditingValue("");
@@ -80,7 +90,15 @@ function TagsManageModal({
   /** Delete a tag */
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this tag?")) {
-      deleteTagMutation.mutate({ id });
+      setDeletingId(id);
+      deleteTagMutation.mutate(
+        { id },
+        {
+          onSettled: () => {
+            setDeletingId(null);
+          },
+        }
+      );
     }
   };
 
@@ -139,6 +157,7 @@ function TagsManageModal({
                         onKeyDown={(e) => {
                           if (e.key === "Enter") handleSaveEdit(t._id);
                         }}
+                        onBlur={() => handleSaveEdit(t._id)}
                       />
                     </div>
                   ) : (
@@ -166,20 +185,31 @@ function TagsManageModal({
                         <button
                           onClick={() => handleSaveEdit(t._id)}
                           className="cursor-pointer text-gray-600"
+                          disabled={
+                            updateTagMutation.isPending && updatingId === t._id
+                          }
                         >
-                          <CircleCheck
-                            size={26}
-                            stroke="white"
-                            fill="currentColor"
-                          />
+                          {updateTagMutation.isPending &&
+                          updatingId === t._id ? (
+                            <CircleSpinner size={26} />
+                          ) : (
+                            <CircleCheck
+                              size={26}
+                              stroke="white"
+                              fill="currentColor"
+                            />
+                          )}
                         </button>
                       </>
                     ) : (
                       <button
                         onClick={() => handleDelete(t._id)}
                         className="cursor-pointer text-gray-600"
+                        disabled={
+                          deleteTagMutation.isPending && deletingId === t._id
+                        }
                       >
-                        {deleteTagMutation.isPending ? (
+                        {deleteTagMutation.isPending && deletingId === t._id ? (
                           <CircleSpinner size={18} />
                         ) : (
                           <Trash size={20} fill="currentColor" />
