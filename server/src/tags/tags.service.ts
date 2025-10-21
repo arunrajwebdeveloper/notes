@@ -103,7 +103,10 @@ export class TagsService {
     ];
 
     // Use .aggregate() to run the pipeline
-    return this.tagModel.aggregate(pipeline).exec();
+    return this.tagModel
+      .aggregate(pipeline)
+      .collation({ locale: 'en', strength: 2 })
+      .exec();
   }
 
   // 3. UPDATE Tag Name
