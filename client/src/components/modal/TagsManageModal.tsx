@@ -36,7 +36,6 @@ function TagsManageModal({
   const [editingValue, setEditingValue] = useState<string>("");
   const [originalValue, setOriginalValue] = useState<string>("");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [isOpenConfirm, setIsOpenConfirm] = useState<{
     isOpen: boolean;
     id: string | null;
@@ -170,7 +169,7 @@ function TagsManageModal({
                           onKeyDown={(e) => {
                             if (e.key === "Enter") handleSaveEdit(t._id);
                           }}
-                          onBlur={handleCancelEdit}
+                          // onBlur={handleCancelEdit}
                         />
                       </div>
                     ) : (
@@ -225,11 +224,12 @@ function TagsManageModal({
                           }
                           className="cursor-pointer text-gray-600"
                           disabled={
-                            deleteTagMutation.isPending && deletingId === t._id
+                            deleteTagMutation.isPending &&
+                            isOpenConfirm?.id === t._id
                           }
                         >
                           {deleteTagMutation.isPending &&
-                          deletingId === t._id ? (
+                          isOpenConfirm?.id === t._id ? (
                             <CircleSpinner size={18} />
                           ) : (
                             <Trash size={20} fill="currentColor" />

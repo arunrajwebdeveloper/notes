@@ -119,11 +119,11 @@ function NoteModal({
         className="rounded-lg relative"
         style={{ backgroundColor: newNote?.color }}
       >
-        {/* {isLoading && (
+        {isLoadingNoteDetails && (
           <div className="w-full h-full absolute z-10 flex justify-center items-center bg-white/50 rounded-lg">
             <CircleSpinner size={36} className="text-blue-600" />
           </div>
-        )} */}
+        )}
 
         <div className="space-y-1 p-6">
           <div>

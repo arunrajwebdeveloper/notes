@@ -74,11 +74,11 @@ function UserDropdown({ user }: { user: User | null }) {
               <Settings2 size={18} />
               <span>Settings</span>
             </button>
-            <button className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100">
+            {/* <button className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100">
               <LayoutGrid size={18} />
-              {/* <Rows2 /> */}
+              <Rows2 />
               <span>Layout</span>
-            </button>
+            </button> */}
             <button
               onClick={logoutUser}
               className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100"
