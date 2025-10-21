@@ -33,7 +33,7 @@ export const useNotes = ({
   const [isOpenTagModal, setIsOpenTagModal] = useState<boolean>(false);
   const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
 
-  const debouncedSearch = useDebounce(localSearch, 600);
+  const debouncedSearch = useDebounce(localSearch, 200);
 
   useEffect(() => {
     if (debouncedSearch !== filterState.search) {
