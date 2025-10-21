@@ -29,6 +29,7 @@ function TagsManageModal({
 }: TagsManageModalProps) {
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const newTagRef = useRef<HTMLInputElement | null>(null);
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newTagValue, setNewTagValue] = useState("");
   const [editingValue, setEditingValue] = useState<string>("");
