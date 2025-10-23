@@ -135,7 +135,7 @@ function NoteModal({
               placeholder="Title"
               className="border-0 text-gray-900 text-2xl rounded-lg outline-0 block w-full py-3"
               onChange={onChangeHandler}
-              disabled={isLoading}
+              disabled={isLoading || noteDetails?.isTrash}
             />
           </div>
           <div>
@@ -146,7 +146,7 @@ function NoteModal({
               rows={8}
               className="border-0 max-h-92 text-gray-900 text-xl rounded-lg outline-0 block w-full py-3"
               onChange={onChangeHandler}
-              disabled={isLoading}
+              disabled={isLoading || noteDetails?.isTrash}
             />
           </div>
 

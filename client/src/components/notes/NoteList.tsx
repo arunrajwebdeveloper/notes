@@ -66,7 +66,7 @@ function NoteList({
     <div className=" mt-8 md:mt-10 mb-10">
       <div className="flex items-center justify-between gap-4">
         <h1 className="font-medium text-4xl xl:text-5xl m-0">{pageTitle}</h1>
-        {filterState?.noteType === "trash" && (
+        {filterState?.noteType === "trash" && allNotes.length && (
           <button className="flex items-center gap-3 text-blue-500 bg-blue-50 h-10 cursor-pointer px-4 rounded-lg text-sm">
             <Trash2 size={20} />
             <span>Empty Trash</span>
