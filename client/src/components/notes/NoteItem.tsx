@@ -33,7 +33,6 @@ function NoteItem({
   return (
     <div className="basis-1 sm:basis-1/2 xl:basis-1/3 2xl:basis-1/4 p-2 xl:p-3 flex">
       <div
-        // onClick={() => onEdit(_id)}
         style={{
           backgroundColor: color,
           border: color === "#ffffff" ? "1px solid #eee" : "0",
