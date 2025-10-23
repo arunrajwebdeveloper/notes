@@ -63,8 +63,6 @@ export class NotesService {
       type = 'active',
     } = pagination;
 
-    console.log('pagination :>> ', pagination);
-
     const skip = (page - 1) * limit;
 
     // 1. Base Filter

@@ -52,6 +52,11 @@ function NoteModal({
   const [newNote, setNewNote] = useState<NewNoteState>(initialState);
   const [isChanged, setIsChanged] = useState(false);
 
+  const isValid = newNote.title.trim() && newNote.description.trim();
+
+  const tagIds = newNote?.tags?.map((n) => n?._id);
+  const payload = { ...newNote, tags: tagIds };
+
   useEffect(() => {
     if (mode === "edit" && noteDetails) {
       setOriginalNote(noteDetails);
@@ -66,25 +71,37 @@ function NoteModal({
     setIsChanged(!isEqual(newNote, originalNote));
   }, [newNote, originalNote]);
 
+  const submitNewNote = () => {
+    if (isValid) {
+      createNoteMutation.mutate(payload);
+    }
+  };
+
+  const submitUpdatedNote = () => {
+    if (isChanged && isValid) {
+      updateNoteMutation.mutate({
+        id: noteDetails?._id as string,
+        payload: { ...payload, isArchived: false },
+      });
+    }
+  };
+
   const isLoading =
     createNoteMutation.isPending ||
     updateNoteMutation.isPending ||
     isLoadingNoteDetails;
 
-  const isValid = newNote.title.trim() && newNote.description.trim();
-
   const handleSubmit = () => {
-    const tagIds = newNote?.tags?.map((n) => n?._id);
-    const payload = { ...newNote, tags: tagIds };
-
-    if (mode === "edit" && noteDetails?._id) {
-      updateNoteMutation.mutate({
-        id: noteDetails?._id,
-        payload: { ...payload, isArchived: false },
-      });
+    if (mode === "edit") {
+      submitUpdatedNote();
     } else {
-      createNoteMutation.mutate(payload);
+      submitNewNote();
     }
+  };
+
+  const onHideModal = () => {
+    handleSubmit();
+    onHide();
   };
 
   const togglePinned = () => {
@@ -118,7 +135,7 @@ function NoteModal({
   };
 
   return (
-    <Modal show={isShow} onHide={onHide}>
+    <Modal show={isShow} onHide={onHideModal}>
       <Modal.Body
         className="rounded-lg relative"
         style={{ backgroundColor: newNote?.color }}
