@@ -1,5 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from "react";
-import { Archive, Pin, X } from "lucide-react";
+import { Archive, Pin, Redo2, Trash2 } from "lucide-react";
 import { isEqual } from "lodash";
 import type { NewNoteState, Note, Tag } from "../../types/note.types";
 import { Modal } from "../common/Modal";
@@ -8,6 +8,7 @@ import TagsMenu from "../notes/TagsMenu";
 import Tooltip from "../common/Tooltip";
 import type { UseMutationResult } from "@tanstack/react-query";
 import CircleSpinner from "../common/CircleSpinner";
+import TagChip from "../notes/TagChip";
 
 interface NoteModalProps {
   isShow: boolean;
@@ -151,23 +152,13 @@ function NoteModal({
 
           {newNote?.tags?.length !== 0 && (
             <div className="flex gap-2 flex-wrap mt-4 select-none">
-              {newNote?.tags?.map((tag) => (
-                <div
-                  key={tag._id}
-                  className="bg-black/30 relative h-8 group flex items-center justify-between gap-2 text-white text-sm rounded-full"
-                >
-                  <Tooltip content={tag.name} position="top" />
-                  <span className="w-full px-2 group-hover:max-w-[calc(100%-24px)] whitespace-nowrap overflow-hidden text-ellipsis">
-                    {tag.name}
-                  </span>
-                  <button
-                    disabled={isLoading}
-                    onClick={() => onRemoveLabel(tag?._id)}
-                    className="rounded-full absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 hidden group-hover:flex cursor-pointer bg-black/30"
-                  >
-                    <X size={16} className="m-auto" />
-                  </button>
-                </div>
+              {newNote?.tags?.map(({ _id, name }) => (
+                <TagChip
+                  key={_id}
+                  name={name}
+                  isLoading={isLoading}
+                  onRemoveLabel={() => onRemoveLabel(_id)}
+                />
               ))}
             </div>
           )}
@@ -177,83 +168,118 @@ function NoteModal({
 
         <div className="bg-white rounded-b-lg">
           <div className="flex gap-2 items-center justify-between px-6 py-4 border-t border-t-slate-800/10">
-            <div className="flex gap-3 items-center">
-              <div className="flex-none">
-                <ColorMenu
-                  currentColor={newNote?.color}
-                  onSelect={onSelectColor}
-                  isLoading={isLoading}
-                />
+            {noteDetails?.isTrash && (
+              <div className="flex-none flex items-center  gap-2">
+                <div className="flex-none">
+                  <button
+                    onClick={() => {}}
+                    disabled={false}
+                    className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
+                   text-slate-500 `}
+                  >
+                    <Redo2 size={20} />
+                    <Tooltip content="Restore" position="top" />
+                  </button>
+                </div>
+                <div className="flex-none">
+                  <button
+                    onClick={() => {}}
+                    disabled={false}
+                    className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
+                   text-slate-500 `}
+                  >
+                    <Trash2 size={20} />
+                    <Tooltip content="Delete Forever" position="top" />
+                  </button>
+                </div>
               </div>
-              <div className="flex-none">
-                <TagsMenu
-                  tags={tags}
-                  selectedTags={newNote?.tags}
-                  onChange={onSelectTags}
-                  isLoading={isLoading}
-                />
-              </div>
-              <div className="flex-none">
-                <button
-                  onClick={toggleArchived}
-                  disabled={isLoading}
-                  className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
+            )}
+
+            {!noteDetails?.isTrash && (
+              <>
+                <div className="flex gap-3 items-center">
+                  <div className="flex-none">
+                    <ColorMenu
+                      currentColor={newNote?.color}
+                      onSelect={onSelectColor}
+                      isLoading={isLoading}
+                    />
+                  </div>
+                  <div className="flex-none">
+                    <TagsMenu
+                      tags={tags}
+                      selectedTags={newNote?.tags}
+                      onChange={onSelectTags}
+                      isLoading={isLoading}
+                    />
+                  </div>
+                  <div className="flex-none">
+                    <button
+                      onClick={toggleArchived}
+                      disabled={isLoading}
+                      className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
                 ${
                   newNote?.isArchived
                     ? " bg-blue-600 text-white"
-                    : " text-slate-500 bg-slate-200"
+                    : " text-slate-500"
                 }`}
-                >
-                  <Archive size={24} />
-                  {!isLoading && (
-                    <Tooltip
-                      content={newNote?.isArchived ? "Unarchive" : "Archive"}
-                      position="top"
-                    />
-                  )}
-                </button>
-              </div>
-              <div className="flex-none">
-                <button
-                  onClick={togglePinned}
-                  disabled={isLoading}
-                  className={`w-12 h-12 relative  group flex items-center justify-center rounded-full cursor-pointer transition duration-300
+                    >
+                      <Archive size={20} />
+                      {!isLoading && (
+                        <Tooltip
+                          content={
+                            newNote?.isArchived ? "Unarchive" : "Archive"
+                          }
+                          position="top"
+                        />
+                      )}
+                    </button>
+                  </div>
+                  <div className="flex-none">
+                    <button
+                      onClick={togglePinned}
+                      disabled={isLoading}
+                      className={`w-12 h-12 relative  group flex items-center justify-center rounded-full cursor-pointer transition duration-300
                 ${
                   newNote?.isPinned
                     ? " bg-blue-600 text-white"
-                    : " text-slate-500 bg-slate-200"
+                    : " text-slate-500"
                 }`}
-                >
-                  <Pin size={24} />
-                  {!isLoading && (
-                    <Tooltip
-                      content={newNote?.isPinned ? "Unpin" : "Pin"}
-                      position="top"
-                    />
-                  )}
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center justify-end">
-              <button
-                onClick={handleSubmit}
-                disabled={
-                  isLoading || !isValid || (mode === "edit" && !isChanged)
-                }
-                className="bg-green-600 hover:bg-green-700 disabled:opacity-70 disabled:cursor-default transition duration-300 text-white h-12 px-4 rounded-md cursor-pointer text-sm"
-              >
-                {isLoading ? (
-                  <div className="flex items-center gap-2">
-                    <CircleSpinner size={20} className="text-white" />
-                    <span>
-                      {mode === "edit" ? "Updating..." : "Creating..."}
-                    </span>
+                    >
+                      <Pin size={20} />
+                      {!isLoading && (
+                        <Tooltip
+                          content={newNote?.isPinned ? "Unpin" : "Pin"}
+                          position="top"
+                        />
+                      )}
+                    </button>
                   </div>
-                ) : (
-                  <span>{mode === "edit" ? "Update Note" : "Create Note"}</span>
-                )}
-              </button>
-            </div>
+                </div>
+                <div className="flex items-center justify-end">
+                  <button
+                    onClick={handleSubmit}
+                    disabled={
+                      isLoading || !isValid || (mode === "edit" && !isChanged)
+                    }
+                    className="bg-green-600 hover:bg-green-700 disabled:opacity-70 disabled:cursor-default transition duration-300 text-white h-12 px-4 rounded-md cursor-pointer text-sm"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center gap-2">
+                        <CircleSpinner size={20} className="text-white" />
+                        <span>
+                          {mode === "edit" ? "Updating..." : "Creating..."}
+                        </span>
+                      </div>
+                    ) : (
+                      <span>
+                        {mode === "edit" ? "Update Note" : "Create Note"}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </Modal.Body>

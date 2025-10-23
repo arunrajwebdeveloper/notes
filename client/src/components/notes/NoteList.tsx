@@ -7,6 +7,7 @@ import type {
 import NoteItem from "./NoteItem";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer"; // Used for scroll detection
+import { Trash2 } from "lucide-react";
 
 export interface BaseProps {
   onEdit: (id: string) => void;
@@ -63,8 +64,14 @@ function NoteList({
 
   return (
     <div className=" mt-8 md:mt-10 mb-10">
-      <div className="text-left">
-        <h1 className="font-medium text-4xl xl:text-5xl">{pageTitle}</h1>
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="font-medium text-4xl xl:text-5xl m-0">{pageTitle}</h1>
+        {filterState?.noteType === "trash" && (
+          <button className="flex items-center gap-3 text-blue-500 bg-blue-50 h-10 cursor-pointer px-4 rounded-lg text-sm">
+            <Trash2 size={20} />
+            <span>Empty Trash</span>
+          </button>
+        )}
       </div>
 
       {isLoading && allNotes.length === 0 && (

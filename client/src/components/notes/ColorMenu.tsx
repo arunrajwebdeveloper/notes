@@ -44,13 +44,9 @@ export default function ColorMenu({
             <div className="relative group">
               <div
                 className={`w-12 h-12 flex items-center justify-center rounded-full cursor-pointer transition duration-300
-                ${
-                  isOpen
-                    ? " bg-blue-600 text-white"
-                    : " text-slate-500 bg-slate-200"
-                }`}
+                ${isOpen ? " bg-blue-600 text-white" : "text-slate-500"}`}
               >
-                <Palette size={24} />
+                <Palette size={20} />
               </div>
               {!isOpen && !isLoading && (
                 <Tooltip content="Choose Color" position="top" />
