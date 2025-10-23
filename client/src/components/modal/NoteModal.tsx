@@ -175,7 +175,7 @@ function NoteModal({
                     onClick={() => {}}
                     disabled={false}
                     className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
-                   text-slate-500 `}
+                   text-slate-900 `}
                   >
                     <Redo2 size={20} />
                     <Tooltip content="Restore" position="top" />
@@ -186,7 +186,7 @@ function NoteModal({
                     onClick={() => {}}
                     disabled={false}
                     className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
-                   text-slate-500 `}
+                   text-slate-900 `}
                   >
                     <Trash2 size={20} />
                     <Tooltip content="Delete Forever" position="top" />
@@ -221,7 +221,7 @@ function NoteModal({
                 ${
                   newNote?.isArchived
                     ? " bg-blue-600 text-white"
-                    : " text-slate-500"
+                    : " text-slate-900"
                 }`}
                     >
                       <Archive size={20} />
@@ -243,7 +243,7 @@ function NoteModal({
                 ${
                   newNote?.isPinned
                     ? " bg-blue-600 text-white"
-                    : " text-slate-500"
+                    : " text-slate-900"
                 }`}
                     >
                       <Pin size={20} />

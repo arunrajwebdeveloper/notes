@@ -19,7 +19,7 @@ function SearchBar({
     }
   }, [localSearch, isLoading]);
   return (
-    <div className="relative w-full max-w-lg">
+    <div className="relative w-full max-w-sm hover:max-w-lg transition-all duration-300">
       <Search className="absolute w-5 h-5 md:w-6 md:h-6 text-gray-900 z-10 left-2 md:left-4 top-1/2 transform -translate-y-1/2 pointer-events-none" />
       <input
         ref={ref}

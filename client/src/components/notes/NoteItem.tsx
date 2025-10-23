@@ -101,7 +101,7 @@ function NoteItem({
                     onClick={() => {}}
                     disabled={false}
                     className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
-                   text-slate-500 `}
+                   text-slate-900 `}
                   >
                     {isArchived ? (
                       <ArchiveRestore size={20} />
@@ -123,7 +123,7 @@ function NoteItem({
                       onClick={() => {}}
                       disabled={false}
                       className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
-                   text-slate-500 `}
+                   text-slate-900 `}
                     >
                       <Redo2 size={20} />
                       <Tooltip content="Restore" position="top" />
@@ -134,7 +134,7 @@ function NoteItem({
                       onClick={() => {}}
                       disabled={false}
                       className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
-                   text-slate-500 `}
+                   text-slate-900 `}
                     >
                       <Trash2 size={20} />
                       <Tooltip content="Delete Forever" position="top" />
@@ -148,7 +148,7 @@ function NoteItem({
                     onClick={() => {}}
                     disabled={false}
                     className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
-                   text-slate-500`}
+                   text-slate-900`}
                   >
                     <Trash2 size={20} />
                     <Tooltip content="Trash" position="top" />

@@ -44,7 +44,7 @@ export default function ColorMenu({
             <div className="relative group">
               <div
                 className={`w-12 h-12 flex items-center justify-center rounded-full cursor-pointer transition duration-300
-                ${isOpen ? " bg-blue-600 text-white" : "text-slate-500"}`}
+                ${isOpen ? " bg-blue-600 text-white" : "text-slate-900"}`}
               >
                 <Palette size={20} />
               </div>
