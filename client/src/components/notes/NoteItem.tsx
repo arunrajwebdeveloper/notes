@@ -40,7 +40,7 @@ function NoteItem({
         }}
         className="relative rounded-2xl flex flex-col justify-between cursor-default w-full"
       >
-        <div className="p-8">
+        <div className="p-8 flex-1" onClick={() => onEdit(_id)}>
           {isPinned && (
             <button
               disabled
@@ -50,7 +50,7 @@ function NoteItem({
             </button>
           )}
 
-          <div onClick={() => onEdit(_id)}>
+          <div>
             <h2 className="text-2xl xl:text-3xl mb-6 break-all">
               {highlightText(trimText(title || "", 80), currentSearch)}
             </h2>
@@ -59,7 +59,7 @@ function NoteItem({
             </p>
           </div>
         </div>
-        <div className="mt-6 px-8 pb-2">
+        <div className="px-8 pb-2">
           {tags?.length !== 0 && (
             <div className="flex gap-1 flex-wrap">
               {tags?.map(({ _id, name }) => (

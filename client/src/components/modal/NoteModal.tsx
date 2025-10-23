@@ -78,7 +78,10 @@ function NoteModal({
     const payload = { ...newNote, tags: tagIds };
 
     if (mode === "edit" && noteDetails?._id) {
-      updateNoteMutation.mutate({ id: noteDetails?._id, payload });
+      updateNoteMutation.mutate({
+        id: noteDetails?._id,
+        payload: { ...payload, isArchived: false },
+      });
     } else {
       createNoteMutation.mutate(payload);
     }
@@ -166,7 +169,7 @@ function NoteModal({
 
         {/* Note Modal Footer */}
 
-        <div className="bg-white rounded-b-lg">
+        <div className="rounded-b-lg">
           <div className="flex gap-2 items-center justify-between px-6 py-4 border-t border-t-slate-800/10">
             {noteDetails?.isTrash && (
               <div className="flex-none flex items-center  gap-2">
