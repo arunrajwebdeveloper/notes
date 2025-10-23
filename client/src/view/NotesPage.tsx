@@ -30,6 +30,7 @@ function NotesPage() {
     isOpenTagModal,
     openTagModal,
     closeTagModal,
+    handleNoteType,
     createTagMutation,
     updateTagMutation,
     deleteTagMutation,
@@ -56,6 +57,7 @@ function NotesPage() {
           handleTagSelect={handleTagSelect}
           filterState={filterState}
           openTagModal={openTagModal}
+          handleNoteType={handleNoteType}
         />
       </div>
       <div

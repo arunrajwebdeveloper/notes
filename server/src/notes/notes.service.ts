@@ -42,7 +42,7 @@ export class NotesService {
    * Main Read: Finds all ACTIVE notes (not archived, not trashed) with pagination, filter and search.
    * * Returns the paginated data along with total count and navigation flags.
    */
-  async findAllActive(
+  async findAll(
     userId: Types.ObjectId,
     pagination: PaginationDto,
   ): Promise<{
@@ -60,7 +60,10 @@ export class NotesService {
       sortOrder = 'asc',
       search,
       tagId,
+      type = 'active',
     } = pagination;
+
+    console.log('pagination :>> ', pagination);
 
     const skip = (page - 1) * limit;
 
@@ -69,9 +72,18 @@ export class NotesService {
     // Mongoose queries use $and for combining multiple conditions implicitly.
     const filter: any = {
       userId,
-      isTrash: false,
-      isArchived: false,
     };
+
+    // Apply type-based filters
+    if (type === 'active') {
+      filter.isTrash = false;
+      filter.isArchived = false;
+    } else if (type === 'archive') {
+      filter.isArchived = true;
+      filter.isTrash = false;
+    } else if (type === 'trash') {
+      filter.isTrash = true;
+    }
 
     // 2. Apply Search Filter (by title or description)
     if (search) {
@@ -82,6 +94,8 @@ export class NotesService {
         { title: { $regex: searchRegex } },
         { description: { $regex: searchRegex } },
       ];
+
+      // filter.$or = [{ title: regex }, { description: regex }];
     }
 
     // 3. Apply Tag Filter

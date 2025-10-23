@@ -40,4 +40,8 @@ export class PaginationDto {
   @IsOptional()
   @IsString()
   tagId?: string;
+
+  @IsOptional()
+  @IsIn(['active', 'archive', 'trash'])
+  type?: 'active' | 'archive' | 'trash';
 }

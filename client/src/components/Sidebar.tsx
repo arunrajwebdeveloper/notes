@@ -1,3 +1,4 @@
+import { Archive, StickyNote, Tag, Trash2 } from "lucide-react";
 import type { NoteFilterState, TagItem } from "../types/note.types";
 import { List, type RowComponentProps } from "react-window";
 
@@ -25,9 +26,12 @@ function TagRowComponent({
         filterState?.tagId === tag?._id ? "bg-blue-200" : "hover:bg-slate-100"
       }`}
     >
-      <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-        {tag?.name}
-      </span>
+      <div className="flex gap-4 items-center">
+        <Tag size={20} />
+        <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+          {tag?.name}
+        </span>
+      </div>
 
       {tag?.noteCount !== 0 && (
         <span className="rounded-full min-w-7 h-7 px-2 bg-slate-200 text-slate-800 flex justify-center items-center text-sm">
@@ -45,6 +49,7 @@ function Sidebar({
   handleTagSelect,
   filterState,
   openTagModal,
+  handleNoteType,
 }: {
   tags: TagItem[];
   isLoadingTags: boolean;
@@ -52,6 +57,7 @@ function Sidebar({
   handleTagSelect: (tagId: string) => void;
   filterState: NoteFilterState;
   openTagModal: () => void;
+  handleNoteType: (type: string) => void;
 }) {
   return (
     <aside className="h-dvh w-full flex flex-col justify-between">
@@ -91,24 +97,65 @@ function Sidebar({
 
           <div className="mt-6 virtualized-list">
             {!isLoadingTags && tags?.length !== 0 ? (
-              <List
-                rowComponent={TagRowComponent}
-                rowCount={tags?.length || 0}
-                rowHeight={56}
-                rowProps={{
-                  tags,
-                  isLoadingNotes,
-                  filterState,
-                  handleTagSelect,
-                }}
-                style={{ height: "calc(100dvh - 144px)", width: "100%" }}
-              />
+              <>
+                <button
+                  disabled={isLoadingNotes}
+                  onClick={() => handleNoteType("active")}
+                  className={`flex items-center justify-between gap-4 h-14 px-6 w-full cursor-pointer text-base text-black transition duration-300 ${
+                    filterState?.noteType === "active" &&
+                    !filterState?.search &&
+                    !filterState?.tagId
+                      ? "bg-blue-200"
+                      : "hover:bg-slate-100"
+                  }`}
+                >
+                  <div className="flex gap-4 items-center">
+                    <StickyNote size={20} />
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                      Notes
+                    </span>
+                  </div>
+                </button>
+                <List
+                  rowComponent={TagRowComponent}
+                  rowCount={tags?.length || 0}
+                  rowHeight={56}
+                  rowProps={{
+                    tags,
+                    isLoadingNotes,
+                    filterState,
+                    handleTagSelect,
+                  }}
+                  style={{ height: "calc(100dvh - 310px)", width: "100%" }}
+                />
+              </>
             ) : (
-              <div className="px-6 pt-6 text-sm text-slate-500">
-                <span>No tags yet</span>
-              </div>
+              !isLoadingTags && (
+                <div className="px-6 pt-6 text-sm text-slate-500">
+                  <span>No tags yet</span>
+                </div>
+              )
             )}
           </div>
+
+          {!isLoadingTags && (
+            <div>
+              <button
+                onClick={() => handleNoteType("archive")}
+                className={`flex items-center h-14 gap-4 px-6 w-full cursor-pointer text-base text-black transition duration-300 hover:bg-slate-100`}
+              >
+                <Archive size={20} />
+                <span>Archive</span>
+              </button>
+              <button
+                onClick={() => handleNoteType("trash")}
+                className={`flex items-center h-14 gap-4 px-6 w-full cursor-pointer text-base text-black transition duration-300 hover:bg-slate-100`}
+              >
+                <Trash2 size={20} />
+                <span>Trash</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </aside>

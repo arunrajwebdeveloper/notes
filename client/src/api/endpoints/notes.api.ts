@@ -4,8 +4,14 @@ import apiClient from "../axios.config";
 
 export const notesAPI = {
   getNotes: async (params: any) => {
-    const response = await apiClient.get<ApiResponse<NotesResponse>>("/notes", {
-      params,
+    const { noteType, ...rest } = params;
+
+    let endpoint = "/notes";
+    if (noteType === "archive") endpoint = "/notes/archive";
+    if (noteType === "trash") endpoint = "/notes/trash";
+
+    const response = await apiClient.get<ApiResponse<NotesResponse>>(endpoint, {
+      params: rest,
     });
     return response.data.result;
   },

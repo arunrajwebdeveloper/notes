@@ -51,15 +51,7 @@ export class NotesController {
     hasNext: boolean;
     hasPrev: boolean;
   }> {
-    return this.notesService.findAllActive(req.user.userId, paginationDto);
-  }
-
-  /**
-   * GET /notes/:id - Find one active notes (not archived, not trashed)
-   */
-  @Get(':id')
-  findOne(@Request() req, @Param('id') id: string): Promise<Note | null> {
-    return this.notesService.findOne(req.user.userId, id);
+    return this.notesService.findAll(req.user.userId, paginationDto);
   }
 
   /**
@@ -94,8 +86,21 @@ export class NotesController {
   // --- Archiving Endpoints ---
 
   @Get('archive')
-  findArchived(@Request() req): Promise<Note[]> {
-    return this.notesService.findArchived(req.user.userId);
+  findArchived(
+    @Request() req,
+    @Query() pagination: PaginationDto,
+  ): Promise<{
+    total: number;
+    limit: number;
+    page: number;
+    result: Note[];
+    hasNext: boolean;
+    hasPrev: boolean;
+  }> {
+    return this.notesService.findAll(req.user.userId, {
+      ...pagination,
+      type: 'archive',
+    });
   }
 
   @Post(':id/archive')
@@ -111,8 +116,29 @@ export class NotesController {
   // --- Trash Bin Endpoints ---
 
   @Get('trash')
-  findTrashed(@Request() req): Promise<Note[]> {
-    return this.notesService.findTrashed(req.user.userId);
+  findTrash(
+    @Request() req,
+    @Query() pagination: PaginationDto,
+  ): Promise<{
+    total: number;
+    limit: number;
+    page: number;
+    result: Note[];
+    hasNext: boolean;
+    hasPrev: boolean;
+  }> {
+    return this.notesService.findAll(req.user.userId, {
+      ...pagination,
+      type: 'trash',
+    });
+  }
+
+  /**
+   * GET /notes/:id - Find one active notes (not archived, not trashed)
+   */
+  @Get(':id')
+  findOne(@Request() req, @Param('id') id: string): Promise<Note | null> {
+    return this.notesService.findOne(req.user.userId, id);
   }
 
   /**

@@ -47,7 +47,3 @@
 .virtualized-list:hover > div[role="list"]::-webkit-scrollbar-thumb {
   background-color: #99a1af;
 }
-.virtualized-list > div[role="list"] {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}

@@ -7,7 +7,11 @@ import {
   type InfiniteData,
 } from "@tanstack/react-query";
 import { notesAPI } from "../api/endpoints/notes.api";
-import type { NoteFilterState, NotesResponse } from "../types/note.types";
+import type {
+  NoteFilterState,
+  NotesResponse,
+  NoteType,
+} from "../types/note.types";
 import { useDebounce } from "../utils/useDebounce";
 
 type NoteQueryKey = ["get_notes", NoteFilterState];
@@ -27,6 +31,7 @@ export const useNotes = ({
     tagId: null,
     sortBy: "orderIndex",
     sortOrder: "asc",
+    noteType: "active",
   });
   const [localSearch, setLocalSearch] = useState(filterState.search);
   const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
@@ -81,9 +86,18 @@ export const useNotes = ({
       ...prev,
       tagId: newSelectedTagId,
       search: "",
+      noteType: "active",
     }));
 
     setLocalSearch("");
+  };
+
+  const handleNoteType = (type: string) => {
+    setFilterState((prev) => ({
+      ...prev,
+      noteType: type as NoteType,
+      tagId: null,
+    }));
   };
 
   const notes = useInfiniteQuery<
@@ -211,6 +225,7 @@ export const useNotes = ({
     isOpenTagModal,
     openTagModal,
     closeTagModal,
+    handleNoteType,
     createTagMutation,
     updateTagMutation,
     deleteTagMutation,

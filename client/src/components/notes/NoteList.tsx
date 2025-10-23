@@ -46,6 +46,13 @@ function NoteList({
   const allNotes: Note[] =
     data?.pages?.flatMap((page: any) => page.result) || [];
 
+  const pageTitle =
+    {
+      active: "My Notes",
+      archive: "Archive",
+      trash: "Trash",
+    }[filterState?.noteType] || "My Notes";
+
   if (error) {
     return (
       <div className="p-3 text-sm bg-red-100 border border-red-400 text-red-700 rounded">
@@ -57,7 +64,7 @@ function NoteList({
   return (
     <div className=" mt-8 md:mt-10 mb-10">
       <div className="text-left">
-        <h1 className="font-medium text-4xl xl:text-5xl">My Notes</h1>
+        <h1 className="font-medium text-4xl xl:text-5xl">{pageTitle}</h1>
       </div>
 
       {isLoading && allNotes.length === 0 && (
