@@ -81,7 +81,7 @@ function Sidebar({
             </button>
           </div>
 
-          {isLoadingTags && (
+          {isLoadingTags && tags?.length === 0 && (
             <div className="mt-6 animate-pulse space-y-6">
               {[...Array(14)].map((_, index) => (
                 <div

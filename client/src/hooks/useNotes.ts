@@ -26,7 +26,7 @@ export const useNotes = ({
   const queryClient = useQueryClient();
 
   const [filterState, setFilterState] = useState<NoteFilterState>({
-    limit: 10,
+    limit,
     search: "",
     tagId: null,
     sortBy: "orderIndex",
@@ -147,7 +147,7 @@ export const useNotes = ({
   const createNoteMutation = useMutation({
     mutationFn: notesAPI.createNote,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get_notes", { limit }] });
+      queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
       queryClient.invalidateQueries({ queryKey: ["get_tags"] });
     },
     onError: (error: any) => {
@@ -165,7 +165,7 @@ export const useNotes = ({
     mutationFn: ({ id, payload }: { id: string; payload: any }) =>
       notesAPI.updateNote(id, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get_notes", { limit }] });
+      queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
       queryClient.invalidateQueries({ queryKey: ["get_tags"] });
       queryClient.invalidateQueries({
         queryKey: ["get_note_by_id", selectedNoteId],
@@ -193,7 +193,7 @@ export const useNotes = ({
     mutationFn: ({ id, payload }: { id: string; payload: any }) =>
       notesAPI.editTag(id, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get_notes", { limit }] });
+      queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
       queryClient.invalidateQueries({ queryKey: ["get_tags"] });
     },
   });
@@ -201,7 +201,7 @@ export const useNotes = ({
   const deleteTagMutation = useMutation({
     mutationFn: notesAPI.deleteTag,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get_notes", { limit }] });
+      queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
       queryClient.invalidateQueries({ queryKey: ["get_tags"] });
     },
   });
