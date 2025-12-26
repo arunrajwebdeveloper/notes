@@ -20,12 +20,12 @@ function SearchBar({
   }, [localSearch, isLoading]);
   return (
     <div className="relative w-full max-w-sm hover:max-w-lg transition-all duration-300">
-      <Search className="absolute w-5 h-5 md:w-6 md:h-6 text-gray-900 z-10 left-2 md:left-4 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+      <Search className="absolute w-5 h-5 text-gray-500 z-10 left-0 top-1/2 transform -translate-y-1/2 pointer-events-none" />
       <input
         ref={ref}
         type="text"
         placeholder="Search Notes"
-        className=" border-0 rounded-lg bg-slate-100 text-gray-900 text-md md:text-lg outline-0 block w-full h-12 md:h-14 ps-10 md:ps-12 pe-3"
+        className=" border-0 rounded-lg bg-white text-gray-500 text-md outline-0 block w-full h-12 md:h-14 ps-8 pe-3"
         onChange={handleSearchChange}
         disabled={isLoading}
         value={localSearch}
