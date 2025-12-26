@@ -136,7 +136,7 @@ export const useNotes = ({
 
   const {
     data: tags,
-    isLoading: isLoadingTags,
+    isLoading: isLoadingTagsList,
     isFetching: isFetchingTags,
   } = useQuery({
     queryKey: ["get_tags"],
@@ -209,7 +209,7 @@ export const useNotes = ({
   return {
     notes,
     tags,
-    isLoadingTags: isLoadingTags || isFetchingTags,
+    isLoadingTags: isLoadingTagsList || isFetchingTags,
     noteDetails,
     isLoadingNoteDetails,
     isOpenNoteModal,
