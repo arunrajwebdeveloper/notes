@@ -11,13 +11,13 @@ import { map } from 'rxjs/operators';
 export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map((data) => {
+      map((result) => {
         const ctx = context.switchToHttp();
-        const response = ctx.getResponse();
+        const { statusCode } = ctx.getResponse();
         return {
           status: 'success',
-          statusCode: response.statusCode,
-          result: data,
+          statusCode,
+          result,
         };
       }),
     );
