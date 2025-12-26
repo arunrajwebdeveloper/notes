@@ -4,8 +4,6 @@ import NoteList from "../components/notes/NoteList";
 import { useNotes } from "../hooks/useNotes";
 import NoteModal from "../components/modal/NoteModal";
 import { useAppSelector } from "../hooks";
-import { Plus } from "lucide-react";
-import Tooltip from "../components/common/Tooltip";
 import TagsManageModal from "../components/modal/TagsManageModal";
 
 function NotesPage() {
@@ -49,17 +47,17 @@ function NotesPage() {
 
   return (
     <div className="flex h-dvh w-full overflow-hidden">
-      <div className="h-dvh w-[340px] flex-none hidden lg:block">
-        <Sidebar
-          tags={tags}
-          isLoadingTags={isLoadingTags}
-          isLoadingNotes={isLoadingNotes}
-          handleTagSelect={handleTagSelect}
-          filterState={filterState}
-          openTagModal={openTagModal}
-          handleNoteType={handleNoteType}
-        />
-      </div>
+      <Sidebar
+        tags={tags}
+        isLoadingTags={isLoadingTags}
+        isLoadingNotes={isLoadingNotes}
+        handleTagSelect={handleTagSelect}
+        filterState={filterState}
+        openTagModal={openTagModal}
+        handleNoteType={handleNoteType}
+        openNoteModal={openNoteModal}
+      />
+
       <div
         className="w-full lg:w-[calc(100%-340px)] flex-1 overflow-y-auto px-4 sm:px-6 md:px-10 transition duration-300 
       [&::-webkit-scrollbar]:w-2
@@ -108,15 +106,6 @@ function NotesPage() {
         updateTagMutation={updateTagMutation}
         deleteTagMutation={deleteTagMutation}
       />
-
-      {/* Create Button */}
-      <button
-        onClick={() => openNoteModal(null)}
-        className="bg-black w-16 h-16 lg:w-20 lg:h-20 group border-3 border-black hover:border-t-blue-500 hover:border-l-blue-500 hover:border-r-amber-400 hover:border-b-amber-400 fixed bottom-6 right-6 z-50 font-medium cursor-pointer text-white flex justify-center items-center gap-1 rounded-full transition duration-300"
-      >
-        <Plus className="m-auto group-hover:rotate-90 transition duration-300 origin-center" />
-        <Tooltip content="Create Note" position="left" />
-      </button>
     </div>
   );
 }
