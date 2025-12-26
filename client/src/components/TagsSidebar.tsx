@@ -60,8 +60,8 @@ const TagsSidebar = ({
   handleNoteType: (type: string) => void;
 }) => {
   return (
-    <div className="w-[300px]">
-      <div className="flex justify-between items-center px-6">
+    <div className="w-[300px] h-full border-r border-r-slate-200">
+      <div className="flex justify-between items-center px-6 h-[80px]">
         <h2 className="text-xl text-black font-medium m-0">Tags</h2>
         <button
           onClick={openTagModal}
@@ -72,7 +72,7 @@ const TagsSidebar = ({
       </div>
 
       {isLoadingTags && tags?.length === 0 && (
-        <div className="mt-6 animate-pulse space-y-6">
+        <div className="animate-pulse space-y-6">
           {[...Array(14)].map((_, index) => (
             <div
               key={`initial-tags-skel-${index}`}
@@ -85,7 +85,7 @@ const TagsSidebar = ({
         </div>
       )}
 
-      <div className="mt-6 virtualized-list">
+      <div className="virtualized-list">
         {!isLoadingTags && tags?.length !== 0 ? (
           <>
             <button
@@ -116,7 +116,7 @@ const TagsSidebar = ({
                 filterState,
                 handleTagSelect,
               }}
-              style={{ height: "calc(100dvh - 310px)", width: "100%" }}
+              style={{ height: "calc(100dvh - 138px)", width: "100%" }}
             />
           </>
         ) : (

@@ -63,7 +63,7 @@ function NoteList({
   }
 
   return (
-    <div className=" mt-8 md:mt-10 mb-10">
+    <div className="mt-8 md:mt-10 mb-10">
       <div className="flex items-center justify-between gap-4">
         <h1 className="font-medium text-4xl xl:text-5xl m-0">{pageTitle}</h1>
         {filterState?.noteType === "trash" && allNotes.length && (
@@ -75,7 +75,7 @@ function NoteList({
       </div>
 
       {isLoading && allNotes.length === 0 && (
-        <div className="mt-10 animate-pulse flex flex-col sm:flex-row flex-wrap -mx-2 xl:-mx-3">
+        <div className="mt-12 animate-pulse flex flex-col sm:flex-row flex-wrap -mx-2 xl:-mx-3">
           {[...Array(12)].map((_, index) => (
             <div
               key={`initial-notes-skel-${index}`}
@@ -87,7 +87,7 @@ function NoteList({
         </div>
       )}
 
-      <div className="mt-10 flex flex-col sm:flex-row flex-wrap -mx-2 xl:-mx-3">
+      <div className="mt-12 flex flex-col sm:flex-row flex-wrap -mx-2 xl:-mx-3">
         {!isLoading && allNotes?.length !== 0
           ? allNotes?.map((note: Note) => {
               return (

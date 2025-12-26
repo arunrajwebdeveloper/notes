@@ -36,7 +36,7 @@ function UserDropdown({ user }: { user: User | null }) {
       <button
         onClick={() => setIsShow((prev) => !prev)}
         className={`flex items-center gap-4 text-left cursor-pointer w-10 h-10 md:w-12 md:h-12 border-3 rounded-full transition duration-300 ${
-          isShow ? "border-gray-500" : "border-slate-300"
+          isShow ? "border-slate-300" : "border-white"
         }`}
       >
         <svg
