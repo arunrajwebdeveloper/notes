@@ -31,7 +31,7 @@ function NoteItem({
   } = note;
 
   return (
-    <div className="basis-1 sm:basis-1/2 xl:basis-1/3 2xl:basis-1/4 p-2 xl:p-3 flex">
+    <div className="basis-1 sm:basis-1/2 xl:basis-1/3 2xl:basis-1/4 p-2 xl:p-3 flex note-item">
       <div
         style={{
           backgroundColor: color,
@@ -73,7 +73,7 @@ function NoteItem({
           </div>
 
           {/* ACTIONS */}
-          <div className="flex gap-3 items-center justify-between">
+          <div className="flex gap-3 items-center justify-between note-actions">
             {!isTrash && (
               <div className="flex gap-3 items-center">
                 <div className="flex-none">

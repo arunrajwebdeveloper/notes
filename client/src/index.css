@@ -47,3 +47,14 @@
 .virtualized-list:hover > div[role="list"]::-webkit-scrollbar-thumb {
   background-color: #99a1af;
 }
+
+.note-item .note-actions {
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+}
+
+.note-item:hover .note-actions {
+  opacity: 1;
+  visibility: visible;
+}
