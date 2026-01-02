@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
-import { CircleCheck, CircleX, Trash } from "lucide-react";
+import { CircleCheck, CircleX, Trash2 } from "lucide-react";
 import { isEqual } from "lodash";
 import type { TagItem } from "../../types/note.types";
 import { Modal } from "../common/Modal";
@@ -143,7 +143,7 @@ function TagsManageModal({
           <div className="flex flex-col justify-between h-full max-h-[500px]">
             <div
               className="py-4 h-[calc(100%-48px)] overflow-y-auto flex flex-col transition duration-300
-              [&::-webkit-scrollbar]:w-2
+              [&::-webkit-scrollbar]:w-1
               [&::-webkit-scrollbar-track]:bg-white
               [&::-webkit-scrollbar-thumb]:bg-white
               hover:[&::-webkit-scrollbar-track]:bg-gray-100
@@ -232,7 +232,7 @@ function TagsManageModal({
                           isOpenConfirm?.id === t._id ? (
                             <CircleSpinner size={18} />
                           ) : (
-                            <Trash size={20} fill="currentColor" />
+                            <Trash2 size={20} />
                           )}
                         </button>
                       )}
