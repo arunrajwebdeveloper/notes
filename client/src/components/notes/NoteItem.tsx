@@ -4,21 +4,27 @@ import { trimText } from "../../utils";
 import { highlightText } from "../../utils/highlightText";
 import { formatSmartTime } from "../../utils/dateFormatter";
 import TagChip from "./TagChip";
-import ColorMenu from "./ColorMenu";
-import TagsMenu from "./TagsMenu";
+// import ColorMenu from "./ColorMenu";
+// import TagsMenu from "./TagsMenu";
 import Tooltip from "../common/Tooltip";
+import CircleSpinner from "../common/CircleSpinner";
 
 function NoteItem({
   note,
   onEdit,
   searchTest,
+  isDeleting,
+  onDeleteNote,
 }: {
   note: Note;
   onEdit: (note: Note) => void;
   searchTest: string;
+  isDeleting: boolean;
+  onDeleteNote: (id: string) => void;
 }) {
   const currentSearch = searchTest;
   const {
+    _id,
     title,
     description,
     color,
@@ -66,14 +72,15 @@ function NoteItem({
             </div>
           )}
           <div className="mt-4 mb-2">
-            <span className="text-xs text-slate-700">
+            <span className="text-xs text-slate-700 select-none">
               {`Updated at ${formatSmartTime(updatedAt)}`}
             </span>
           </div>
 
           {/* ACTIONS */}
           <div className="flex gap-3 items-center justify-between note-actions">
-            {!isTrash && (
+            <div></div>
+            {/* {!isTrash && (
               <div className="flex gap-3 items-center">
                 <div className="flex-none">
                   <ColorMenu
@@ -91,7 +98,7 @@ function NoteItem({
                   />
                 </div>
               </div>
-            )}
+            )} */}
             <div className="flex gap-3 items-center">
               {!isTrash && (
                 <div className="flex-none">
@@ -143,13 +150,19 @@ function NoteItem({
               {!isTrash && (
                 <div className="flex-none">
                   <button
-                    onClick={() => {}}
-                    disabled={false}
+                    onClick={() => onDeleteNote(_id)}
+                    disabled={isDeleting}
                     className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900`}
                   >
-                    <Trash2 size={20} />
-                    <Tooltip content="Trash" position="top" />
+                    {isDeleting ? (
+                      <CircleSpinner size={20} className="text-slate-400" />
+                    ) : (
+                      <>
+                        <Trash2 size={20} />
+                        <Tooltip content="Trash" position="top" />
+                      </>
+                    )}
                   </button>
                 </div>
               )}

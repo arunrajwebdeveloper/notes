@@ -162,12 +162,17 @@ export const useNotes = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
       queryClient.invalidateQueries({ queryKey: ["get_tags"] });
-      // queryClient.invalidateQueries({
-      //   queryKey: ["get_note_by_id", selectedNoteId],
-      // });
     },
     onSettled: () => {
       closeNoteModal();
+    },
+  });
+
+  const deleteNoteMutation = useMutation({
+    mutationFn: notesAPI.deleteNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
+      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
     },
   });
 
@@ -210,6 +215,7 @@ export const useNotes = ({
     closeNoteModal,
     createNoteMutation,
     updateNoteMutation,
+    deleteNoteMutation,
     selectedNote,
     handleSearchChange,
     handleTagSelect,

@@ -36,7 +36,7 @@ function Sidebar({
             onClick={() => openNoteModal(null)}
             className="w-16 h-16 mt-14 rounded-full group relative bg-black flex items-center cursor-pointer text-base text-white transition duration-300"
           >
-            <Plus className="m-auto group-hover:rotate-90 transition duration-300 origin-center" />
+            <Plus className="m-auto transition duration-300 origin-center group-hover:rotate-90" />
             <Tooltip content="Create Note" position="right" />
           </button>
         </div>

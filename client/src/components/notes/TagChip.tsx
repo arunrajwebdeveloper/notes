@@ -10,7 +10,7 @@ const TagChip = ({
   onRemoveLabel: () => void;
 }) => {
   return (
-    <div className="bg-black/30 relative h-8 group flex items-center justify-between gap-2 text-white text-sm rounded-full">
+    <div className="bg-black/30 relative h-8 group flex items-center justify-between gap-2 text-white text-sm rounded-full select-none">
       <span className="w-full px-2 group-hover:max-w-[calc(100%-24px)] whitespace-nowrap overflow-hidden text-ellipsis">
         {name}
       </span>

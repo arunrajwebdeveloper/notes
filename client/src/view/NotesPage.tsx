@@ -18,6 +18,7 @@ function NotesPage() {
     closeNoteModal,
     createNoteMutation,
     updateNoteMutation,
+    deleteNoteMutation,
     selectedNote,
     handleSearchChange,
     handleTagSelect,
@@ -80,6 +81,7 @@ function NotesPage() {
           isFetchingNextPage={isFetchingNextPage}
           onEdit={(note) => openNoteModal(note)}
           filterState={filterState}
+          deleteNoteMutation={deleteNoteMutation}
         />
       </div>
       {/* NOTE MODAL */}

@@ -1,17 +1,19 @@
-import type { InfiniteData } from "@tanstack/react-query";
+import type { InfiniteData, UseMutationResult } from "@tanstack/react-query";
 import type {
   Note,
   NoteFilterState,
   NotesResponse,
 } from "../../types/note.types";
 import NoteItem from "./NoteItem";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer"; // Used for scroll detection
 import { Trash2 } from "lucide-react";
+import ConfirmModal from "../modal/ConfirmModal";
 
 export interface BaseProps {
   onEdit: (note: Note) => void;
   filterState: NoteFilterState;
+  deleteNoteMutation: UseMutationResult<any, unknown, { id: string }>;
 }
 export interface InfiniteMatchListProps extends BaseProps {
   data: InfiniteData<NotesResponse, number> | undefined;
@@ -31,9 +33,17 @@ function NoteList({
   isFetchingNextPage,
   onEdit,
   filterState,
+  deleteNoteMutation,
 }: InfiniteMatchListProps) {
   // Intersection Observer Hook
   const { ref, inView } = useInView();
+  const [isOpenConfirm, setIsOpenConfirm] = useState<{
+    isOpen: boolean;
+    id: string | null;
+  }>({
+    isOpen: false,
+    id: null,
+  });
 
   // Auto-fetch logic
   useEffect(() => {
@@ -42,6 +52,29 @@ function NoteList({
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const onDeleteNote = (id: string) => {
+    setIsOpenConfirm({
+      isOpen: true,
+      id,
+    });
+  };
+
+  const handleDelete = (id: string | null) => {
+    if (id) {
+      deleteNoteMutation.mutate(
+        { id },
+        {
+          onSettled: () => {
+            setIsOpenConfirm({
+              isOpen: false,
+              id: null,
+            });
+          },
+        }
+      );
+    }
+  };
 
   // Flatten the array of pages into a single array of notes
   const allNotes: Note[] =
@@ -96,6 +129,8 @@ function NoteList({
                   note={note}
                   onEdit={onEdit}
                   searchTest={filterState?.search}
+                  isDeleting={deleteNoteMutation.isPending}
+                  onDeleteNote={onDeleteNote}
                 />
               );
             })
@@ -124,6 +159,24 @@ function NoteList({
           )
         )}
       </div>
+
+      {/* Confirm Delete */}
+
+      <ConfirmModal
+        isShow={isOpenConfirm?.isOpen}
+        isLoading={deleteNoteMutation.isPending}
+        title="Delete confirm?"
+        description="Are you sure you want to delete this note?"
+        onClose={() =>
+          setIsOpenConfirm({
+            isOpen: false,
+            id: null,
+          })
+        }
+        onConfirm={() => {
+          handleDelete(isOpenConfirm?.id);
+        }}
+      />
     </div>
   );
 }

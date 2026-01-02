@@ -32,6 +32,11 @@
   }
 } */
 
+button {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
 .virtualized-list > div[role="list"]::-webkit-scrollbar {
   width: 4px;
 }
