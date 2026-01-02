@@ -10,7 +10,7 @@ import { useInView } from "react-intersection-observer"; // Used for scroll dete
 import { Trash2 } from "lucide-react";
 
 export interface BaseProps {
-  onEdit: (id: string) => void;
+  onEdit: (note: Note) => void;
   filterState: NoteFilterState;
 }
 export interface InfiniteMatchListProps extends BaseProps {

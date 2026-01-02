@@ -1,5 +1,5 @@
 import { Archive, Plus, Trash2 } from "lucide-react";
-import type { NoteFilterState, TagItem } from "../types/note.types";
+import type { Note, NoteFilterState, TagItem } from "../types/note.types";
 import TagsSidebar from "./TagsSidebar";
 import Tooltip from "./common/Tooltip";
 
@@ -20,7 +20,7 @@ function Sidebar({
   filterState: NoteFilterState;
   openTagModal: () => void;
   handleNoteType: (type: string) => void;
-  openNoteModal: (id: string | null) => void;
+  openNoteModal: (note: Note | null) => void;
 }) {
   return (
     <aside className="h-dvh w-auto hidden lg:flex">

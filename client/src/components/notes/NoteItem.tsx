@@ -14,12 +14,11 @@ function NoteItem({
   searchTest,
 }: {
   note: Note;
-  onEdit: (id: string) => void;
+  onEdit: (note: Note) => void;
   searchTest: string;
 }) {
   const currentSearch = searchTest;
   const {
-    _id,
     title,
     description,
     color,
@@ -39,7 +38,7 @@ function NoteItem({
         }}
         className="relative rounded-2xl flex flex-col justify-between cursor-default w-full"
       >
-        <div className="p-8 flex-1" onClick={() => onEdit(_id)}>
+        <div className="p-8 flex-1" onClick={() => onEdit(note)}>
           {isPinned && (
             <button
               disabled

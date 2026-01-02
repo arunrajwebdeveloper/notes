@@ -18,9 +18,7 @@ function NotesPage() {
     closeNoteModal,
     createNoteMutation,
     updateNoteMutation,
-    selectedNoteId,
-    noteDetails,
-    isLoadingNoteDetails,
+    selectedNote,
     handleSearchChange,
     handleTagSelect,
     filterState,
@@ -80,20 +78,19 @@ function NotesPage() {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          onEdit={(noteId) => openNoteModal(noteId)}
+          onEdit={(note) => openNoteModal(note)}
           filterState={filterState}
         />
       </div>
       {/* NOTE MODAL */}
       <NoteModal
         isShow={isOpenNoteModal}
-        mode={selectedNoteId ? "edit" : "create"}
+        mode={selectedNote ? "edit" : "create"}
         tags={tags}
         onHide={closeNoteModal}
         createNoteMutation={createNoteMutation}
         updateNoteMutation={updateNoteMutation}
-        noteDetails={noteDetails}
-        isLoadingNoteDetails={isLoadingNoteDetails}
+        selectedNote={selectedNote}
       />
 
       {/* Tags Modal */}

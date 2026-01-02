@@ -26,16 +26,14 @@ interface NoteModalProps {
     unknown,
     { id: string; payload: any }
   >;
-  noteDetails?: Note;
-  isLoadingNoteDetails: boolean;
+  selectedNote?: Note | null;
 }
 
 function NoteModal({
   isShow,
   mode,
   tags,
-  noteDetails,
-  isLoadingNoteDetails,
+  selectedNote,
   createNoteMutation,
   updateNoteMutation,
   onHide,
@@ -48,6 +46,7 @@ function NoteModal({
     tags: [],
     isArchived: false,
   };
+
   const [originalNote, setOriginalNote] = useState<NewNoteState | null>(null);
   const [newNote, setNewNote] = useState<NewNoteState>(initialState);
   const [isChanged, setIsChanged] = useState(false);
@@ -58,13 +57,13 @@ function NoteModal({
   const payload = { ...newNote, tags: tagIds };
 
   useEffect(() => {
-    if (mode === "edit" && noteDetails) {
-      setOriginalNote(noteDetails);
-      setNewNote(noteDetails);
+    if (mode === "edit" && selectedNote) {
+      setOriginalNote(selectedNote);
+      setNewNote(selectedNote);
     } else {
       setNewNote(initialState);
     }
-  }, [isShow, mode, noteDetails]);
+  }, [isShow, mode, selectedNote]);
 
   useEffect(() => {
     if (!originalNote) return;
@@ -81,7 +80,7 @@ function NoteModal({
   const submitUpdatedNote = () => {
     if (isChanged && isValid) {
       updateNoteMutation.mutate({
-        id: noteDetails?._id as string,
+        id: selectedNote?._id as string,
         payload: { ...payload, isArchived: false },
       });
       setNewNote(initialState);
@@ -89,9 +88,7 @@ function NoteModal({
   };
 
   const isLoading =
-    createNoteMutation.isPending ||
-    updateNoteMutation.isPending ||
-    isLoadingNoteDetails;
+    createNoteMutation.isPending || updateNoteMutation.isPending;
 
   const handleSubmit = () => {
     if (mode === "edit") {
@@ -142,11 +139,11 @@ function NoteModal({
         className="rounded-lg relative"
         style={{ backgroundColor: newNote?.color }}
       >
-        {isLoadingNoteDetails && (
+        {/* 
           <div className="w-full h-full absolute z-10 flex justify-center items-center bg-white/50 rounded-lg">
             <CircleSpinner size={36} className="text-blue-600" />
           </div>
-        )}
+        */}
 
         <div className="space-y-1 p-6">
           <div>
@@ -157,7 +154,7 @@ function NoteModal({
               placeholder="Title"
               className="border-0 text-gray-900 text-2xl rounded-lg outline-0 block w-full py-3"
               onChange={onChangeHandler}
-              disabled={isLoading || noteDetails?.isTrash}
+              disabled={isLoading || selectedNote?.isTrash}
             />
           </div>
           <div>
@@ -168,7 +165,7 @@ function NoteModal({
               rows={8}
               className="border-0 max-h-92 text-gray-900 text-xl rounded-lg outline-0 block w-full py-3"
               onChange={onChangeHandler}
-              disabled={isLoading || noteDetails?.isTrash}
+              disabled={isLoading || selectedNote?.isTrash}
             />
           </div>
 
@@ -190,7 +187,7 @@ function NoteModal({
 
         <div className="rounded-b-lg">
           <div className="flex gap-2 items-center justify-between px-6 py-4 border-t border-t-slate-800/10">
-            {noteDetails?.isTrash && (
+            {selectedNote?.isTrash && (
               <div className="flex-none flex items-center  gap-2">
                 <div className="flex-none">
                   <button
@@ -217,7 +214,7 @@ function NoteModal({
               </div>
             )}
 
-            {!noteDetails?.isTrash && (
+            {!selectedNote?.isTrash && (
               <>
                 <div className="flex gap-3 items-center">
                   <div className="flex-none">

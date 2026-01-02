@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { notesAPI } from "../api/endpoints/notes.api";
 import type {
+  Note,
   NoteFilterState,
   NotesResponse,
   NoteType,
@@ -36,7 +37,7 @@ export const useNotes = ({
   const [localSearch, setLocalSearch] = useState(filterState.search);
   const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
   const [isOpenTagModal, setIsOpenTagModal] = useState<boolean>(false);
-  const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
 
   const debouncedSearch = useDebounce(localSearch, 500);
 
@@ -49,14 +50,14 @@ export const useNotes = ({
     }
   }, [debouncedSearch, filterState.search]);
 
-  const openNoteModal = (noteId?: string | null) => {
-    setSelectedNoteId(noteId || null);
+  const openNoteModal = (note?: Note | null) => {
+    setSelectedNote(note || null);
     setIsOpenNoteModal(true);
   };
 
   const closeNoteModal = () => {
     setIsOpenNoteModal(false);
-    setSelectedNoteId(null);
+    setSelectedNote(null);
   };
 
   const openTagModal = () => {
@@ -128,12 +129,6 @@ export const useNotes = ({
     // staleTime: 1000 * 60 * 5,
   });
 
-  const { data: noteDetails, isLoading: isLoadingNoteDetails } = useQuery({
-    queryKey: ["get_note_by_id", selectedNoteId],
-    queryFn: () => notesAPI.getNoteById(selectedNoteId as string),
-    enabled: enabled && !!selectedNoteId,
-  });
-
   const {
     data: tags,
     isLoading: isLoadingTagsList,
@@ -167,9 +162,9 @@ export const useNotes = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
       queryClient.invalidateQueries({ queryKey: ["get_tags"] });
-      queryClient.invalidateQueries({
-        queryKey: ["get_note_by_id", selectedNoteId],
-      });
+      // queryClient.invalidateQueries({
+      //   queryKey: ["get_note_by_id", selectedNoteId],
+      // });
     },
     onSettled: () => {
       closeNoteModal();
@@ -210,14 +205,12 @@ export const useNotes = ({
     notes,
     tags,
     isLoadingTags: isLoadingTagsList || isFetchingTags,
-    noteDetails,
-    isLoadingNoteDetails,
     isOpenNoteModal,
     openNoteModal,
     closeNoteModal,
     createNoteMutation,
     updateNoteMutation,
-    selectedNoteId,
+    selectedNote,
     handleSearchChange,
     handleTagSelect,
     filterState,
