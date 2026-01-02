@@ -74,6 +74,7 @@ function NoteModal({
   const submitNewNote = () => {
     if (isValid) {
       createNoteMutation.mutate(payload);
+      setNewNote(initialState);
     }
   };
 
@@ -83,6 +84,7 @@ function NoteModal({
         id: noteDetails?._id as string,
         payload: { ...payload, isArchived: false },
       });
+      setNewNote(initialState);
     }
   };
 
