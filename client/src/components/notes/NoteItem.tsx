@@ -14,13 +14,23 @@ function NoteItem({
   onEdit,
   searchTest,
   isDeleting,
+  isArchiving,
   onDeleteNote,
+  toggleArchive,
 }: {
   note: Note;
   onEdit: (note: Note) => void;
   searchTest: string;
   isDeleting: boolean;
+  isArchiving: boolean;
   onDeleteNote: (id: string) => void;
+  toggleArchive: ({
+    id,
+    type,
+  }: {
+    id: string;
+    type: "archive" | "unarchive";
+  }) => void;
 }) {
   const currentSearch = searchTest;
   const {
@@ -103,20 +113,31 @@ function NoteItem({
               {!isTrash && (
                 <div className="flex-none">
                   <button
-                    onClick={() => {}}
+                    onClick={() =>
+                      toggleArchive({
+                        id: _id,
+                        type: isArchived ? "unarchive" : "archive",
+                      })
+                    }
                     disabled={false}
                     className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900 `}
                   >
-                    {isArchived ? (
-                      <ArchiveRestore size={20} />
+                    {isArchiving ? (
+                      <CircleSpinner size={20} className="text-slate-400" />
                     ) : (
-                      <Archive size={20} />
+                      <>
+                        {isArchived ? (
+                          <ArchiveRestore size={20} />
+                        ) : (
+                          <Archive size={20} />
+                        )}
+                        <Tooltip
+                          content={isArchived ? "Unarchive" : "Archive"}
+                          position="top"
+                        />
+                      </>
                     )}
-                    <Tooltip
-                      content={isArchived ? "Unarchive" : "Archive"}
-                      position="top"
-                    />
                   </button>
                 </div>
               )}

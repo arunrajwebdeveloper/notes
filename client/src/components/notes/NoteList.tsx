@@ -14,6 +14,8 @@ export interface BaseProps {
   onEdit: (note: Note) => void;
   filterState: NoteFilterState;
   deleteNoteMutation: UseMutationResult<any, unknown, { id: string }>;
+  archiveNoteMutation: UseMutationResult<any, unknown, { id: string }>;
+  unarchiveNoteMutation: UseMutationResult<any, unknown, { id: string }>;
 }
 export interface InfiniteMatchListProps extends BaseProps {
   data: InfiniteData<NotesResponse, number> | undefined;
@@ -34,6 +36,8 @@ function NoteList({
   onEdit,
   filterState,
   deleteNoteMutation,
+  archiveNoteMutation,
+  unarchiveNoteMutation,
 }: InfiniteMatchListProps) {
   // Intersection Observer Hook
   const { ref, inView } = useInView();
@@ -73,6 +77,20 @@ function NoteList({
           },
         }
       );
+    }
+  };
+
+  const toggleArchive = ({
+    id,
+    type,
+  }: {
+    id: string;
+    type: "archive" | "unarchive";
+  }) => {
+    if (type === "archive") {
+      archiveNoteMutation.mutate({ id });
+    } else {
+      unarchiveNoteMutation.mutate({ id });
     }
   };
 
@@ -130,7 +148,12 @@ function NoteList({
                   onEdit={onEdit}
                   searchTest={filterState?.search}
                   isDeleting={deleteNoteMutation.isPending}
+                  isArchiving={
+                    archiveNoteMutation.isPending ||
+                    unarchiveNoteMutation.isPending
+                  }
                   onDeleteNote={onDeleteNote}
+                  toggleArchive={toggleArchive}
                 />
               );
             })

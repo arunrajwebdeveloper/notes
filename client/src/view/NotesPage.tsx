@@ -31,6 +31,8 @@ function NotesPage() {
     createTagMutation,
     updateTagMutation,
     deleteTagMutation,
+    archiveNoteMutation,
+    unarchiveNoteMutation,
   } = useNotes({
     enabled: true,
   });
@@ -59,7 +61,7 @@ function NotesPage() {
 
       <div
         className="w-full flex-1 overflow-y-auto px-4 sm:px-6 md:px-10 transition duration-300 
-      [&::-webkit-scrollbar]:w-2
+      [&::-webkit-scrollbar]:w-1
     [&::-webkit-scrollbar-track]:bg-gray-100
     [&::-webkit-scrollbar-thumb]:bg-gray-400
     dark:[&::-webkit-scrollbar-track]:bg-neutral-400
@@ -82,6 +84,8 @@ function NotesPage() {
           onEdit={(note) => openNoteModal(note)}
           filterState={filterState}
           deleteNoteMutation={deleteNoteMutation}
+          archiveNoteMutation={archiveNoteMutation}
+          unarchiveNoteMutation={unarchiveNoteMutation}
         />
       </div>
       {/* NOTE MODAL */}

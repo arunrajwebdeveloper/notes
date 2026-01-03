@@ -206,6 +206,20 @@ export const useNotes = ({
     },
   });
 
+  const archiveNoteMutation = useMutation({
+    mutationFn: notesAPI.archiveNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+    },
+  });
+
+  const unarchiveNoteMutation = useMutation({
+    mutationFn: notesAPI.unarchiveNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+    },
+  });
+
   return {
     notes,
     tags,
@@ -228,5 +242,7 @@ export const useNotes = ({
     createTagMutation,
     updateTagMutation,
     deleteTagMutation,
+    archiveNoteMutation,
+    unarchiveNoteMutation,
   };
 };

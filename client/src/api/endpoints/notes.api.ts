@@ -36,7 +36,6 @@ export const notesAPI = {
     return response.data.result;
   },
   createTag: async (payload: any) => {
-    console.log("payload :>> ", payload);
     const response = await apiClient.post("/tags", payload);
     return response.data.result;
   },
@@ -46,6 +45,14 @@ export const notesAPI = {
   },
   deleteTag: async ({ id }: { id: string }) => {
     const response = await apiClient.delete(`/tags/${id}`);
+    return response.data.result;
+  },
+  archiveNote: async ({ id }: { id: string }) => {
+    const response = await apiClient.post(`/notes/${id}/archive`);
+    return response.data.result;
+  },
+  unarchiveNote: async ({ id }: { id: string }) => {
+    const response = await apiClient.post(`/notes/${id}/unarchive`);
     return response.data.result;
   },
 };
