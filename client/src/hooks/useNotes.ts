@@ -206,6 +206,28 @@ export const useNotes = ({
     },
   });
 
+  const restoreNoteMutation = useMutation({
+    mutationFn: notesAPI.restoreNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
+      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
+    },
+  });
+
+  const deleteNoteFromTrashMutation = useMutation({
+    mutationFn: notesAPI.deleteNoteFromTrash,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
+    },
+  });
+
+  const emptyTrashMutation = useMutation({
+    mutationFn: notesAPI.emptyTrash,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
+    },
+  });
+
   const archiveNoteMutation = useMutation({
     mutationFn: notesAPI.archiveNote,
     onSuccess: () => {
@@ -244,5 +266,8 @@ export const useNotes = ({
     deleteTagMutation,
     archiveNoteMutation,
     unarchiveNoteMutation,
+    restoreNoteMutation,
+    deleteNoteFromTrashMutation,
+    emptyTrashMutation,
   };
 };

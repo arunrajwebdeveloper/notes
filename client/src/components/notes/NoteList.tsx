@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer"; // Used for scroll detection
 import { Trash2 } from "lucide-react";
 import ConfirmModal from "../modal/ConfirmModal";
+import CircleSpinner from "../common/CircleSpinner";
 
 export interface BaseProps {
   onEdit: (note: Note) => void;
@@ -16,6 +17,9 @@ export interface BaseProps {
   deleteNoteMutation: UseMutationResult<any, unknown, { id: string }>;
   archiveNoteMutation: UseMutationResult<any, unknown, { id: string }>;
   unarchiveNoteMutation: UseMutationResult<any, unknown, { id: string }>;
+  restoreNoteMutation: UseMutationResult<any, unknown, { id: string }>;
+  deleteNoteFromTrashMutation: UseMutationResult<any, unknown, { id: string }>;
+  emptyTrashMutation: UseMutationResult<any, unknown, void>;
 }
 export interface InfiniteMatchListProps extends BaseProps {
   data: InfiniteData<NotesResponse, number> | undefined;
@@ -38,6 +42,9 @@ function NoteList({
   deleteNoteMutation,
   archiveNoteMutation,
   unarchiveNoteMutation,
+  restoreNoteMutation,
+  deleteNoteFromTrashMutation,
+  emptyTrashMutation,
 }: InfiniteMatchListProps) {
   // Intersection Observer Hook
   const { ref, inView } = useInView();
@@ -94,6 +101,18 @@ function NoteList({
     }
   };
 
+  const restoreNote = (id: string) => {
+    restoreNoteMutation.mutate({ id });
+  };
+
+  const deleteTrashNote = (id: string) => {
+    deleteNoteFromTrashMutation.mutate({ id });
+  };
+
+  const emptyTrash = () => {
+    emptyTrashMutation.mutate();
+  };
+
   // Flatten the array of pages into a single array of notes
   const allNotes: Note[] =
     data?.pages?.flatMap((page: any) => page.result) || [];
@@ -118,8 +137,15 @@ function NoteList({
       <div className="flex items-center justify-between gap-4">
         <h1 className="font-medium text-4xl xl:text-5xl m-0">{pageTitle}</h1>
         {filterState?.noteType === "trash" && allNotes.length !== 0 && (
-          <button className="flex items-center gap-3 text-blue-500 bg-blue-50 h-10 cursor-pointer px-4 rounded-lg text-sm">
-            <Trash2 size={20} />
+          <button
+            onClick={() => emptyTrash()}
+            className="flex items-center gap-3 text-blue-500 bg-blue-50 h-10 cursor-pointer px-4 rounded-lg text-sm"
+          >
+            {emptyTrashMutation.isPending ? (
+              <CircleSpinner size={20} className="text-blue-500" />
+            ) : (
+              <Trash2 size={20} />
+            )}
             <span>Empty Trash</span>
           </button>
         )}
@@ -152,8 +178,12 @@ function NoteList({
                     archiveNoteMutation.isPending ||
                     unarchiveNoteMutation.isPending
                   }
+                  isRestoring={restoreNoteMutation.isPending}
+                  isTrashNoteDeleting={deleteNoteFromTrashMutation.isPending}
                   onDeleteNote={onDeleteNote}
                   toggleArchive={toggleArchive}
+                  restoreNote={restoreNote}
+                  deleteTrashNote={deleteTrashNote}
                 />
               );
             })

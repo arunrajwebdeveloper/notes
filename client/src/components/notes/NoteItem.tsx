@@ -15,15 +15,23 @@ function NoteItem({
   searchTest,
   isDeleting,
   isArchiving,
+  isRestoring,
+  isTrashNoteDeleting,
   onDeleteNote,
   toggleArchive,
+  restoreNote,
+  deleteTrashNote,
 }: {
   note: Note;
   onEdit: (note: Note) => void;
   searchTest: string;
   isDeleting: boolean;
   isArchiving: boolean;
+  isRestoring: boolean;
+  isTrashNoteDeleting: boolean;
   onDeleteNote: (id: string) => void;
+  restoreNote: (id: string) => void;
+  deleteTrashNote: (id: string) => void;
   toggleArchive: ({
     id,
     type,
@@ -119,7 +127,7 @@ function NoteItem({
                         type: isArchived ? "unarchive" : "archive",
                       })
                     }
-                    disabled={false}
+                    disabled={isArchiving}
                     className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900 `}
                   >
@@ -146,8 +154,8 @@ function NoteItem({
                 <>
                   <div className="flex-none">
                     <button
-                      onClick={() => {}}
-                      disabled={false}
+                      onClick={() => restoreNote(_id)}
+                      disabled={isRestoring}
                       className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900 `}
                     >
@@ -157,8 +165,8 @@ function NoteItem({
                   </div>
                   <div className="flex-none">
                     <button
-                      onClick={() => {}}
-                      disabled={false}
+                      onClick={() => deleteTrashNote(_id)}
+                      disabled={isTrashNoteDeleting}
                       className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900 `}
                     >

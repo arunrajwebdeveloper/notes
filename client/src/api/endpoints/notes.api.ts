@@ -47,6 +47,18 @@ export const notesAPI = {
     const response = await apiClient.delete(`/tags/${id}`);
     return response.data.result;
   },
+  restoreNote: async ({ id }: { id: string }) => {
+    const response = await apiClient.post(`/notes/${id}/restore`);
+    return response.data.result;
+  },
+  deleteNoteFromTrash: async ({ id }: { id: string }) => {
+    const response = await apiClient.delete(`/notes/trash/${id}`);
+    return response.data.result;
+  },
+  emptyTrash: async () => {
+    const response = await apiClient.delete("/notes/empty-trash");
+    return response.data.result;
+  },
   archiveNote: async ({ id }: { id: string }) => {
     const response = await apiClient.post(`/notes/${id}/archive`);
     return response.data.result;
