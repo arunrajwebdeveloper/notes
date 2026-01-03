@@ -40,7 +40,7 @@ function NoteItem({
       <div
         style={{
           backgroundColor: color,
-          border: color === "#ffffff" ? "1px solid #eee" : "0",
+          border: color === "#ffffff" ? "1px solid #e2e8f0" : "0",
         }}
         className="relative rounded-2xl flex flex-col justify-between cursor-default w-full"
       >

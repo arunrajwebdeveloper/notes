@@ -23,7 +23,9 @@ function TagRowComponent({
       style={style}
       onClick={() => handleTagSelect(tag._id)}
       className={`flex items-center justify-between gap-4 px-6 w-full cursor-pointer text-base text-black transition duration-300 ${
-        filterState?.tagId === tag?._id ? "bg-blue-200" : "hover:bg-slate-100"
+        filterState?.tagId === tag?._id
+          ? "bg-emerald-200"
+          : "hover:bg-slate-100"
       }`}
     >
       <div className="flex gap-4 items-center">
@@ -65,15 +67,15 @@ const TagsSidebar = ({
         <h2 className="text-xl text-black font-medium m-0">Tags</h2>
         <button
           onClick={openTagModal}
-          className="text-blue-600 hover:text-blue-700 text-sm transition duration-300 cursor-pointer"
+          className="text-gray-800 hover:text-gray-700 text-sm transition duration-300 cursor-pointer"
         >
           <span>Manage Tags</span>
         </button>
       </div>
 
-      {isLoadingTags && tags?.length === 0 && (
+      {isLoadingTags && (
         <div className="animate-pulse space-y-6">
-          {[...Array(14)].map((_, index) => (
+          {[...Array(18)].map((_, index) => (
             <div
               key={`initial-tags-skel-${index}`}
               className="px-6 flex gap-4 justify-between items-center rounded-sm h-6 w-full"
@@ -95,7 +97,7 @@ const TagsSidebar = ({
                 filterState?.noteType === "active" &&
                 !filterState?.search &&
                 !filterState?.tagId
-                  ? "bg-blue-200"
+                  ? "bg-emerald-200"
                   : "hover:bg-slate-100"
               }`}
             >
