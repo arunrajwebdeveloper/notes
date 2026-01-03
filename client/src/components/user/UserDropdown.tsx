@@ -35,7 +35,7 @@ function UserDropdown({ user }: { user: User | null }) {
     <div className="relative select-none" ref={menuRef}>
       <button
         onClick={() => setIsShow((prev) => !prev)}
-        className={`flex items-center gap-4 text-left cursor-pointer w-10 h-10 md:w-12 md:h-12 border-3 rounded-full transition duration-300 ${
+        className={`flex items-center gap-4 text-left cursor-pointer w-10 h-10 md:w-12 md:h-12 border-3 relative z-60 rounded-full transition duration-300 ${
           isShow ? "border-slate-300" : "border-white"
         }`}
       >
@@ -63,18 +63,18 @@ function UserDropdown({ user }: { user: User | null }) {
       {/* User dropdown */}
 
       {isShow && (
-        <div className="absolute w-50 top-14 right-0 bg-white shadow-sm border border-slate-100 rounded-lg z-50">
-          <div className="px-4 py-2 leading-1">
-            <span className="text-sm text-black mb-0 block whitespace-nowrap overflow-hidden text-ellipsis max-w-full">{`${
+        <div className="absolute w-80 -top-2 -right-2 bg-white shadow-sm border border-slate-100 rounded-2xl rounded-tr-3xl z-50">
+          <div className="px-8 py-4 leading-1">
+            <span className="text-2xl text-black mb-0 block whitespace-nowrap overflow-hidden text-ellipsis max-w-full">{`${
               user?.firstName
             } ${user?.lastName || ""}`}</span>
-            <span className="text-xs text-slate-600 m-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-full block">
+            <span className="text-lg text-slate-600 m-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-full block">
               {user?.email}
             </span>
           </div>
           <div className="space-y-1 py-2 mt-1 border-t border-t-slate-200">
-            <button className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100">
-              <Settings2 size={18} />
+            <button className="flex w-full text-lg text-slate-700 h-16 cursor-pointer items-center gap-3 px-6 hover:bg-slate-100">
+              <Settings2 size={20} />
               <span>Settings</span>
             </button>
             {/* <button className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100">
@@ -84,9 +84,9 @@ function UserDropdown({ user }: { user: User | null }) {
             </button> */}
             <button
               onClick={logoutUser}
-              className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100"
+              className="flex w-full text-lg text-slate-700 h-16 cursor-pointer items-center gap-3 px-6 hover:bg-slate-100"
             >
-              <LogOut size={18} />
+              <LogOut size={20} />
               <span>Logout</span>
             </button>
           </div>
