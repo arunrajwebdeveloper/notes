@@ -143,7 +143,7 @@ export const useNotes = ({
     mutationFn: notesAPI.createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
-      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
+      // queryClient.invalidateQueries({ queryKey: ["get_tags"] });
     },
     onError: (error: any) => {
       console.error(
@@ -161,7 +161,7 @@ export const useNotes = ({
       notesAPI.updateNote(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
-      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
+      // queryClient.invalidateQueries({ queryKey: ["get_tags"] });
     },
     onSettled: () => {
       closeNoteModal();
@@ -172,7 +172,7 @@ export const useNotes = ({
     mutationFn: notesAPI.deleteNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
-      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
+      // queryClient.invalidateQueries({ queryKey: ["get_tags"] });
     },
   });
 
@@ -210,7 +210,7 @@ export const useNotes = ({
     mutationFn: notesAPI.restoreNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] });
-      queryClient.invalidateQueries({ queryKey: ["get_tags"] });
+      // queryClient.invalidateQueries({ queryKey: ["get_tags"] });
     },
   });
 

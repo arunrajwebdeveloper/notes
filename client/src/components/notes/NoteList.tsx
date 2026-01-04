@@ -51,9 +51,11 @@ function NoteList({
   const [isOpenConfirm, setIsOpenConfirm] = useState<{
     isOpen: boolean;
     id: string | null;
+    action: "note" | "trash" | null;
   }>({
     isOpen: false,
     id: null,
+    action: null,
   });
 
   // Auto-fetch logic
@@ -68,6 +70,7 @@ function NoteList({
     setIsOpenConfirm({
       isOpen: true,
       id,
+      action: "note",
     });
   };
 
@@ -80,6 +83,7 @@ function NoteList({
             setIsOpenConfirm({
               isOpen: false,
               id: null,
+              action: null,
             });
           },
         }
@@ -110,7 +114,15 @@ function NoteList({
   };
 
   const emptyTrash = () => {
-    emptyTrashMutation.mutate();
+    emptyTrashMutation.mutate(undefined, {
+      onSettled: () => {
+        setIsOpenConfirm({
+          isOpen: false,
+          id: null,
+          action: null,
+        });
+      },
+    });
   };
 
   // Flatten the array of pages into a single array of notes
@@ -138,7 +150,13 @@ function NoteList({
         <h1 className="font-medium text-4xl xl:text-5xl m-0">{pageTitle}</h1>
         {filterState?.noteType === "trash" && allNotes.length !== 0 && (
           <button
-            onClick={() => emptyTrash()}
+            onClick={() =>
+              setIsOpenConfirm({
+                isOpen: true,
+                id: null,
+                action: "trash",
+              })
+            }
             className="flex items-center gap-3 text-blue-500 bg-blue-50 h-10 cursor-pointer px-4 rounded-lg text-sm"
           >
             {emptyTrashMutation.isPending ? (
@@ -216,7 +234,7 @@ function NoteList({
       {/* Confirm Delete */}
 
       <ConfirmModal
-        isShow={isOpenConfirm?.isOpen}
+        isShow={isOpenConfirm?.isOpen && isOpenConfirm?.action === "note"}
         isLoading={deleteNoteMutation.isPending}
         title="Delete confirm?"
         description="Are you sure you want to delete this note?"
@@ -224,10 +242,30 @@ function NoteList({
           setIsOpenConfirm({
             isOpen: false,
             id: null,
+            action: null,
           })
         }
         onConfirm={() => {
           handleDelete(isOpenConfirm?.id);
+        }}
+      />
+
+      {/* Confirm empty trash */}
+
+      <ConfirmModal
+        isShow={isOpenConfirm?.isOpen && isOpenConfirm?.action === "trash"}
+        isLoading={deleteNoteMutation.isPending}
+        title="Empty trash confirm?"
+        description="Are you sure you want to empty trash?"
+        onClose={() =>
+          setIsOpenConfirm({
+            isOpen: false,
+            id: null,
+            action: null,
+          })
+        }
+        onConfirm={() => {
+          emptyTrash();
         }}
       />
     </div>
