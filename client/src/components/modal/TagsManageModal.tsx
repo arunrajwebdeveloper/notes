@@ -146,7 +146,7 @@ function TagsManageModal({
                 tags.map((t) => (
                   <div
                     key={t._id}
-                    className="flex justify-between items-center gap-4 py-2 ps-6 pe-3 group"
+                    className="flex justify-between items-center gap-4 py-2 ps-6 pe-3 group transition duration-300 hover:bg-slate-100"
                   >
                     {editingId === t._id ? (
                       <div className="flex-1">
