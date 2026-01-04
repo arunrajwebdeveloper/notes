@@ -85,7 +85,12 @@ function NoteItem({
           {tags?.length !== 0 && (
             <div className="flex gap-1 flex-wrap">
               {tags?.map(({ _id, name }) => (
-                <TagChip key={_id} name={name} onRemoveLabel={() => {}} />
+                <TagChip
+                  key={_id}
+                  name={name}
+                  onRemoveLabel={() => {}}
+                  isTrash={isTrash}
+                />
               ))}
             </div>
           )}

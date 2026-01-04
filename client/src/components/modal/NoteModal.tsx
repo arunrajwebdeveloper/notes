@@ -79,9 +79,18 @@ function NoteModal({
 
   const submitUpdatedNote = () => {
     if (isChanged && isValid) {
+      const { title, description, color, isPinned, tags } = payload;
+
       updateNoteMutation.mutate({
         id: selectedNote?._id as string,
-        payload: { ...payload, isArchived: false },
+        payload: {
+          title,
+          description,
+          color,
+          isPinned,
+          tags,
+          isArchived: false,
+        },
       });
       setNewNote(initialState);
     }
