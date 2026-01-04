@@ -6,6 +6,7 @@ import { Modal } from "../common/Modal";
 import type { UseMutationResult } from "@tanstack/react-query";
 import CircleSpinner from "../common/CircleSpinner";
 import ConfirmModal from "./ConfirmModal";
+import { useDelete } from "../../hooks/useDelete";
 
 interface TagsManageModalProps {
   isShow: boolean;
@@ -36,13 +37,8 @@ function TagsManageModal({
   const [editingValue, setEditingValue] = useState<string>("");
   const [originalValue, setOriginalValue] = useState<string>("");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [isOpenConfirm, setIsOpenConfirm] = useState<{
-    isOpen: boolean;
-    id: string | null;
-  }>({
-    isOpen: false,
-    id: null,
-  });
+
+  const { deleteInfo, onDelete, resetDeleteInfo } = useDelete();
 
   /** Focus input when editing starts */
   useEffect(() => {
@@ -101,10 +97,7 @@ function TagsManageModal({
         { id },
         {
           onSettled: () => {
-            setIsOpenConfirm({
-              isOpen: false,
-              id: null,
-            });
+            resetDeleteInfo();
           },
         }
       );
@@ -217,19 +210,19 @@ function TagsManageModal({
                       ) : (
                         <button
                           onClick={() =>
-                            setIsOpenConfirm({
-                              isOpen: true,
+                            onDelete({
                               id: t._id,
+                              action: "tag",
                             })
                           }
                           className="cursor-pointer text-gray-600"
                           disabled={
                             deleteTagMutation.isPending &&
-                            isOpenConfirm?.id === t._id
+                            deleteInfo?.id === t._id
                           }
                         >
                           {deleteTagMutation.isPending &&
-                          isOpenConfirm?.id === t._id ? (
+                          deleteInfo?.id === t._id ? (
                             <CircleSpinner size={18} />
                           ) : (
                             <Trash2 size={20} />
@@ -290,18 +283,13 @@ function TagsManageModal({
       {/* Confirm */}
 
       <ConfirmModal
-        isShow={isOpenConfirm?.isOpen}
+        isShow={deleteInfo?.isOpen && deleteInfo.action === "tag"}
         isLoading={deleteTagMutation.isPending}
         title="Delete confirm?"
         description="Are you sure you want to delete this tag?"
-        onClose={() =>
-          setIsOpenConfirm({
-            isOpen: false,
-            id: null,
-          })
-        }
+        onClose={() => resetDeleteInfo()}
         onConfirm={() => {
-          handleDelete(isOpenConfirm?.id);
+          handleDelete(deleteInfo?.id);
         }}
       />
     </>

@@ -5,11 +5,12 @@ import type {
   NotesResponse,
 } from "../../types/note.types";
 import NoteItem from "./NoteItem";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer"; // Used for scroll detection
 import { Trash2 } from "lucide-react";
 import ConfirmModal from "../modal/ConfirmModal";
 import CircleSpinner from "../common/CircleSpinner";
+import { useDelete } from "../../hooks/useDelete";
 
 export interface BaseProps {
   onEdit: (note: Note) => void;
@@ -48,15 +49,8 @@ function NoteList({
 }: InfiniteMatchListProps) {
   // Intersection Observer Hook
   const { ref, inView } = useInView();
-  const [isOpenConfirm, setIsOpenConfirm] = useState<{
-    isOpen: boolean;
-    id: string | null;
-    action: "note" | "trash" | null;
-  }>({
-    isOpen: false,
-    id: null,
-    action: null,
-  });
+
+  const { deleteInfo, onDelete, resetDeleteInfo } = useDelete();
 
   // Auto-fetch logic
   useEffect(() => {
@@ -67,8 +61,7 @@ function NoteList({
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const onDeleteNote = (id: string) => {
-    setIsOpenConfirm({
-      isOpen: true,
+    onDelete({
       id,
       action: "note",
     });
@@ -80,11 +73,7 @@ function NoteList({
         { id },
         {
           onSettled: () => {
-            setIsOpenConfirm({
-              isOpen: false,
-              id: null,
-              action: null,
-            });
+            resetDeleteInfo();
           },
         }
       );
@@ -116,11 +105,7 @@ function NoteList({
   const emptyTrash = () => {
     emptyTrashMutation.mutate(undefined, {
       onSettled: () => {
-        setIsOpenConfirm({
-          isOpen: false,
-          id: null,
-          action: null,
-        });
+        resetDeleteInfo();
       },
     });
   };
@@ -151,8 +136,7 @@ function NoteList({
         {filterState?.noteType === "trash" && allNotes.length !== 0 && (
           <button
             onClick={() =>
-              setIsOpenConfirm({
-                isOpen: true,
+              onDelete({
                 id: null,
                 action: "trash",
               })
@@ -234,36 +218,24 @@ function NoteList({
       {/* Confirm Delete */}
 
       <ConfirmModal
-        isShow={isOpenConfirm?.isOpen && isOpenConfirm?.action === "note"}
+        isShow={deleteInfo?.isOpen && deleteInfo?.action === "note"}
         isLoading={deleteNoteMutation.isPending}
         title="Delete confirm?"
         description="Are you sure you want to delete this note?"
-        onClose={() =>
-          setIsOpenConfirm({
-            isOpen: false,
-            id: null,
-            action: null,
-          })
-        }
+        onClose={() => resetDeleteInfo()}
         onConfirm={() => {
-          handleDelete(isOpenConfirm?.id);
+          handleDelete(deleteInfo?.id);
         }}
       />
 
       {/* Confirm empty trash */}
 
       <ConfirmModal
-        isShow={isOpenConfirm?.isOpen && isOpenConfirm?.action === "trash"}
+        isShow={deleteInfo?.isOpen && deleteInfo?.action === "trash"}
         isLoading={deleteNoteMutation.isPending}
         title="Empty trash confirm?"
         description="Are you sure you want to empty trash?"
-        onClose={() =>
-          setIsOpenConfirm({
-            isOpen: false,
-            id: null,
-            action: null,
-          })
-        }
+        onClose={() => resetDeleteInfo()}
         onConfirm={() => {
           emptyTrash();
         }}
