@@ -81,7 +81,7 @@ const TagsSidebar = ({
               className="px-6 flex gap-4 justify-between items-center rounded-sm h-6 w-full"
             >
               <span className="h-7 bg-slate-200 flex-1 rounded-full"></span>
-              <span className="h-7 w-7 bg-slate-200 rounded-full"></span>
+              {/* <span className="h-7 w-7 bg-slate-200 rounded-full"></span> */}
             </div>
           ))}
         </div>
