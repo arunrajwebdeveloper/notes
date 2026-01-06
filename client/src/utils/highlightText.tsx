@@ -1,5 +1,5 @@
 export const highlightText = (text: string, search: string) => {
-  if (!search || !text) {
+  if (!search) {
     return text;
   }
 
