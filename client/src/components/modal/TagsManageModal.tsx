@@ -132,7 +132,7 @@ function TagsManageModal({
           </span>
         </Modal.Header>
 
-        <Modal.Body className="relative border-t border-t-slate-300">
+        <Modal.Body className="relative border-t border-t-slate-200">
           <div className="flex flex-col justify-between h-full max-h-[500px]">
             <div
               className="py-4 h-[calc(100%-48px)] overflow-y-auto flex flex-col transition duration-300
@@ -240,7 +240,7 @@ function TagsManageModal({
             </div>
 
             {/* Create new tag */}
-            <div className="h-12 ps-6 pe-3 flex flex-none gap-3 justify-between items-center border-t border-t-slate-300">
+            <div className="h-12 ps-6 pe-3 flex flex-none gap-3 justify-between items-center border-t border-t-slate-200">
               <div className="flex-1">
                 <input
                   ref={newTagRef}
