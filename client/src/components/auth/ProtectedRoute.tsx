@@ -5,13 +5,13 @@ import type { RootState } from "../../store/store";
 
 interface ProtectedRouteProps {
   children?: React.ReactNode;
-  requiredRole?: string;
+  // requiredRole?: string;
 }
 
 export const ProtectedRoute = ({
   children,
-  requiredRole,
-}: ProtectedRouteProps) => {
+}: // requiredRole,
+ProtectedRouteProps) => {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth
   );
@@ -21,9 +21,9 @@ export const ProtectedRoute = ({
   }
 
   // Role-based access control
-  if (requiredRole && user?.role !== requiredRole) {
-    return <Navigate to="/unauthorized" replace />;
-  }
+  // if (requiredRole && user?.role !== requiredRole) {
+  //   return <Navigate to="/unauthorized" replace />;
+  // }
 
   return children ? <>{children}</> : <Outlet />;
 };

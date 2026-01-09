@@ -6,9 +6,9 @@ import { useMutation } from "@tanstack/react-query";
 import apiClient from "../api/axios.config";
 
 const ProfilePage = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [name, setName] = useState(user?.name || "");
+  const [name, setName] = useState(user?.firstName || "");
   const [email, setEmail] = useState(user?.email || "");
 
   const updateProfileMutation = useMutation({
@@ -41,12 +41,6 @@ const ProfilePage = () => {
               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
             >
               Back to Dashboard
-            </button>
-            <button
-              onClick={logout}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-            >
-              Logout
             </button>
           </div>
         </div>
@@ -84,7 +78,7 @@ const ProfilePage = () => {
               />
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium mb-2">Role</label>
               <input
                 type="text"
@@ -92,7 +86,7 @@ const ProfilePage = () => {
                 disabled
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
               />
-            </div>
+            </div> */}
 
             <button
               type="submit"

@@ -6,6 +6,7 @@ interface ModalProps {
   show: boolean;
   onHide: () => void;
   children: ReactNode;
+  className?: string;
 }
 
 interface ModalHeaderProps {
@@ -35,7 +36,7 @@ interface ButtonProps {
   [key: string]: any; // For additional props
 }
 
-const Modal = ({ show, onHide, children }: ModalProps) => {
+const Modal = ({ show, onHide, className, children }: ModalProps) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [shouldRender, setShouldRender] = useState<boolean>(false);
 
@@ -103,7 +104,7 @@ const Modal = ({ show, onHide, children }: ModalProps) => {
       <div
         className={`bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] transform transition-all duration-500 ease-out ${
           isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-        }`}
+        } ${className}`}
       >
         {children}
       </div>

@@ -9,6 +9,7 @@ import {
 } from "../store/features/authSlice";
 import { useAppDispatch } from "./hooks";
 import { useAppSelector } from "../hooks";
+import { userAPI } from "../api/endpoints/user.api";
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
@@ -30,7 +31,7 @@ export const useAuth = () => {
               token: data.access_token,
             })
           );
-          const currentUser = await authAPI.getCurrentUser();
+          const currentUser = await userAPI.getCurrentUser();
           dispatch(
             setUserData({
               user: currentUser,
@@ -70,22 +71,10 @@ export const useAuth = () => {
   // Get current user query (optional - for refreshing user data)
   const { data: currentUser, isLoading: isLoadingUser } = useQuery({
     queryKey: ["currentUser"],
-    queryFn: authAPI.getCurrentUser,
+    queryFn: userAPI.getCurrentUser,
     enabled: isAuthenticated,
     retry: false,
   });
-
-  // Logout function
-  const logout = async () => {
-    try {
-      await authAPI.logout();
-    } catch (error) {
-      console.error("Logout failed:", error);
-    } finally {
-      dispatch(logoutAction());
-      navigate("/login");
-    }
-  };
 
   return {
     user,
@@ -94,7 +83,6 @@ export const useAuth = () => {
     loading: loading || isLoadingUser,
     login: loginMutation.mutate,
     register: registerMutation.mutate,
-    logout,
     isLoginLoading: loginMutation.isPending,
     isRegisterLoading: registerMutation.isPending,
     loginError: loginMutation.error,
