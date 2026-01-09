@@ -61,9 +61,9 @@ function TagsMenu({
           [&::-webkit-scrollbar]:w-1
         [&::-webkit-scrollbar-track]:bg-gray-100
         [&::-webkit-scrollbar-thumb]:bg-gray-400
-        dark:[&::-webkit-scrollbar-track]:bg-neutral-400
-        dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
           "
+            //dark:[&::-webkit-scrollbar-track]:bg-neutral-400
+            //dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
           >
             {sortedTagList?.length !== 0 ? (
               sortedTagList?.map(({ _id, name }) => {
