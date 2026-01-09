@@ -4,7 +4,7 @@ import { TagsController } from './tags.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Tag, TagSchema } from './schemas/tag.schema'; // Update import
 import { Note, NoteSchema } from './../notes/schemas/note.schema';
-import { NotesModule } from 'src/notes/notes.module';
+import { NotesModule } from 'notes/notes.module';
 
 @Module({
   imports: [

@@ -9,7 +9,7 @@ import { Tag, TagDocument } from './schemas/tag.schema';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { Note, NoteDocument } from './../notes/schemas/note.schema';
-import { NotesService } from 'src/notes/notes.service';
+import { NotesService } from 'notes/notes.service';
 
 @Injectable()
 export class TagsService {
