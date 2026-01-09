@@ -16,12 +16,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "ignoreDeprecations": "5.0",
-    "baseUrl": "./",
-    "paths": {
-      "*": ["src/*"]
-    }
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+    "baseUrl": "./src"
+  }
 }
