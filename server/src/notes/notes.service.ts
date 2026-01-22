@@ -65,7 +65,7 @@ export class NotesService {
 
     const skip = (page - 1) * limit;
 
-    // 1. Base Filter
+    //  Base Filter
     // This filter must contain all conditions (user ID, not trashed/archived)
     // Mongoose queries use $and for combining multiple conditions implicitly.
     const filter: any = {
@@ -83,7 +83,7 @@ export class NotesService {
       filter.isTrash = true;
     }
 
-    // 2. Apply Search Filter (by title or description)
+    //  Apply Search Filter (by title or description)
     if (search) {
       const searchRegex = new RegExp(search, 'i'); // 'i' for case-insensitive
 
@@ -96,12 +96,12 @@ export class NotesService {
       // filter.$or = [{ title: regex }, { description: regex }];
     }
 
-    // 3. Apply Tag Filter
+    //  Apply Tag Filter
     if (tagId) {
       filter['tags'] = { $in: tagId };
     }
 
-    // 4. Sorting logic remains the same
+    // Sorting logic remains the same
     const sort: Record<string, 1 | -1> = {
       // Primary Sort: Pinned notes always come first (true > false)
       isPinned: -1,
@@ -165,19 +165,19 @@ export class NotesService {
     noteId: string,
     updateNoteDto: UpdateNoteDto,
   ): Promise<Note> {
-    // // 1. Separate tags from other fields for atomic update
+    // //  Separate tags from other fields for atomic update
     // const { tags, ...otherUpdateFields } = updateNoteDto;
 
-    // // 2. Build the Mongoose update object
+    // //  Build the Mongoose update object
     // const mongoUpdate: any = { $set: {} };
 
-    // // 3. Handle other fields: Use $set for direct replacement (title, color, etc.)
+    // //  Handle other fields: Use $set for direct replacement (title, color, etc.)
     // if (Object.keys(otherUpdateFields).length > 0) {
     //   // If the DTO includes other fields, add them to $set
     //   mongoUpdate.$set = otherUpdateFields;
     // }
 
-    // // 4. Handle tags: Use $addToSet for non-duplicate addition
+    // //  Handle tags: Use $addToSet for non-duplicate addition
     // if (tags && tags.length > 0) {
     //   // Convert string IDs from DTO to Mongoose ObjectIds
     //   const objectIdTags = tags.map((id) => new Types.ObjectId(id));
@@ -187,7 +187,7 @@ export class NotesService {
     //   mongoUpdate.$addToSet = { tags: { $each: objectIdTags } };
     // }
 
-    // 5. Execute the update
+    //  Execute the update
     const updatedNote = await this.noteModel
       .findOneAndUpdate(
         { _id: noteId, userId },
@@ -335,10 +335,8 @@ export class NotesService {
       .updateMany(
         // Filter: Find all notes where the 'tags' array contains this tag ID
         { tags: objectIdTag },
-
         // Update: Pull (remove) that specific ID from the 'tags' array
         { $pull: { tags: objectIdTag } },
-
         // No need for { new: true } as we don't need the result documents
       )
       .exec();

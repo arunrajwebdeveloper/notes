@@ -21,7 +21,6 @@ export class AuthController {
   @Post('register')
   async register(@Body() registerUserDto: RegisterUserDto) {
     await this.authService.register(registerUserDto);
-    // You could return the token here, but returning a success message is cleaner.
     return { message: 'User successfully registered.' };
   }
 
@@ -32,7 +31,6 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
-    // req.user is populated by LocalStrategy's validate method
     return this.authService.login(req.user);
   }
 
@@ -43,7 +41,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
-    // req.user is populated by JwtStrategy's validate method
     return req.user;
   }
 }

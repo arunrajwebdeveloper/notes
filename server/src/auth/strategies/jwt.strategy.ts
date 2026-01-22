@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   // The payload is the decoded JWT
   async validate(payload: any) {
     return {
-      userId: payload.userId, // The MongoDB ObjectId we stored
+      userId: payload.userId,
       email: payload.email,
     };
     // This object is attached to 'req.user'
