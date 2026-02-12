@@ -1,4 +1,3 @@
-// src/api/axios.config.ts
 import axios, {
   AxiosError,
   type AxiosInstance,
@@ -32,7 +31,7 @@ apiClient.interceptors.request.use(
   },
   (error: AxiosError) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor
@@ -60,7 +59,7 @@ apiClient.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;

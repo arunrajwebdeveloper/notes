@@ -4,8 +4,8 @@ import { useAuth } from "../hooks/useAuth";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("arunrajcvkl@gmail.com");
-  const [password, setPassword] = useState("12345678");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login, isLoginLoading, loginError } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {

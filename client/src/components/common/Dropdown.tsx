@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, type ReactNode } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-// 1. Define the props interface for type safety
 interface DropdownProps {
   headerText: string;
   children: ReactNode; // 'ReactNode' covers all valid React children (JSX, string, number, array)
@@ -17,12 +16,12 @@ const Dropdown: React.FC<DropdownProps> = ({
   contentClasses = "border border-gray-300 bg-white",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // 2. Use useRef with the correct HTML element type (HTMLDivElement)
+  //  Use useRef with the correct HTML element type (HTMLDivElement)
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
 
-  // 3. Effect hook for handling clicks outside the component
+  //  Effect hook for handling clicks outside the component
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       // Check if the ref exists and if the clicked target (event.target)
@@ -45,7 +44,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   }, []); // Empty dependency array means this effect runs once on mount
 
   return (
-    // 4. Attach the ref to the top-level container element
+    //  Attach the ref to the top-level container element
     <div ref={sectionRef} className="w-full max-w-md mx-auto my-4 relative">
       {/* Toggle Button */}
       <button
