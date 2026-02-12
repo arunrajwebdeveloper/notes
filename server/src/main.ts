@@ -8,31 +8,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
-  const cors_origin = configService.get<string>('CORS_ORIGIN')!;
+  const origin = configService.get<string>('CORS_ORIGIN')!;
 
   // app.enableCors();
-  // app.enableCors({
-  //   origin: ['http://localhost:3000', origin],
-  //   credentials: true, // Allow cookies
-  // });
-
   app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true); // allow server-to-server
-      if (cors_origin.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'), false);
-      }
-    },
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'X-Requested-With',
-      'Accept',
-    ],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    origin: ['http://localhost:3000', origin],
+    credentials: true, // Allow cookies
   });
+
   app.setGlobalPrefix('api');
 
   // Global exception filter for consistent error responses
