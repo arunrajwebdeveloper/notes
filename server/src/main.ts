@@ -2,15 +2,19 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { TransformInterceptor } from './interceptors/transform.interceptor';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
-  // app.enableCors({
-  //   origin: ['http://localhost:3000'],
-  //   credentials: true, // Allow cookies
-  // });
+  const configService = app.get(ConfigService);
+  const origin = configService.get<string>('CORS_ORIGIN');
+
+  // app.enableCors();
+  app.enableCors({
+    origin: ['http://localhost:3000', origin],
+    credentials: true, // Allow cookies
+  });
   app.setGlobalPrefix('api');
 
   // Global exception filter for consistent error responses
