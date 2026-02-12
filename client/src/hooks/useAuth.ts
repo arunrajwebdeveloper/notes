@@ -16,7 +16,7 @@ export const useAuth = () => {
 
   const navigate = useNavigate();
   const { user, token, isAuthenticated, loading } = useAppSelector(
-    (state) => state.auth
+    (state) => state.auth,
   );
 
   // Login mutation - SOLUTION 1: Direct API call
@@ -29,13 +29,13 @@ export const useAuth = () => {
           dispatch(
             setAccessToken({
               token: data.access_token,
-            })
+            }),
           );
           const currentUser = await userAPI.getCurrentUser();
           dispatch(
             setUserData({
               user: currentUser,
-            })
+            }),
           );
           navigate("/notes");
         } catch (error) {
@@ -49,7 +49,7 @@ export const useAuth = () => {
     onError: (error: any) => {
       console.error(
         "Login failed:",
-        error.response?.data?.message || error.message
+        error.response?.data?.message || error.message,
       );
     },
   });
@@ -63,13 +63,13 @@ export const useAuth = () => {
     onError: (error: any) => {
       console.error(
         "Registration failed:",
-        error.response?.data?.message || error.message
+        error.response?.data?.message || error.message,
       );
     },
   });
 
   // Get current user query (optional - for refreshing user data)
-  const { data: currentUser, isLoading: isLoadingUser } = useQuery({
+  const { isLoading: isLoadingUser } = useQuery({
     queryKey: ["currentUser"],
     queryFn: userAPI.getCurrentUser,
     enabled: isAuthenticated,
