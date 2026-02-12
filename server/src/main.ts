@@ -12,7 +12,7 @@ async function bootstrap() {
 
   // app.enableCors();
   app.enableCors({
-    origin: ['http://localhost:3000', origin],
+    origin: ['http://localhost:5173', 'http://localhost:3000', origin],
     credentials: true, // Allow cookies
   });
 
