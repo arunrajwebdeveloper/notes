@@ -121,7 +121,7 @@ function NoteModal({
   };
 
   const onChangeHandler = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setNewNote((prev) => ({ ...prev, [name]: value }));
@@ -290,7 +290,7 @@ function NoteModal({
                     disabled={
                       isLoading || !isValid || (mode === "edit" && !isChanged)
                     }
-                    className="bg-green-600 hover:bg-green-700 disabled:opacity-70 disabled:cursor-default transition duration-300 text-white h-12 px-4 rounded-md cursor-pointer text-sm"
+                    className="disabled:opacity-70 disabled:hover:bg-transparent hover:bg-black/5 disabled:cursor-default transition duration-300 text-slate-900 h-12 px-4 rounded-md cursor-pointer text-sm font-normal"
                   >
                     {isLoading ? (
                       <div className="flex items-center gap-2">
@@ -300,9 +300,7 @@ function NoteModal({
                         </span>
                       </div>
                     ) : (
-                      <span>
-                        {mode === "edit" ? "Update Note" : "Create Note"}
-                      </span>
+                      <span>{mode === "edit" ? "Update" : "Create"}</span>
                     )}
                   </button>
                 </div>
