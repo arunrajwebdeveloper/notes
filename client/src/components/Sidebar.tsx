@@ -2,6 +2,7 @@ import { Archive, Plus, Trash2 } from "lucide-react";
 import type { Note, NoteFilterState, TagItem } from "../types/note.types";
 import TagsSidebar from "./TagsSidebar";
 import Tooltip from "./common/Tooltip";
+import { useSidebarContext } from "../context/SidebarContext";
 
 function Sidebar({
   tags,
@@ -22,8 +23,10 @@ function Sidebar({
   handleNoteType: (type: string) => void;
   openNoteModal: (note: Note | null) => void;
 }) {
+  const { isOpenSidebar } = useSidebarContext();
+
   return (
-    <aside className="h-dvh w-auto hidden lg:flex">
+    <aside className={`h-dvh w-auto ${isOpenSidebar ? "flex" : "hidden"}`}>
       <div className="w-[100px] h-full flex flex-col justify-between items-center py-6 border-r border-r-slate-200">
         {/* Logo */}
         <div className="flex flex-col items-center">

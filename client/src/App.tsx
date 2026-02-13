@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute, PublicRoute } from "./components/auth/ProtectedRoute";
 import OfflineModal from "./components/modal/OfflineModal";
 import CircleSpinner from "./components/common/CircleSpinner";
+import SidebarContextProvider from "./context/SidebarContext";
 
 // Lazy load pages
 const NotesPage = lazy(() => import("./view/NotesPage"));
@@ -29,51 +30,53 @@ function App() {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Suspense
-            fallback={
-              <div className="text-center h-screen w-full bg-white text-blue-600 flex justify-center items-center">
-                <CircleSpinner size={36} />
-              </div>
-            }
-          >
-            <Routes>
-              {/* Public routes */}
-              <Route
-                path="/login"
-                element={
-                  <PublicRoute>
-                    <LoginPage />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/register"
-                element={
-                  <PublicRoute>
-                    <RegisterPage />
-                  </PublicRoute>
-                }
-              />
+        <SidebarContextProvider>
+          <BrowserRouter>
+            <Suspense
+              fallback={
+                <div className="text-center h-screen w-full bg-white text-blue-600 flex justify-center items-center">
+                  <CircleSpinner size={36} />
+                </div>
+              }
+            >
+              <Routes>
+                {/* Public routes */}
+                <Route
+                  path="/login"
+                  element={
+                    <PublicRoute>
+                      <LoginPage />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <PublicRoute>
+                      <RegisterPage />
+                    </PublicRoute>
+                  }
+                />
 
-              {/* Protected routes */}
-              <Route element={<ProtectedRoute />}>
-                <Route path="/notes" element={<NotesPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-              </Route>
+                {/* Protected routes */}
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/notes" element={<NotesPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                </Route>
 
-              {/* Admin only route */}
-              {/* <Route element={<ProtectedRoute requiredRole="admin" />}>
+                {/* Admin only route */}
+                {/* <Route element={<ProtectedRoute requiredRole="admin" />}>
                 <Route path="/admin" element={<AdminPage />} />
               </Route> */}
 
-              {/* Error routes */}
-              <Route path="/unauthorized" element={<UnauthorizedPage />} />
-              <Route path="/" element={<Navigate to="/notes" replace />} />
-              <Route path="*" element={<Navigate to="/notes" replace />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
+                {/* Error routes */}
+                <Route path="/unauthorized" element={<UnauthorizedPage />} />
+                <Route path="/" element={<Navigate to="/notes" replace />} />
+                <Route path="*" element={<Navigate to="/notes" replace />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </SidebarContextProvider>
         <OfflineModal />
       </QueryClientProvider>
     </Provider>
