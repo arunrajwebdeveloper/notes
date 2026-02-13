@@ -28,7 +28,7 @@ const useTogglerContext = () => {
   const context = useContext(TogglerContext);
   if (context === undefined) {
     throw new Error(
-      "Toggler compound components must be rendered within a <Toggler>"
+      "Toggler compound components must be rendered within a <Toggler>",
     );
   }
   return context;

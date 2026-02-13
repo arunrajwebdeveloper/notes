@@ -1,5 +1,3 @@
-// src/utils/storage.ts
-
 const TOKEN_KEY = "auth_token";
 const USER_KEY = "user_data";
 
