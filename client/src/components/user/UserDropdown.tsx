@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useAppDispatch } from "../../hooks";
 import { logout } from "../../store/features/authSlice";
+import { Link } from "react-router-dom";
 
 function UserDropdown({ user }: { user: User | null }) {
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -73,10 +74,13 @@ function UserDropdown({ user }: { user: User | null }) {
             </span>
           </div>
           <div className="space-y-1 py-2 mt-1 border-t border-t-slate-200">
-            <button className="flex w-full text-lg text-slate-700 h-16 cursor-pointer items-center gap-3 px-6 hover:bg-slate-100">
+            <Link
+              to="/profile"
+              className="flex w-full text-lg text-slate-700 h-16 cursor-pointer items-center gap-3 px-6 hover:bg-slate-100"
+            >
               <Settings2 size={20} />
               <span>Settings</span>
-            </button>
+            </Link>
             {/* <button className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100">
               <LayoutGrid size={18} />
               <Rows2 />

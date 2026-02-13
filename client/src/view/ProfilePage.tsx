@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
@@ -7,11 +7,27 @@ import apiClient from "../api/axios.config";
 const ProfilePage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [name, setName] = useState(user?.firstName || "");
-  const [email, setEmail] = useState(user?.email || "");
+  const [userData, setUserData] = useState({
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+  });
+
+  const onHandleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setUserData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const updateProfileMutation = useMutation({
-    mutationFn: async (data: { name: string; email: string }) => {
+    mutationFn: async (data: {
+      firstName: string;
+      lastName: string;
+      email: string;
+    }) => {
       const response = await apiClient.put("/user/profile", data);
       return response.data;
     },
@@ -25,7 +41,7 @@ const ProfilePage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfileMutation.mutate({ name, email });
+    updateProfileMutation.mutate(userData);
   };
 
   return (
@@ -39,7 +55,7 @@ const ProfilePage = () => {
               onClick={() => navigate("/notes")}
               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
             >
-              Back to Dashboard
+              Back to Notes
             </button>
           </div>
         </div>
@@ -52,14 +68,34 @@ const ProfilePage = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-2">
-                Name
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium mb-2"
+              >
+                First Name
               </label>
               <input
-                id="name"
+                id="firstName"
+                name="firstName"
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={userData.firstName}
+                onChange={onHandleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium mb-2"
+              >
+                Last Name
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                value={userData.lastName}
+                onChange={onHandleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -70,9 +106,10 @@ const ProfilePage = () => {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={userData.email}
+                onChange={onHandleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
