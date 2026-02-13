@@ -9,10 +9,9 @@ import type { ReactNode, RefObject } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react"; // Icons for the toggle switch
 
 // ====================================================================
-// 1. CONTEXT SETUP
+// CONTEXT SETUP
 // ====================================================================
 
-// Define the shape of the context state
 interface TogglerContextType {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,12 +34,12 @@ const useTogglerContext = () => {
 };
 
 // ====================================================================
-// 2. CHILD COMPONENTS (Toggler.Toggle and Toggler.Menu)
+// CHILD COMPONENTS (Toggler.Toggle and Toggler.Menu)
 // ====================================================================
 
 interface ToggleProps {
   children: ReactNode;
-  className?: string; // Tailwind classes for the button appearance
+  className?: string;
 }
 
 // Toggler.Toggle: The switch/button content
@@ -95,12 +94,12 @@ const Menu: React.FC<MenuProps> = ({
 };
 
 // ====================================================================
-// 3. MAIN COMPONENT (Toggler)
+// MAIN COMPONENT (Toggler)
 // ====================================================================
 
 interface TogglerProps {
   children: ReactNode;
-  className?: string; // Tailwind classes for the wrapper div
+  className?: string;
 }
 
 // Combine the main component with its subcomponents for the Compound Pattern
@@ -152,7 +151,7 @@ Toggler.Menu = Menu;
 export default Toggler;
 
 // ====================================================================
-// 4. EXPORT TYPES (Optional but Recommended)
+// EXPORT TYPES
 // ====================================================================
 
 export type { TogglerProps, ToggleProps, MenuProps };
