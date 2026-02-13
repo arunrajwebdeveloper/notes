@@ -21,6 +21,11 @@ export interface BaseProps {
   restoreNoteMutation: UseMutationResult<any, unknown, { id: string }>;
   deleteNoteFromTrashMutation: UseMutationResult<any, unknown, { id: string }>;
   emptyTrashMutation: UseMutationResult<any, unknown, void>;
+  removeNoteTagMutation: UseMutationResult<
+    any,
+    unknown,
+    { id: string; payload: { tagId: string } }
+  >;
 }
 export interface InfiniteMatchListProps extends BaseProps {
   data: InfiniteData<NotesResponse, number> | undefined;
@@ -46,6 +51,7 @@ function NoteList({
   restoreNoteMutation,
   deleteNoteFromTrashMutation,
   emptyTrashMutation,
+  removeNoteTagMutation,
 }: InfiniteMatchListProps) {
   // Intersection Observer Hook
   const { ref, inView } = useInView();
@@ -75,7 +81,7 @@ function NoteList({
           onSettled: () => {
             resetDeleteInfo();
           },
-        }
+        },
       );
     }
   };
@@ -108,6 +114,10 @@ function NoteList({
         resetDeleteInfo();
       },
     });
+  };
+
+  const onRemoveNoteTag = (id: string, tagId: string) => {
+    removeNoteTagMutation.mutate({ id, payload: { tagId } });
   };
 
   // Flatten the array of pages into a single array of notes
@@ -182,10 +192,12 @@ function NoteList({
                   }
                   isRestoring={restoreNoteMutation.isPending}
                   isTrashNoteDeleting={deleteNoteFromTrashMutation.isPending}
+                  isRemovingNoteTag={removeNoteTagMutation.isPending}
                   onDeleteNote={onDeleteNote}
                   toggleArchive={toggleArchive}
                   restoreNote={restoreNote}
                   deleteTrashNote={deleteTrashNote}
+                  onRemoveNoteTag={onRemoveNoteTag}
                 />
               );
             })

@@ -67,4 +67,8 @@ export const notesAPI = {
     const response = await apiClient.post(`/notes/${id}/unarchive`);
     return response.data.result;
   },
+  removeNoteTag: async ({ id, payload }: { id: string; payload: any }) => {
+    const response = await apiClient.patch(`/notes/${id}/tags`, payload);
+    return response.data.result;
+  },
 };

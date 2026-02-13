@@ -17,10 +17,12 @@ function NoteItem({
   isArchiving,
   isRestoring,
   isTrashNoteDeleting,
+  isRemovingNoteTag,
   onDeleteNote,
   toggleArchive,
   restoreNote,
   deleteTrashNote,
+  onRemoveNoteTag,
 }: {
   note: Note;
   onEdit: (note: Note) => void;
@@ -29,9 +31,11 @@ function NoteItem({
   isArchiving: boolean;
   isRestoring: boolean;
   isTrashNoteDeleting: boolean;
+  isRemovingNoteTag: boolean;
   onDeleteNote: (id: string) => void;
   restoreNote: (id: string) => void;
   deleteTrashNote: (id: string) => void;
+  onRemoveNoteTag: (id: string, payload: any) => void;
   toggleArchive: ({
     id,
     type,
@@ -42,7 +46,7 @@ function NoteItem({
 }) {
   const currentSearch = searchTest;
   const {
-    _id,
+    _id: noteId,
     title,
     description,
     color,
@@ -84,12 +88,15 @@ function NoteItem({
         <div className="px-8 pb-2">
           {tags?.length !== 0 && (
             <div className="flex gap-1 flex-wrap">
-              {tags?.map(({ _id, name }) => (
+              {tags?.map(({ _id: tagId, name }) => (
                 <TagChip
-                  key={_id}
+                  key={tagId}
                   name={name}
-                  onRemoveLabel={() => {}}
+                  onRemoveLabel={() =>
+                    onRemoveNoteTag(noteId, tagId?.toString())
+                  }
                   isTrash={isTrash}
+                  isLoading={isRemovingNoteTag}
                 />
               ))}
             </div>
@@ -128,7 +135,7 @@ function NoteItem({
                   <button
                     onClick={() =>
                       toggleArchive({
-                        id: _id,
+                        id: noteId,
                         type: isArchived ? "unarchive" : "archive",
                       })
                     }
@@ -159,7 +166,7 @@ function NoteItem({
                 <>
                   <div className="flex-none">
                     <button
-                      onClick={() => restoreNote(_id)}
+                      onClick={() => restoreNote(noteId)}
                       disabled={isRestoring}
                       className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900 `}
@@ -170,7 +177,7 @@ function NoteItem({
                   </div>
                   <div className="flex-none">
                     <button
-                      onClick={() => deleteTrashNote(_id)}
+                      onClick={() => deleteTrashNote(noteId)}
                       disabled={isTrashNoteDeleting}
                       className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900 `}
@@ -184,7 +191,7 @@ function NoteItem({
               {!isTrash && (
                 <div className="flex-none">
                   <button
-                    onClick={() => onDeleteNote(_id)}
+                    onClick={() => onDeleteNote(noteId)}
                     disabled={isDeleting}
                     className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900`}

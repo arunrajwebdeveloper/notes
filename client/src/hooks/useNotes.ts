@@ -148,7 +148,7 @@ export const useNotes = ({
     onError: (error: any) => {
       console.error(
         "Note creation failed:",
-        error.response?.data?.result?.message || error.message
+        error.response?.data?.result?.message || error.message,
       );
     },
     onSettled: () => {
@@ -184,7 +184,7 @@ export const useNotes = ({
     onError: (error: any) => {
       console.error(
         "Tag creation failed:",
-        error.response?.data?.result?.message || error.message
+        error.response?.data?.result?.message || error.message,
       );
     },
   });
@@ -242,6 +242,13 @@ export const useNotes = ({
     },
   });
 
+  const removeNoteTagMutation = useMutation({
+    mutationFn: notesAPI.removeNoteTag,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+    },
+  });
+
   return {
     notes,
     tags,
@@ -269,5 +276,6 @@ export const useNotes = ({
     restoreNoteMutation,
     deleteNoteFromTrashMutation,
     emptyTrashMutation,
+    removeNoteTagMutation,
   };
 };

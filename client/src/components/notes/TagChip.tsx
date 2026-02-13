@@ -20,6 +20,7 @@ const TagChip = ({
       >
         {name}
       </span>
+
       {!isTrash && (
         <button
           disabled={isLoading || isTrash}

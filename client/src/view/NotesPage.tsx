@@ -36,6 +36,7 @@ function NotesPage() {
     restoreNoteMutation,
     deleteNoteFromTrashMutation,
     emptyTrashMutation,
+    removeNoteTagMutation,
   } = useNotes({
     enabled: true,
   });
@@ -92,6 +93,7 @@ function NotesPage() {
           restoreNoteMutation={restoreNoteMutation}
           deleteNoteFromTrashMutation={deleteNoteFromTrashMutation}
           emptyTrashMutation={emptyTrashMutation}
+          removeNoteTagMutation={removeNoteTagMutation}
         />
       </div>
       {/* NOTE MODAL */}
