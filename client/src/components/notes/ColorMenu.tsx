@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { noteColors } from "../../utils/constants";
 import Toggler from "../common/Toggler";
 import Tooltip from "../common/Tooltip";
-import { CircleCheck, Palette } from "lucide-react";
+import { CircleCheck, PaintBucket, Palette } from "lucide-react";
 import { HexColorPicker } from "react-colorful";
 
 interface ColorMenuProps {
@@ -18,6 +18,7 @@ export default function ColorMenu({
 }: ColorMenuProps) {
   const [selectedColor, setSelectedColor] = useState<string>(currentColor);
   const [isModalOpend, setIsModalOpended] = useState<boolean>(false);
+  const [isShowPicker, setIsShowPicker] = useState<boolean>(false);
 
   useEffect(() => {
     if (isModalOpend) {
@@ -27,7 +28,12 @@ export default function ColorMenu({
     }
   }, [isModalOpend]);
 
+  const togglePicker = () => {
+    setIsShowPicker((prev) => !prev);
+  };
+
   const handleChooseColor = (color: string) => {
+    setIsShowPicker(false);
     setSelectedColor(color);
     onSelect?.(color);
   };
@@ -69,13 +75,16 @@ export default function ColorMenu({
           "
           >
             {/* COLOR PICKER */}
-            <HexColorPicker
-              color={selectedColor}
-              onChange={handleChooseColor}
-              style={{ width: "100%" }}
-            />
+            {isShowPicker && (
+              <HexColorPicker
+                color={selectedColor}
+                onChange={handleChooseColor}
+                style={{ width: "100%" }}
+                className="mb-4"
+              />
+            )}
 
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex flex-wrap gap-2">
               {noteColors.map((color) => (
                 <button
                   key={color}
@@ -88,13 +97,26 @@ export default function ColorMenu({
                   {selectedColor === color && (
                     <CircleCheck
                       size={26}
-                      fill="white"
-                      stroke={color}
-                      className=" m-auto"
+                      fill={"#0000006e"}
+                      stroke={selectedColor === "#ffffff" ? "#ffffff" : color}
+                      className="m-auto"
                     />
                   )}
                 </button>
               ))}
+              <button
+                onClick={togglePicker}
+                className={`w-10 h-10 flex border rounded-full transition-transform hover:scale-110 cursor-pointer ${isShowPicker ? "border-blue-500" : "border-slate-200"}`}
+                style={{
+                  backgroundColor: "#fff",
+                }}
+              >
+                <PaintBucket
+                  size={20}
+                  stroke={isShowPicker ? "#2b7fff" : "#555555"}
+                  className="m-auto"
+                />
+              </button>
             </div>
           </div>
         )}

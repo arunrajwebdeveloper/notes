@@ -8,5 +8,4 @@ export const noteColors = [
   "#afccdc",
   "#d3bedb",
   "#e9e3d3",
-  "#efeff1",
 ];
