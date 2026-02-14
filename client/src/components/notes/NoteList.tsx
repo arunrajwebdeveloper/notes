@@ -184,7 +184,7 @@ function NoteList({
                   key={note?._id}
                   note={note}
                   onEdit={onEdit}
-                  searchTest={filterState?.search}
+                  searchText={filterState?.search}
                   isDeleting={deleteNoteMutation.isPending}
                   isArchiving={
                     archiveNoteMutation.isPending ||

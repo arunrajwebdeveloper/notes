@@ -12,7 +12,7 @@ import CircleSpinner from "../common/CircleSpinner";
 function NoteItem({
   note,
   onEdit,
-  searchTest,
+  searchText,
   isDeleting,
   isArchiving,
   isRestoring,
@@ -26,7 +26,7 @@ function NoteItem({
 }: {
   note: Note;
   onEdit: (note: Note) => void;
-  searchTest: string;
+  searchText: string;
   isDeleting: boolean;
   isArchiving: boolean;
   isRestoring: boolean;
@@ -44,7 +44,7 @@ function NoteItem({
     type: "archive" | "unarchive";
   }) => void;
 }) {
-  const currentSearch = searchTest;
+  const currentSearch = searchText;
   const {
     _id: noteId,
     title,
