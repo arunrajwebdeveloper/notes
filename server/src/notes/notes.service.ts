@@ -29,13 +29,16 @@ export class NotesService {
     const newOrderIndex = (lastNote?.orderIndex || 0) + 1;
 
     // 3Create the new note object
-    const createdNote = new this.noteModel({
+    const createdNote = await new this.noteModel({
       ...createNoteDto,
       userId,
       orderIndex: newOrderIndex,
-    });
+    }).save();
 
-    return createdNote.save();
+    // Populate tags before returning
+    await createdNote.populate('tags', '_id name');
+
+    return createdNote;
   }
 
   /**
@@ -57,7 +60,7 @@ export class NotesService {
       page = 1,
       limit = 10,
       sortBy = 'orderIndex',
-      sortOrder = 'asc',
+      sortOrder = 'desc',
       search,
       tagId,
       type = 'active',
@@ -113,6 +116,7 @@ export class NotesService {
 
       // Tertiary/Dynamic Sort: Used as the final fallback,
       //    or when the user specifically requests a different sort (e.g., A-Z title).
+      // [sortBy]: sortOrder === 'asc' ? 1 : -1,
       [sortBy]: sortOrder === 'asc' ? 1 : -1,
     };
 
@@ -195,6 +199,7 @@ export class NotesService {
         //mongoUpdate, // <-- Uses $addToSet for tags, and $set for other fields
         { new: true },
       )
+      .populate('tags', '_id name')
       .exec();
 
     if (!updatedNote) {

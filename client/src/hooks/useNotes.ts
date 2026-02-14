@@ -141,9 +141,25 @@ export const useNotes = ({
 
   const createNoteMutation = useMutation({
     mutationFn: notesAPI.createNote,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["get_notes", filterState],
+    onSuccess: (newNote) => {
+      queryClient.setQueryData(["get_notes", filterState], (oldData: any) => {
+        if (!oldData) return oldData;
+
+        const updatedPages = oldData?.pages.map((page: any, index: number) => {
+          if (index === 0) {
+            return {
+              ...page,
+              result: [newNote, ...page.result],
+              total: (page.total || 0) + 1, // increment total if exists
+            };
+          }
+          return page;
+        });
+
+        return {
+          ...oldData,
+          pages: updatedPages,
+        };
       });
     },
     onError: (error: any) => {
@@ -160,10 +176,26 @@ export const useNotes = ({
   const updateNoteMutation = useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: any }) =>
       notesAPI.updateNote(id, payload),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["get_notes", filterState],
+    onSuccess: (updatedNote, { id }) => {
+      queryClient.setQueryData(["get_notes", filterState], (oldData: any) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page: any) => ({
+            ...page,
+            result: page.result.map((note: any) =>
+              note._id === id ? updatedNote : note,
+            ),
+          })),
+        };
       });
+    },
+    onError: (error: any) => {
+      console.error(
+        "Note updation failed:",
+        error.response?.data?.result?.message || error.message,
+      );
     },
     onSettled: () => {
       closeNoteModal();
@@ -172,17 +204,37 @@ export const useNotes = ({
 
   const deleteNoteMutation = useMutation({
     mutationFn: notesAPI.deleteNote,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["get_notes", filterState],
+    onSuccess: (_, { id }) => {
+      queryClient.setQueryData(["get_notes", filterState], (oldData: any) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page: any) => ({
+            ...page,
+            result: page.result.filter((note: any) => note._id !== id),
+            total: Math.max((page.total || 0) - 1, 0),
+          })),
+        };
       });
+    },
+    onError: (error: any) => {
+      console.error(
+        "Note deletion failed:",
+        error.response?.data?.result?.message || error.message,
+      );
     },
   });
 
   const createTagMutation = useMutation({
     mutationFn: notesAPI.createTag,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["get_tags"] });
+    onSuccess: (newTag) => {
+      queryClient.setQueryData(["get_tags"], (oldData: any) => {
+        if (!oldData) return oldData;
+        return [newTag, ...oldData]?.sort((a, b) =>
+          a.name.localeCompare(b.name),
+        );
+      });
     },
     onError: (error: any) => {
       console.error(
@@ -195,28 +247,37 @@ export const useNotes = ({
   const updateTagMutation = useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: any }) =>
       notesAPI.editTag(id, payload),
-    onSuccess: async () => {
+    onSuccess: async (newTag) => {
       await Promise.all([
-        await queryClient.invalidateQueries({
+        queryClient.setQueryData(["get_tags"], (oldData: any) => {
+          if (!oldData) return oldData;
+
+          return oldData.map((tag: any) =>
+            tag._id === newTag._id ? newTag : tag,
+          );
+        }),
+        queryClient.invalidateQueries({
           queryKey: ["get_notes", filterState],
         }),
-        await queryClient.invalidateQueries({ queryKey: ["get_tags"] }),
       ]);
     },
   });
 
   const deleteTagMutation = useMutation({
     mutationFn: notesAPI.deleteTag,
-    onSuccess: async () => {
+    onSuccess: async (_, { id }) => {
       await Promise.all([
+        queryClient.setQueryData(["get_tags"], (oldData: any) => {
+          if (!oldData) return oldData;
+          return oldData.filter((tag: any) => tag._id !== id);
+        }),
         queryClient.invalidateQueries({ queryKey: ["get_notes", filterState] }),
-        queryClient.invalidateQueries({ queryKey: ["get_tags"] }),
       ]);
     },
   });
 
-  const restoreNoteMutation = useMutation({
-    mutationFn: notesAPI.restoreNote,
+  const removeNoteTagMutation = useMutation({
+    mutationFn: notesAPI.removeNoteTag,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["get_notes", filterState],
@@ -224,10 +285,19 @@ export const useNotes = ({
     },
   });
 
+  const restoreNoteMutation = useMutation({
+    mutationFn: notesAPI.restoreNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["get_notes", filterState],
+      });
+    },
+  });
+
   const deleteNoteFromTrashMutation = useMutation({
     mutationFn: notesAPI.deleteNoteFromTrash,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
         queryKey: ["get_notes", filterState],
       });
     },
@@ -251,13 +321,6 @@ export const useNotes = ({
 
   const unarchiveNoteMutation = useMutation({
     mutationFn: notesAPI.unarchiveNote,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["get_notes"] });
-    },
-  });
-
-  const removeNoteTagMutation = useMutation({
-    mutationFn: notesAPI.removeNoteTag,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["get_notes"] });
     },
