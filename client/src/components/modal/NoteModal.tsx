@@ -72,8 +72,11 @@ function NoteModal({
 
   const submitNewNote = () => {
     if (isValid) {
-      createNoteMutation.mutate(payload);
-      setNewNote(initialState);
+      createNoteMutation.mutate(payload, {
+        onSuccess: () => {
+          setNewNote(initialState);
+        },
+      });
     }
   };
 
@@ -81,18 +84,24 @@ function NoteModal({
     if (isChanged && isValid) {
       const { title, description, color, isPinned, tags } = payload;
 
-      updateNoteMutation.mutate({
-        id: selectedNote?._id as string,
-        payload: {
-          title,
-          description,
-          color,
-          isPinned,
-          tags,
-          isArchived: false,
+      updateNoteMutation.mutate(
+        {
+          id: selectedNote?._id as string,
+          payload: {
+            title,
+            description,
+            color,
+            isPinned,
+            tags,
+            isArchived: false,
+          },
         },
-      });
-      setNewNote(initialState);
+        {
+          onSuccess: () => {
+            setNewNote(initialState);
+          },
+        },
+      );
     }
   };
 
