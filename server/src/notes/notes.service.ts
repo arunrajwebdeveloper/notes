@@ -60,7 +60,7 @@ export class NotesService {
       page = 1,
       limit = 10,
       sortBy = 'orderIndex',
-      sortOrder = 'desc',
+      sortOrder = 'asc',
       search,
       tagId,
       type = 'active',
@@ -111,7 +111,7 @@ export class NotesService {
 
       // Secondary Sort (Tie-breaker for Pinned Notes):
       // Latest update/creation date first within the pinned group.
-      updatedAt: -1, // Use -1 (descending) to show latest note first
+      // updatedAt: -1, // Use -1 (descending) to show latest note first
       // [sortBy]: sortOrder === 'asc' ? 1 : (-1 as 1 | -1),
 
       // Tertiary/Dynamic Sort: Used as the final fallback,

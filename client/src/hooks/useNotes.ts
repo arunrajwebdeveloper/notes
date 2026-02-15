@@ -31,7 +31,7 @@ export const useNotes = ({
     search: "",
     tagId: null,
     sortBy: "orderIndex",
-    sortOrder: "asc",
+    sortOrder: "desc",
     noteType: "active",
   });
   const [localSearch, setLocalSearch] = useState(filterState.search);
