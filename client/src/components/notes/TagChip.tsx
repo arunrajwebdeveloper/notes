@@ -37,7 +37,7 @@ const TagChip = ({
           {isLoading && (
             <CircleSpinner
               size={20}
-              className="text-blue-400 absolute right-1 top-1/2 -translate-y-1/2 flex"
+              className="text-slate-600 absolute right-1 top-1/2 -translate-y-1/2 flex"
             />
           )}
         </>
