@@ -9,6 +9,7 @@ import Tooltip from "../common/Tooltip";
 import type { UseMutationResult } from "@tanstack/react-query";
 import CircleSpinner from "../common/CircleSpinner";
 import TagChip from "../notes/TagChip";
+// import { getContrastColor } from "../../utils/color";
 
 interface NoteModalProps {
   isShow: boolean;
@@ -151,6 +152,8 @@ function NoteModal({
     }));
   };
 
+  // const textColor = getContrastColor(newNote?.color);
+
   return (
     <Modal show={isShow} onHide={onHideModal}>
       <Modal.Body
@@ -173,6 +176,9 @@ function NoteModal({
               className="border-0 text-gray-900 text-2xl rounded-lg outline-0 block w-full py-3"
               onChange={onChangeHandler}
               disabled={isLoading || selectedNote?.isTrash}
+              // style={{
+              //   color: textColor,
+              // }}
             />
           </div>
           <div>

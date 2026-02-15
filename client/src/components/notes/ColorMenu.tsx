@@ -22,9 +22,8 @@ export default function ColorMenu({
 
   useEffect(() => {
     if (isModalOpend) {
+      setIsShowPicker(false);
       setSelectedColor(currentColor);
-    } else {
-      setSelectedColor("#ffffff");
     }
   }, [isModalOpend]);
 
@@ -33,7 +32,6 @@ export default function ColorMenu({
   };
 
   const handleChooseColor = (color: string) => {
-    setIsShowPicker(false);
     setSelectedColor(color);
     onSelect?.(color);
   };
@@ -106,14 +104,18 @@ export default function ColorMenu({
               ))}
               <button
                 onClick={togglePicker}
-                className={`w-10 h-10 flex border rounded-full transition-transform hover:scale-110 cursor-pointer ${isShowPicker ? "border-blue-500" : "border-slate-200"}`}
+                className={`w-10 h-10 flex border rounded-full transition-transform hover:scale-110 cursor-pointer ${isShowPicker || !noteColors.includes(selectedColor) ? "border-blue-500" : "border-slate-200"}`}
                 style={{
                   backgroundColor: "#fff",
                 }}
               >
                 <PaintBucket
                   size={20}
-                  stroke={isShowPicker ? "#2b7fff" : "#555555"}
+                  stroke={
+                    isShowPicker || !noteColors.includes(selectedColor)
+                      ? "#2b7fff"
+                      : "#555555"
+                  }
                   className="m-auto"
                 />
               </button>
