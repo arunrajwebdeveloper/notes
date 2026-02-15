@@ -186,6 +186,7 @@ function NoteList({
                   onEdit={onEdit}
                   searchText={filterState?.search}
                   isDeleting={deleteNoteMutation.isPending}
+                  deleteingNoteId={deleteInfo?.id}
                   isArchiving={
                     archiveNoteMutation.isPending ||
                     unarchiveNoteMutation.isPending

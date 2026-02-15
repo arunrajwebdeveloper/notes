@@ -14,6 +14,7 @@ function NoteItem({
   onEdit,
   searchText,
   isDeleting,
+  deleteingNoteId,
   isArchiving,
   isRestoring,
   isTrashNoteDeleting,
@@ -28,6 +29,7 @@ function NoteItem({
   onEdit: (note: Note) => void;
   searchText: string;
   isDeleting: boolean;
+  deleteingNoteId: string | null;
   isArchiving: boolean;
   isRestoring: boolean;
   isTrashNoteDeleting: boolean;
@@ -196,7 +198,7 @@ function NoteItem({
                     className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900`}
                   >
-                    {isDeleting ? (
+                    {isDeleting && deleteingNoteId === noteId ? (
                       <CircleSpinner size={20} className="text-slate-400" />
                     ) : (
                       <>
