@@ -38,6 +38,9 @@ export const useNotes = ({
   const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
   const [isOpenTagModal, setIsOpenTagModal] = useState<boolean>(false);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+  const [deletingNoteTagIds, setDeletingNoteTagIds] = useState<Set<string>>(
+    new Set(),
+  );
 
   const debouncedSearch = useDebounce(localSearch, 500);
 
@@ -278,9 +281,19 @@ export const useNotes = ({
 
   const removeNoteTagMutation = useMutation({
     mutationFn: notesAPI.removeNoteTag,
+    onMutate: ({ payload: { tagId } }) => {
+      setDeletingNoteTagIds((prev) => new Set([...prev, String(tagId)]));
+    },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["get_notes", filterState],
+      });
+    },
+    onSettled: (_, __, { payload: { tagId } }) => {
+      setDeletingNoteTagIds((prev) => {
+        const next = new Set(prev);
+        next.delete(String(tagId));
+        return next;
       });
     },
   });
@@ -354,5 +367,6 @@ export const useNotes = ({
     deleteNoteFromTrashMutation,
     emptyTrashMutation,
     removeNoteTagMutation,
+    deletingNoteTagIds,
   };
 };

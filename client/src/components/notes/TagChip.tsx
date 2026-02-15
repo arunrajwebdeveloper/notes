@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import CircleSpinner from "../common/CircleSpinner";
 
 const TagChip = ({
   name,
@@ -16,19 +17,30 @@ const TagChip = ({
       <span
         className={`w-full px-2 whitespace-nowrap overflow-hidden text-ellipsis ${
           !isTrash ? "group-hover:max-w-[calc(100%-24px)]" : ""
-        }`}
+        } ${isLoading ? "max-w-[calc(100%-24px)]" : ""}`}
       >
         {name}
       </span>
 
       {!isTrash && (
-        <button
-          disabled={isLoading || isTrash}
-          onClick={onRemoveLabel}
-          className="rounded-full absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 hidden group-hover:flex cursor-pointer bg-black/30"
-        >
-          <X size={16} className="m-auto" />
-        </button>
+        <>
+          {!isLoading && (
+            <button
+              disabled={isLoading || isTrash}
+              onClick={onRemoveLabel}
+              className="rounded-full absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 hidden group-hover:flex cursor-pointer bg-black/30"
+            >
+              <X size={16} className="m-auto" />
+            </button>
+          )}
+
+          {isLoading && (
+            <CircleSpinner
+              size={20}
+              className="text-blue-400 absolute right-1 top-1/2 -translate-y-1/2 flex"
+            />
+          )}
+        </>
       )}
     </div>
   );
