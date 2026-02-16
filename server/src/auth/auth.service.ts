@@ -22,19 +22,23 @@ export class AuthService {
 
   // Centralized method to set cookies
   private setCookies(res: Response, accessToken: string, refreshToken: string) {
+    const isProduction = process.env.NODE_ENV === 'production';
+
     res.cookie('access_token', accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 15 * 60 * 1000, // 15 mins
+      // On Render, this MUST be true because Render uses HTTPS
+      secure: isProduction,
+      // 'none' is required for cross-site requests (Frontend on one URL, Backend on another)
+      sameSite: isProduction ? 'none' : 'lax',
+      maxAge: 15 * 60 * 1000, // 15m
     });
 
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/api/auth/refresh', // Security: Only sent to the refresh endpoint
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
+      path: '/api/auth/refresh',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
     });
   }
 
