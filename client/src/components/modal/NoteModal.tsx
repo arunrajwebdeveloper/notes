@@ -301,7 +301,7 @@ function NoteModal({
                   >
                     {isLoading ? (
                       <div className="flex items-center gap-2">
-                        <CircleSpinner size={20} className="text-white" />
+                        <CircleSpinner size={20} className="text-slate-800" />
                         <span>
                           {mode === "edit" ? "Updating..." : "Creating..."}
                         </span>
