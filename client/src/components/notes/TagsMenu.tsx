@@ -72,8 +72,8 @@ function TagsMenu({
                 return (
                   <div
                     key={`tags-menu-item-${_id}`}
-                    className={`flex items-center relative cursor-pointer bg-white w-full py-1.5 px-3 ps-9 rounded-lg text-sm hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 ${
-                      isSelected ? "bg-emerald-200" : "text-sm text-gray-800"
+                    className={`flex items-center relative cursor-pointer bg-white text-sm w-full py-1.5 px-3 ps-9 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 ${
+                      isSelected ? "text-emerald-600" : "text-gray-800"
                     }`}
                     onClick={() => {
                       onChooseTag({ _id, name });
@@ -83,7 +83,9 @@ function TagsMenu({
                     <CircleCheck
                       size={18}
                       className={`absolute left-2 top-1/2 transform -translate-y-1/2 ${
-                        isSelected ? "bg-emerald-200" : "text-sm text-gray-800"
+                        isSelected
+                          ? "text-emerald-600"
+                          : "text-sm text-gray-800"
                       }`}
                     />
                     <span className="whitespace-nowrap overflow-hidden text-ellipsis w-full">
