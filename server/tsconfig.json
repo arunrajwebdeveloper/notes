@@ -17,6 +17,8 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "ignoreDeprecations": "5.0"
+    "ignoreDeprecations": "5.0",
+    "strictPropertyInitialization": false /* Keep this false for your Mongoose classes */,
+    "strict": true /* This enables strictNullChecks and others in one go */
   }
 }
