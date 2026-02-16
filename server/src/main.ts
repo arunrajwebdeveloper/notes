@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { TransformInterceptor } from './interceptors/transform.interceptor';
 import { ConfigService } from '@nestjs/config';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,8 @@ async function bootstrap() {
     origin: ['http://localhost:5173', 'http://localhost:3000', origin],
     credentials: true, // Allow cookies
   });
+
+  app.use(cookieParser());
 
   app.setGlobalPrefix('api');
 

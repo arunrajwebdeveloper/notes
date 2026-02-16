@@ -9,7 +9,7 @@ import { Tag, TagDocument } from './schemas/tag.schema';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { Note, NoteDocument } from './../notes/schemas/note.schema';
-import { NotesService } from 'notes/notes.service';
+import { NotesService } from '../notes/notes.service';
 
 @Injectable()
 export class TagsService {
@@ -32,7 +32,7 @@ export class TagsService {
         userId,
       });
       return await createdTag.save();
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 11000) {
         throw new ConflictException(
           `Tag with name "${createTagDto.name}" already exists.`,

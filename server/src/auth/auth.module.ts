@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { AuthController } from './auth.controller';
-import { UsersModule } from 'users/users.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { UsersModule } from 'users/users.module';
           secret: configService.get<string>('JWT_SECRET'),
           signOptions: {
             expiresIn:
-              configService.get<string>('JWT_EXPIRATION_TIME') || '60m',
+              configService.get<string>('JWT_EXPIRATION_TIME') || '15m',
           },
         } as JwtModuleOptions;
       },
