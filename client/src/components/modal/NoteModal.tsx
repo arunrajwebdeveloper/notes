@@ -261,11 +261,7 @@ function NoteModal({
                       onClick={toggleArchived}
                       disabled={isLoading}
                       className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
-                ${
-                  newNote?.isArchived
-                    ? " bg-blue-600 text-white"
-                    : " text-slate-900"
-                }`}
+                ${newNote?.isArchived ? " bg-emerald-200" : " text-slate-900"}`}
                     >
                       <Archive size={20} />
                       {!isLoading && (
@@ -283,11 +279,7 @@ function NoteModal({
                       onClick={togglePinned}
                       disabled={isLoading}
                       className={`w-12 h-12 relative  group flex items-center justify-center rounded-full cursor-pointer transition duration-300
-                ${
-                  newNote?.isPinned
-                    ? " bg-blue-600 text-white"
-                    : " text-slate-900"
-                }`}
+                ${newNote?.isPinned ? " bg-emerald-200" : " text-slate-900"}`}
                     >
                       <Pin size={20} />
                       {!isLoading && (

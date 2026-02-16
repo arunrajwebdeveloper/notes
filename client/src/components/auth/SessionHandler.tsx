@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { userAPI } from "../../api/endpoints/user.api";
-import { authAPI } from "../../api/endpoints/auth.api";
 import {
   setAuthenticationData,
   logout as logoutAction,
@@ -18,14 +17,8 @@ export const SessionHandler = ({ children }: { children: React.ReactNode }) => {
         dispatch(setLoading(true));
         const currentUser = await userAPI.getCurrentUser();
         dispatch(setAuthenticationData({ user: currentUser }));
-      } catch {
-        try {
-          await authAPI.refresh();
-          const currentUser = await userAPI.getCurrentUser();
-          dispatch(setAuthenticationData({ user: currentUser }));
-        } catch {
-          dispatch(logoutAction());
-        }
+      } catch (error) {
+        dispatch(logoutAction());
       } finally {
         dispatch(setLoading(false));
       }
@@ -34,8 +27,7 @@ export const SessionHandler = ({ children }: { children: React.ReactNode }) => {
     checkSession();
   }, [dispatch]);
 
-  // Prevent flickering
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Loading session...</div>;
 
   return <>{children}</>;
 };

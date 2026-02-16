@@ -45,7 +45,7 @@ function TagsMenu({
         {({ isOpen }) => (
           <div
             className={`w-12 h-12  group flex items-center justify-center rounded-full cursor-pointer transition duration-300
-                ${isOpen ? " bg-blue-600 text-white" : " text-slate-900"}`}
+                ${isOpen ? " bg-emerald-200" : " text-slate-900"}`}
           >
             <Tag size={20} />
             {!isOpen && !isLoading && (
@@ -73,7 +73,7 @@ function TagsMenu({
                   <div
                     key={`tags-menu-item-${_id}`}
                     className={`flex items-center relative cursor-pointer bg-white w-full py-1.5 px-3 ps-9 rounded-lg text-sm hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 ${
-                      isSelected ? "text-blue-600" : "text-sm text-gray-800"
+                      isSelected ? "bg-emerald-200" : "text-sm text-gray-800"
                     }`}
                     onClick={() => {
                       onChooseTag({ _id, name });
@@ -83,7 +83,7 @@ function TagsMenu({
                     <CircleCheck
                       size={18}
                       className={`absolute left-2 top-1/2 transform -translate-y-1/2 ${
-                        isSelected ? "text-blue-600" : "text-sm text-gray-800"
+                        isSelected ? "bg-emerald-200" : "text-sm text-gray-800"
                       }`}
                     />
                     <span className="whitespace-nowrap overflow-hidden text-ellipsis w-full">

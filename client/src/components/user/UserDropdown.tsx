@@ -4,7 +4,7 @@ import {
   // LayoutGrid,
   // Rows2,
   LogOut,
-  Settings2,
+  User as UserIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -74,8 +74,8 @@ function UserDropdown({ user, logout }: { user: User | null; logout: any }) {
               to="/profile"
               className="flex w-full text-lg text-slate-700 h-16 cursor-pointer items-center gap-3 px-6 hover:bg-slate-100"
             >
-              <Settings2 size={20} />
-              <span>Settings</span>
+              <UserIcon size={20} />
+              <span>Profile</span>
             </Link>
             {/* <button className="flex w-full text-sm text-slate-700 h-10 cursor-pointer items-center gap-3 px-4 hover:bg-slate-100">
               <LayoutGrid size={18} />

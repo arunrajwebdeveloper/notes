@@ -33,7 +33,7 @@ export class AuthService {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      path: '/auth/refresh', // Security: Only sent to the refresh endpoint
+      path: '/api/auth/refresh', // Security: Only sent to the refresh endpoint
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
   }
