@@ -300,7 +300,6 @@ export const useNotes = ({
 
   const removeNoteTagMutation = useMutation({
     mutationFn: notesAPI.removeNoteTag,
-
     onMutate: ({ id: noteId, payload: { tagId } }) => {
       const tid = String(tagId);
       const nid = String(noteId);
@@ -314,14 +313,12 @@ export const useNotes = ({
         return newMap;
       });
     },
-
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["get_notes", filterState],
       });
     },
-
-    onSettled: (_, __, { payload: { noteId, tagId } }) => {
+    onSettled: (_, __, { id: noteId, payload: { tagId } }) => {
       const tid = String(tagId);
       const nid = String(noteId);
 
