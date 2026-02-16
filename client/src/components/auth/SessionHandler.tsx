@@ -6,7 +6,6 @@ import {
   logout as logoutAction,
   setLoading,
 } from "../../store/features/authSlice";
-import CircleSpinner from "../common/CircleSpinner";
 
 export const SessionHandler = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
@@ -28,12 +27,7 @@ export const SessionHandler = ({ children }: { children: React.ReactNode }) => {
     checkSession();
   }, [dispatch]);
 
-  if (loading)
-    return (
-      <div className="text-center h-screen w-full bg-white text-blue-600 flex justify-center items-center">
-        <CircleSpinner size={36} />
-      </div>
-    );
+  if (loading) return null;
 
   return <>{children}</>;
 };
