@@ -4,11 +4,13 @@ import CircleSpinner from "../common/CircleSpinner";
 const TagChip = ({
   name,
   isLoading = false,
+  isDisabled = false,
   onRemoveLabel,
   isTrash,
 }: {
   name: string;
   isLoading?: boolean;
+  isDisabled?: boolean;
   onRemoveLabel: () => void;
   isTrash?: boolean;
 }) => {
@@ -26,7 +28,7 @@ const TagChip = ({
         <>
           {!isLoading && (
             <button
-              disabled={isLoading || isTrash}
+              disabled={isDisabled || isLoading || isTrash}
               onClick={onRemoveLabel}
               className="rounded-full absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 hidden group-hover:flex cursor-pointer bg-black/30"
             >

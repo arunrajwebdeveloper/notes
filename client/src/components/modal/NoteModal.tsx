@@ -199,7 +199,7 @@ function NoteModal({
                 <TagChip
                   key={_id}
                   name={name}
-                  isLoading={isLoading}
+                  isDisabled={isLoading}
                   onRemoveLabel={() => onRemoveLabel(_id)}
                 />
               ))}
