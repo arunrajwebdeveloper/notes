@@ -38,9 +38,9 @@ export const useNotes = ({
   const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
   const [isOpenTagModal, setIsOpenTagModal] = useState<boolean>(false);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
-  const [deletingNoteTagIds, setDeletingNoteTagIds] = useState<Set<string>>(
-    new Set(),
-  );
+  const [deletingNoteTagIds, setDeletingNoteTagIds] = useState<
+    Map<string, string[]>
+  >(new Map());
 
   const debouncedSearch = useDebounce(localSearch, 500);
 
@@ -279,21 +279,66 @@ export const useNotes = ({
     },
   });
 
+  // const removeNoteTagMutation = useMutation({
+  //   mutationFn: notesAPI.removeNoteTag,
+  //   onMutate: ({ payload: { tagId } }) => {
+  //     setDeletingNoteTagIds((prev) => new Set([...prev, String(tagId)]));
+  //   },
+  //   onSuccess: async () => {
+  //     await queryClient.invalidateQueries({
+  //       queryKey: ["get_notes", filterState],
+  //     });
+  //   },
+  //   onSettled: (_, __, { payload: { tagId } }) => {
+  //     setDeletingNoteTagIds((prev) => {
+  //       const next = new Set(prev);
+  //       next.delete(String(tagId));
+  //       return next;
+  //     });
+  //   },
+  // });
+
   const removeNoteTagMutation = useMutation({
     mutationFn: notesAPI.removeNoteTag,
-    onMutate: ({ payload: { tagId } }) => {
-      setDeletingNoteTagIds((prev) => new Set([...prev, String(tagId)]));
+
+    onMutate: ({ id: noteId, payload: { tagId } }) => {
+      const tid = String(tagId);
+      const nid = String(noteId);
+
+      setDeletingNoteTagIds((prevMap) => {
+        const newMap = new Map(prevMap);
+        const existingTags = newMap.get(nid) || [];
+
+        // Add tagId to the array for this specific note
+        newMap.set(nid, [...existingTags, tid]);
+        return newMap;
+      });
     },
+
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["get_notes", filterState],
       });
     },
-    onSettled: (_, __, { payload: { tagId } }) => {
-      setDeletingNoteTagIds((prev) => {
-        const next = new Set(prev);
-        next.delete(String(tagId));
-        return next;
+
+    onSettled: (_, __, { payload: { noteId, tagId } }) => {
+      const tid = String(tagId);
+      const nid = String(noteId);
+
+      setDeletingNoteTagIds((prevMap) => {
+        const newMap = new Map(prevMap);
+        const existingTags = newMap.get(nid) || [];
+
+        // Filter out the tag that just finished deleting
+        const updatedTags = existingTags.filter((id) => id !== tid);
+
+        if (updatedTags.length === 0) {
+          newMap.delete(nid); // Clean up the key if no tags are left deleting
+        } else {
+          newMap.set(nid, updatedTags);
+        }
+
+        return newMap;
       });
     },
   });

@@ -46,7 +46,7 @@ function NoteItem({
     id: string;
     type: "archive" | "unarchive";
   }) => void;
-  deletingNoteTagIds: Set<string>;
+  deletingNoteTagIds: Map<string, string[]>;
 }) {
   const currentSearch = searchText;
   const {
@@ -93,6 +93,10 @@ function NoteItem({
           {tags?.length !== 0 && (
             <div className="flex gap-1 flex-wrap">
               {tags?.map(({ _id: tagId, name }) => {
+                const isDeleting = deletingNoteTagIds
+                  .get(String(noteId))
+                  ?.includes(String(tagId));
+
                 return (
                   <TagChip
                     key={tagId}
@@ -101,9 +105,7 @@ function NoteItem({
                       onRemoveNoteTag(noteId, tagId?.toString())
                     }
                     isTrash={isTrash}
-                    isLoading={
-                      isRemovingNoteTag && deletingNoteTagIds.has(String(tagId))
-                    }
+                    isLoading={isRemovingNoteTag && isDeleting}
                   />
                 );
               })}

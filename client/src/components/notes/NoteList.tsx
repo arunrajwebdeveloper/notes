@@ -26,7 +26,7 @@ export interface BaseProps {
     unknown,
     { id: string; payload: { tagId: string } }
   >;
-  deletingNoteTagIds: Set<string>;
+  deletingNoteTagIds: Map<string, string[]>;
 }
 export interface InfiniteMatchListProps extends BaseProps {
   data: InfiniteData<NotesResponse, number> | undefined;
