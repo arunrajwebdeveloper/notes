@@ -2,10 +2,9 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../api/endpoints/auth.api";
 import {
-  setAccessToken,
   logout as logoutAction,
+  setAuthenticationData,
   setLoading,
-  setUserData,
 } from "../store/features/authSlice";
 import { useAppDispatch } from "./hooks";
 import { useAppSelector } from "../hooks";
@@ -15,35 +14,29 @@ export const useAuth = () => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
-  const { user, token, isAuthenticated, loading } = useAppSelector(
+  const { user, isAuthenticated, loading } = useAppSelector(
     (state) => state.auth,
   );
 
-  // Login mutation - SOLUTION 1: Direct API call
+  // Login mutation
   const loginMutation = useMutation({
     mutationFn: authAPI.login,
-    onSuccess: async (data) => {
-      if (data?.access_token) {
-        try {
-          dispatch(setLoading(true));
-          dispatch(
-            setAccessToken({
-              token: data.access_token,
-            }),
-          );
-          const currentUser = await userAPI.getCurrentUser();
-          dispatch(
-            setUserData({
-              user: currentUser,
-            }),
-          );
-          navigate("/notes");
-        } catch (error) {
-          console.error("Failed to fetch user:", error);
-          dispatch(logoutAction());
-        } finally {
-          dispatch(setLoading(false));
-        }
+    onSuccess: async () => {
+      try {
+        dispatch(setLoading(true));
+        const currentUser = await userAPI.getCurrentUser();
+        dispatch(
+          setAuthenticationData({
+            user: currentUser,
+          }),
+        );
+        navigate("/notes", { replace: true });
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+        dispatch(logoutAction());
+        navigate("/login", { replace: true });
+      } finally {
+        dispatch(setLoading(false));
       }
     },
     onError: (error: any) => {
@@ -58,11 +51,26 @@ export const useAuth = () => {
   const registerMutation = useMutation({
     mutationFn: authAPI.register,
     onSuccess: async () => {
-      navigate("/login");
+      navigate("/login", { replace: true });
     },
     onError: (error: any) => {
       console.error(
         "Registration failed:",
+        error.response?.data?.message || error.message,
+      );
+    },
+  });
+
+  // Logout mutation
+  const logoutMutation = useMutation({
+    mutationFn: authAPI.logout,
+    onSuccess: () => {
+      dispatch(logoutAction());
+      navigate("/login", { replace: true });
+    },
+    onError: (error: any) => {
+      console.error(
+        "Logout failed:",
         error.response?.data?.message || error.message,
       );
     },
@@ -78,11 +86,11 @@ export const useAuth = () => {
 
   return {
     user,
-    token,
     isAuthenticated,
     loading: loading || isLoadingUser,
     login: loginMutation.mutate,
     register: registerMutation.mutate,
+    logout: logoutMutation.mutate,
     isLoginLoading: loginMutation.isPending,
     isRegisterLoading: registerMutation.isPending,
     loginError: loginMutation.error,

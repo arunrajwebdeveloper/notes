@@ -66,6 +66,12 @@ export class AuthController {
     return { message: 'Logged out' };
   }
 
+  @Post('test')
+  test() {
+    console.log('Hello');
+    return { m: 'Hellooo' };
+  }
+
   /**
    * GET /auth/profile - Example of a protected route to get user profile.
    * Uses JwtAuthGuard to execute the JwtStrategy and validate the token.

@@ -4,6 +4,7 @@ import UserDropdown from "./user/UserDropdown";
 import SearchBar from "./SearchBar";
 import { Menu, X } from "lucide-react";
 import { useSidebarContext } from "../context/SidebarContext";
+import { useAuth } from "../hooks/useAuth";
 
 function Header({
   user,
@@ -16,6 +17,7 @@ function Header({
   isLoading: boolean;
   localSearch: string;
 }) {
+  const { logout } = useAuth();
   const { isOpenSidebar, toggleSidebar } = useSidebarContext();
 
   return (
@@ -48,7 +50,7 @@ function Header({
 
       {/* User Menu */}
       <div className="flex flex-none items-center relative">
-        <UserDropdown user={user} />
+        <UserDropdown user={user} logout={logout} />
       </div>
     </header>
   );

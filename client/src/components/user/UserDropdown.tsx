@@ -6,18 +6,14 @@ import {
   LogOut,
   Settings2,
 } from "lucide-react";
-import { useAppDispatch } from "../../hooks";
-import { logout } from "../../store/features/authSlice";
 import { Link } from "react-router-dom";
 
-function UserDropdown({ user }: { user: User | null }) {
+function UserDropdown({ user, logout }: { user: User | null; logout: any }) {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [isShow, setIsShow] = useState(false);
 
-  const dispatch = useAppDispatch();
-
   const logoutUser = () => {
-    dispatch(logout());
+    logout();
   };
 
   useEffect(() => {

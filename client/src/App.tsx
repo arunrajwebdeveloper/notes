@@ -1,12 +1,11 @@
 import { Suspense, lazy } from "react";
-import { Provider } from "react-redux";
-import { store } from "./store/store";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute, PublicRoute } from "./components/auth/ProtectedRoute";
 import OfflineModal from "./components/modal/OfflineModal";
 import CircleSpinner from "./components/common/CircleSpinner";
 import SidebarContextProvider from "./context/SidebarContext";
+import StoreProvider from "./providers/StoreProvider";
+import { SessionHandler } from "./components/auth/SessionHandler";
 
 // Lazy load pages
 const NotesPage = lazy(() => import("./view/NotesPage"));
@@ -16,20 +15,10 @@ const ProfilePage = lazy(() => import("./view/ProfilePage"));
 const UnauthorizedPage = lazy(() => import("./view/UnauthorizedPage"));
 // const AdminPage = lazy(() => import("./view/AdminPage"));
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    },
-  },
-});
-
 function App() {
   return (
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
+    <StoreProvider>
+      <SessionHandler>
         <SidebarContextProvider>
           <BrowserRouter>
             <Suspense
@@ -78,8 +67,8 @@ function App() {
           </BrowserRouter>
         </SidebarContextProvider>
         <OfflineModal />
-      </QueryClientProvider>
-    </Provider>
+      </SessionHandler>
+    </StoreProvider>
   );
 }
 
