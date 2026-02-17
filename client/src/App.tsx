@@ -20,8 +20,6 @@ const UnauthorizedPage = lazy(() => import("./view/UnauthorizedPage"));
 function App() {
   const cookiesEnabled = useCookieSupport();
 
-  console.log("cookiesEnabled :>> ", cookiesEnabled);
-
   return (
     <StoreProvider>
       <SessionHandler>
