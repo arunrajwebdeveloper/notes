@@ -39,6 +39,7 @@ export class AuthService {
 
     res.cookie('access_token', accessToken, {
       ...commonOptions,
+      path: '/',
       maxAge: 15 * 60 * 1000, // 15m
     });
 
