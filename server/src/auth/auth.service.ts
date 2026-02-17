@@ -15,6 +15,7 @@ import { UsersService } from '../users/users.service';
 // Create a custom type that includes partitioned
 interface CustomCookieOptions extends CookieOptions {
   partitioned?: boolean;
+  httpOnly: boolean;
 }
 @Injectable()
 export class AuthService {
