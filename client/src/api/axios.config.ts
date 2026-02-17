@@ -12,6 +12,13 @@ export const apiClient: AxiosInstance = axios.create({
   withCredentials: true, // send cookies
 });
 
+apiClient.interceptors.request.use((config) => {
+  if (!navigator.cookieEnabled) {
+    alert("Cookies are disabled. Please enable them to stay logged in.");
+  }
+  return config;
+});
+
 // Response interceptor
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {

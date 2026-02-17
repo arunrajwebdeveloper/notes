@@ -6,6 +6,8 @@ import CircleSpinner from "./components/common/CircleSpinner";
 import SidebarContextProvider from "./context/SidebarContext";
 import StoreProvider from "./providers/StoreProvider";
 import { SessionHandler } from "./components/auth/SessionHandler";
+import { useCookieSupport } from "./hooks/useCookieSupport";
+import CookieDisabledModal from "./components/modal/CookieDisabledModal";
 
 // Lazy load pages
 const NotesPage = lazy(() => import("./view/NotesPage"));
@@ -16,6 +18,10 @@ const UnauthorizedPage = lazy(() => import("./view/UnauthorizedPage"));
 // const AdminPage = lazy(() => import("./view/AdminPage"));
 
 function App() {
+  const cookiesEnabled = useCookieSupport();
+
+  console.log("cookiesEnabled :>> ", cookiesEnabled);
+
   return (
     <StoreProvider>
       <SessionHandler>
@@ -67,6 +73,7 @@ function App() {
           </BrowserRouter>
         </SidebarContextProvider>
         <OfflineModal />
+        {!cookiesEnabled && <CookieDisabledModal />}
       </SessionHandler>
     </StoreProvider>
   );
