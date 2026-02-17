@@ -30,7 +30,6 @@ export class AuthService {
   // Centralized method to set cookies
   private setCookies(res: Response, accessToken: string, refreshToken: string) {
     const isProduction = process.env.NODE_ENV === 'production';
-
     const commonOptions: CustomCookieOptions = {
       httpOnly: true,
       // On Render, this MUST be true because Render uses HTTPS
