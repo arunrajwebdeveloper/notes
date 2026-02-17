@@ -30,7 +30,10 @@ export class NotesController {
    * POST /notes - Create a note
    */
   @Post()
-  create(@Request() req, @Body() createNoteDto: CreateNoteDto): Promise<Note> {
+  create(
+    @Request() req: any,
+    @Body() createNoteDto: CreateNoteDto,
+  ): Promise<Note> {
     return this.notesService.create(req.user.userId, createNoteDto);
   }
 
@@ -40,7 +43,7 @@ export class NotesController {
    */
   @Get()
   findAll(
-    @Request() req,
+    @Request() req: any,
     @Query(new ValidationPipe({ transform: true }))
     paginationDto: PaginationDto,
   ): Promise<{
@@ -59,7 +62,7 @@ export class NotesController {
    */
   @Patch(':id')
   update(
-    @Request() req,
+    @Request() req: any,
     @Param('id') id: string,
     @Body() updateNoteDto: UpdateNoteDto,
   ): Promise<Note> {
@@ -72,7 +75,7 @@ export class NotesController {
    */
   @Patch(':noteId/tags')
   async removeTag(
-    @Request() req,
+    @Request() req: any,
     @Param('noteId') noteId: string,
     @Body() removeTagDto: RemoveSingleTagDto,
   ): Promise<void> {
@@ -87,7 +90,7 @@ export class NotesController {
 
   @Get('archive')
   findArchived(
-    @Request() req,
+    @Request() req: any,
     @Query() pagination: PaginationDto,
   ): Promise<{
     total: number;
@@ -104,7 +107,7 @@ export class NotesController {
   }
 
   @Post(':id/archive')
-  archive(@Request() req, @Param('id') id: string): Promise<Note> {
+  archive(@Request() req: any, @Param('id') id: string): Promise<Note> {
     return this.notesService.archive(req.user.userId, id);
   }
 
@@ -117,7 +120,7 @@ export class NotesController {
 
   @Get('trash')
   findTrash(
-    @Request() req,
+    @Request() req: any,
     @Query() pagination: PaginationDto,
   ): Promise<{
     total: number;
@@ -137,7 +140,7 @@ export class NotesController {
    * GET /notes/:id - Find one active notes (not archived, not trashed)
    */
   @Get(':id')
-  findOne(@Request() req, @Param('id') id: string): Promise<Note | null> {
+  findOne(@Request() req: any, @Param('id') id: string): Promise<Note | null> {
     return this.notesService.findOne(req.user.userId, id);
   }
 
@@ -146,7 +149,7 @@ export class NotesController {
    */
   @Delete('empty-trash')
   @HttpCode(200) // Or 204 No Content, but 200 with the count is often helpful.
-  async emptyTrash(@Request() req): Promise<{ deletedCount: number }> {
+  async emptyTrash(@Request() req: any): Promise<{ deletedCount: number }> {
     return this.notesService.emptyTrash(req.user.userId);
   }
 
@@ -155,7 +158,7 @@ export class NotesController {
    */
   @Delete(':id')
   @HttpCode(200) // Changed to 200/204, but POST/DELETE is semantic for moving to trash
-  moveToTrash(@Request() req, @Param('id') id: string): Promise<Note> {
+  moveToTrash(@Request() req: any, @Param('id') id: string): Promise<Note> {
     return this.notesService.moveToTrash(req.user.userId, id);
   }
 
@@ -163,7 +166,7 @@ export class NotesController {
    * POST /notes/:id/restore - Restores the note from the trash bin.
    */
   @Post(':id/restore')
-  restore(@Request() req, @Param('id') id: string): Promise<Note> {
+  restore(@Request() req: any, @Param('id') id: string): Promise<Note> {
     return this.notesService.restoreFromTrash(req.user.userId, id);
   }
 
@@ -172,7 +175,7 @@ export class NotesController {
    */
   @Delete('trash/:id')
   @HttpCode(204) // 204 No Content is standard for successful deletion
-  deletePermanent(@Request() req, @Param('id') id: string): Promise<void> {
+  deletePermanent(@Request() req: any, @Param('id') id: string): Promise<void> {
     return this.notesService.deletePermanent(req.user.userId, id);
   }
 }

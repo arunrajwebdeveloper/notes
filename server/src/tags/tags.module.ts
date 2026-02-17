@@ -2,8 +2,7 @@ import { Module } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { TagsController } from './tags.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Tag, TagSchema } from './schemas/tag.schema'; // Update import
-import { Note, NoteSchema } from './../notes/schemas/note.schema';
+import { Tag, TagSchema } from './schemas/tag.schema';
 import { NotesModule } from '../notes/notes.module';
 
 @Module({

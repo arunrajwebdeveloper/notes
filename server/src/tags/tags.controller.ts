@@ -24,20 +24,23 @@ export class TagsController {
 
   // POST /tags
   @Post()
-  create(@Request() req, @Body() createTagDto: CreateTagDto): Promise<Tag> {
-    return this.tagsService.create(req.user.userId, createTagDto);
+  create(
+    @Request() req: any,
+    @Body() createTagDto: CreateTagDto,
+  ): Promise<Tag> {
+    return this.tagsService.create(req?.user?.userId, createTagDto);
   }
 
   // GET /tags
   @Get()
-  findAll(@Request() req): Promise<any[]> {
+  findAll(@Request() req: any): Promise<any[]> {
     return this.tagsService.findAllWithNoteCounts(req.user.userId);
   }
 
   // PATCH /tags/:id (Use PATCH for partial update of the name)
   @Patch(':id')
   update(
-    @Request() req,
+    @Request() req: any,
     @Param('id') id: string,
     @Body() updateLabelDto: UpdateTagDto,
   ): Promise<Tag> {
@@ -47,14 +50,14 @@ export class TagsController {
   // DELETE /tags/:id
   @Delete(':id')
   @HttpCode(204) // Standard response for successful deletion
-  delete(@Request() req, @Param('id') id: string): Promise<void> {
+  delete(@Request() req: any, @Param('id') id: string): Promise<void> {
     return this.tagsService.delete(req.user.userId, id);
   }
 
   // DELETE /tags
   @Delete()
   async deleteManyTags(
-    @Request() req,
+    @Request() req: any,
     @Body() deleteManyTagsDto: DeleteManyTagsDto,
   ): Promise<void> {
     await this.tagsService.deleteManyTags(
