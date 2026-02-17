@@ -65,7 +65,7 @@ function NotesPage() {
       />
 
       <div
-        className="w-full flex-1 overflow-y-auto px-4 sm:px-6 md:px-10 transition duration-300 
+        className="w-full flex-1 overflow-y-auto px-4 sm:px-6 lg:px-10 transition duration-300 
       [&::-webkit-scrollbar]:w-1
     [&::-webkit-scrollbar-track]:bg-gray-100
     [&::-webkit-scrollbar-thumb]:bg-gray-400

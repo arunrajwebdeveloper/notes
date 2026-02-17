@@ -27,7 +27,7 @@ function Sidebar({
 
   return (
     <aside className={`h-dvh w-auto ${isOpenSidebar ? "flex" : "hidden"}`}>
-      <div className="w-[100px] h-full flex flex-col justify-between items-center py-6 border-r border-r-slate-200">
+      <div className="w-[60px] lg:w-[100px] h-full flex flex-col justify-between items-center py-6 border-r border-r-slate-200">
         {/* Logo */}
         <div className="flex flex-col items-center">
           <p className="text-xl font-semibold text-black m-auto leading-5 select-none">
@@ -37,7 +37,7 @@ function Sidebar({
 
           <button
             onClick={() => openNoteModal(null)}
-            className="w-16 h-16 mt-14 rounded-full group relative bg-black flex items-center cursor-pointer text-base text-white transition duration-300"
+            className="w-12 h-12 lg:w-16 lg:h-16 mt-14 rounded-full group relative bg-black flex items-center cursor-pointer text-base text-white transition duration-300"
           >
             <Plus className="m-auto transition duration-300 origin-center group-hover:rotate-90" />
             <Tooltip content="Create Note" position="right" />

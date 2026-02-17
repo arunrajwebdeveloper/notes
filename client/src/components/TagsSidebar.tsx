@@ -62,7 +62,7 @@ const TagsSidebar = ({
   handleNoteType: (type: string) => void;
 }) => {
   return (
-    <div className="w-[300px] h-full border-r border-r-slate-200">
+    <div className="w-[240px] lg:w-[300px] h-full border-r border-r-slate-200">
       <div className="flex justify-between items-center px-6 h-[80px]">
         <h2 className="text-xl text-black font-medium m-0">Tags</h2>
         <button
