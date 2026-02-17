@@ -72,7 +72,7 @@ const LoginPage = () => {
       </div>
 
       <div className="text-center py-4">
-        <p className="text-white text-xs">&copy; 2025</p>
+        <p className="text-white text-xs">&copy;{new Date().getFullYear()}</p>
       </div>
     </div>
   );
