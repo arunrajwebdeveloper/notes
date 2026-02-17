@@ -12,15 +12,6 @@ export const SessionHandler = ({ children }: { children: React.ReactNode }) => {
   const { loading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    // Check if cookies are disabled at the browser level
-    if (!navigator.cookieEnabled) {
-      alert(
-        "This app requires cookies to keep you logged in. Please enable them in your browser settings.",
-      );
-      dispatch(setLoading(false));
-      return;
-    }
-
     const checkSession = async () => {
       try {
         dispatch(setLoading(true));
