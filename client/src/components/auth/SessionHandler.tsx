@@ -13,33 +13,9 @@ export const SessionHandler = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // Check if cookies are disabled at the browser level
-    // if (!navigator.cookieEnabled) {
-    //   alert(
-    //     "This app requires cookies to keep you logged in. Please enable them in your browser settings.",
-    //   );
-    //   dispatch(setLoading(false));
-    //   return;
-    // }
-
-    const checkCookiesReallyWork = () => {
-      try {
-        // 1. Try to set a test cookie
-        document.cookie = "testcookie=1; SameSite=Lax";
-        const isCookieSet = document.cookie.indexOf("testcookie=") !== -1;
-
-        // 2. Immediately clean it up
-        document.cookie =
-          "testcookie=1; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
-
-        return isCookieSet;
-      } catch (e) {
-        return false;
-      }
-    };
-
-    if (!checkCookiesReallyWork()) {
+    if (!navigator.cookieEnabled) {
       alert(
-        "Cookies are blocked! Please enable 'Cross-Site Tracking' or 'Third-Party Cookies' in your browser settings to log in.",
+        "This app requires cookies to keep you logged in. Please enable them in your browser settings.",
       );
       dispatch(setLoading(false));
       return;
