@@ -36,10 +36,6 @@ export class AuthService {
       // On Render, this MUST be true because Render uses HTTPS
       secure: isProduction,
       sameSite: isProduction ? 'none' : 'lax',
-      /* Note: partitioned: true is part of a new standard (CHIPS) that allows 
-      "third-party" cookies to work in a restricted "partition" 
-      so they aren't blocked by privacy settings. */
-      partitioned: true,
     };
 
     res.cookie('access_token', accessToken, {
