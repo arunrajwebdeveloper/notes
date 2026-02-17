@@ -6,16 +6,18 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { CookieOptions, Response } from 'express';
+import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { User } from '../users/schemas/user.schema';
 import { UsersService } from '../users/users.service';
 
 // Create a custom type that includes partitioned
-interface CustomCookieOptions extends CookieOptions {
-  partitioned?: boolean;
+interface CustomCookieOptions {
   httpOnly: boolean;
+  secure: boolean;
+  sameSite: boolean | 'lax' | 'strict' | 'none';
+  partitioned?: boolean;
 }
 @Injectable()
 export class AuthService {
