@@ -6,12 +6,16 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { Response } from 'express';
+import { CookieOptions, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { User } from '../users/schemas/user.schema';
 import { UsersService } from '../users/users.service';
 
+// Create a custom type that includes partitioned
+interface CustomCookieOptions extends CookieOptions {
+  partitioned?: boolean;
+}
 @Injectable()
 export class AuthService {
   constructor(
@@ -24,19 +28,24 @@ export class AuthService {
   private setCookies(res: Response, accessToken: string, refreshToken: string) {
     const isProduction = process.env.NODE_ENV === 'production';
 
-    res.cookie('access_token', accessToken, {
+    const commonOptions: CustomCookieOptions = {
       httpOnly: true,
       // On Render, this MUST be true because Render uses HTTPS
       secure: isProduction,
-      // 'none' is required for cross-site requests (Frontend on one URL, Backend on another)
       sameSite: isProduction ? 'none' : 'lax',
+      /* Note: partitioned: true is part of a new standard (CHIPS) that allows 
+      "third-party" cookies to work in a restricted "partition" 
+      so they aren't blocked by privacy settings. */
+      partitioned: true,
+    };
+
+    res.cookie('access_token', accessToken, {
+      ...commonOptions,
       maxAge: 15 * 60 * 1000, // 15m
     });
 
     res.cookie('refresh_token', refreshToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? 'none' : 'lax',
+      ...commonOptions,
       path: '/api/auth/refresh',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
     });
