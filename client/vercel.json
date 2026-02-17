@@ -5,7 +5,7 @@
       "destination": "https://notes-guvs.onrender.com/api/:path*"
     },
     {
-      "source": "/((?!api|assets|favicon.ico).* )",
+      "source": "/((?!api|assets|favicon.ico).*)",
       "destination": "/index.html"
     }
   ]
