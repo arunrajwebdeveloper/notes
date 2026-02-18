@@ -13,6 +13,7 @@ interface SidebarContextProps {
 
 interface SidebarContextTypes {
   isOpenSidebar: boolean;
+  windowWidth: number;
   toggleSidebar: () => void;
   openSidebar: () => void;
   closeSidebar: () => void;
@@ -50,6 +51,7 @@ const SidebarContextProvider = ({ children }: SidebarContextProps) => {
     <SidebarContext.Provider
       value={{
         isOpenSidebar,
+        windowWidth,
         toggleSidebar,
         openSidebar,
         closeSidebar,
