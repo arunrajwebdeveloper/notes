@@ -5,9 +5,11 @@ import { useNotes } from "../hooks/useNotes";
 import NoteModal from "../components/modal/NoteModal";
 import { useAppSelector } from "../hooks";
 import TagsManageModal from "../components/modal/TagsManageModal";
+import { useSidebarContext } from "../context/SidebarContext";
 
 function NotesPage() {
   const { user } = useAppSelector((state) => state.auth);
+  const { isOpenSidebar } = useSidebarContext();
 
   const {
     notes: notesData,
@@ -66,13 +68,12 @@ function NotesPage() {
       />
 
       <div
-        className="w-full flex-1 overflow-y-auto px-4 sm:px-6 lg:px-10 transition duration-300 
+        className={`w-full overflow-y-auto px-4 sm:px-6 lg:px-10 transition duration-300 
       [&::-webkit-scrollbar]:w-1
     [&::-webkit-scrollbar-track]:bg-gray-100
     [&::-webkit-scrollbar-thumb]:bg-gray-400
     dark:[&::-webkit-scrollbar-track]:bg-neutral-400
-    dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
-      "
+    dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 ${isOpenSidebar ? "flex-none" : "flex-1"}`}
       >
         <Header
           user={user}
