@@ -19,7 +19,7 @@ interface RelativeTimeFormatOptions {
  */
 export function formatRelativeTime(
   date: Date | string | number,
-  options: RelativeTimeFormatOptions = {}
+  options: RelativeTimeFormatOptions = {},
 ): string {
   const { locale = "en-US", numeric = "auto" } = options;
 
@@ -69,7 +69,7 @@ export function formatRelativeTime(
 export function formatSmartTime(
   date: Date | string | number,
   thresholdDays: number = 30,
-  options: RelativeTimeFormatOptions = {}
+  options: RelativeTimeFormatOptions = {},
 ): string {
   const { locale = "en-US" } = options;
   const now = new Date();
@@ -83,9 +83,9 @@ export function formatSmartTime(
 
   // Use absolute date for older dates
   const dateFormatter = new Intl.DateTimeFormat(locale, {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+    year: "numeric", // "numeric" | "2-digit" | undefined
+    month: "short", // "numeric" | "2-digit" | "long" | "short"
+    day: "numeric", // "numeric" | "2-digit" | undefined
   });
 
   return dateFormatter.format(past);
@@ -97,10 +97,10 @@ export function formatSmartTime(
  */
 export function useRelativeTime(
   date: Date | string | number,
-  options: RelativeTimeFormatOptions = {}
+  options: RelativeTimeFormatOptions = {},
 ) {
   const [relativeTime, setRelativeTime] = React.useState(() =>
-    formatRelativeTime(date, options)
+    formatRelativeTime(date, options),
   );
 
   React.useEffect(() => {

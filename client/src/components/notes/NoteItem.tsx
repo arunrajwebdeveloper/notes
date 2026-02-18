@@ -119,7 +119,6 @@ function NoteItem({
 
           {/* ACTIONS */}
           <div className="flex gap-3 items-center justify-between note-actions">
-            <div></div>
             {/* {!isTrash && (
               <div className="flex gap-3 items-center">
                 <div className="flex-none">
