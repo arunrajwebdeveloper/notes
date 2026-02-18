@@ -150,11 +150,13 @@ function NoteItem({
                         type: isArchived ? "unarchive" : "archive",
                       })
                     }
-                    disabled={isArchiving && archivingNoteIds.has(noteId)}
+                    disabled={
+                      isArchiving && archivingNoteIds.has(String(noteId))
+                    }
                     className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900 `}
                   >
-                    {isArchiving && archivingNoteIds.has(noteId) ? (
+                    {isArchiving && archivingNoteIds.has(String(noteId)) ? (
                       <CircleSpinner size={20} className="text-slate-400" />
                     ) : (
                       <>

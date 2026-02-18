@@ -351,25 +351,6 @@ export const useNotes = ({
     },
   });
 
-  // const removeNoteTagMutation = useMutation({
-  //   mutationFn: notesAPI.removeNoteTag,
-  //   onMutate: ({ payload: { tagId } }) => {
-  //     setDeletingNoteTagIds((prev) => new Set([...prev, String(tagId)]));
-  //   },
-  //   onSuccess: async () => {
-  //     await queryClient.invalidateQueries({
-  //       queryKey: ["get_notes", filterState],
-  //     });
-  //   },
-  //   onSettled: (_, __, { payload: { tagId } }) => {
-  //     setDeletingNoteTagIds((prev) => {
-  //       const next = new Set(prev);
-  //       next.delete(String(tagId));
-  //       return next;
-  //     });
-  //   },
-  // });
-
   const archiveNoteMutation = useMutation({
     mutationFn: notesAPI.archiveNote,
     onMutate: ({ id }) => {
