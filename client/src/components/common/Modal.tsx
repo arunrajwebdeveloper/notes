@@ -7,6 +7,7 @@ interface ModalProps {
   onHide: () => void;
   children: ReactNode;
   className?: string;
+  isCenter?: boolean;
 }
 
 interface ModalHeaderProps {
@@ -36,7 +37,13 @@ interface ButtonProps {
   [key: string]: any; // For additional props
 }
 
-const Modal = ({ show, onHide, className, children }: ModalProps) => {
+const Modal = ({
+  show,
+  onHide,
+  isCenter = true,
+  className,
+  children,
+}: ModalProps) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [shouldRender, setShouldRender] = useState<boolean>(false);
 
@@ -95,10 +102,10 @@ const Modal = ({ show, onHide, className, children }: ModalProps) => {
 
   return (
     <div
-      className={`fixed inset-0 bg-gray-900/50 flex items-center justify-center z-[99999] transition-opacity duration-500 ease-out ${
+      className={`fixed inset-0 bg-gray-900/50 flex justify-center z-[99999] transition-opacity duration-500 ease-out ${
         // Changed transition-all to transition-opacity
         isVisible ? "opacity-100" : "opacity-0" // Changed bg-opacity-50 to opacity-100 and bg-opacity-0 to opacity-0
-      }`}
+      } ${isCenter ? "items-center" : "items-start"}`}
       onClick={handleBackdropClick}
     >
       <div

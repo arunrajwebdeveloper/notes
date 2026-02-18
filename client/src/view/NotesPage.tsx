@@ -6,6 +6,8 @@ import NoteModal from "../components/modal/NoteModal";
 import { useAppSelector } from "../hooks";
 import TagsManageModal from "../components/modal/TagsManageModal";
 import { useSidebarContext } from "../context/SidebarContext";
+import SearchModal from "../components/modal/SearchModal";
+// import { useEffect } from "react";
 
 function NotesPage() {
   const { user } = useAppSelector((state) => state.auth);
@@ -27,9 +29,14 @@ function NotesPage() {
     filterState,
     localSearch,
     isOpenTagModal,
+    isOpenSearchModal,
     openTagModal,
     closeTagModal,
     handleNoteType,
+    closeSearchModal,
+    openSearchModal,
+    clearSearchModal,
+    closeOrClearSearchModal,
     createTagMutation,
     updateTagMutation,
     deleteTagMutation,
@@ -52,7 +59,15 @@ function NotesPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    // isSuccess,
   } = notesData;
+
+  // Close search modal after fetch data
+  // useEffect(() => {
+  //   if (isOpenSearchModal && isSuccess && data) {
+  //     closeSearchModal();
+  //   }
+  // }, [isSuccess, data]);
 
   return (
     <div className="flex h-dvh w-full overflow-hidden">
@@ -80,6 +95,8 @@ function NotesPage() {
           handleSearchChange={handleSearchChange}
           isLoading={isLoadingNotes}
           localSearch={localSearch}
+          openSearchModal={openSearchModal}
+          clearSearchModal={clearSearchModal}
         />
         <NoteList
           data={data}
@@ -121,6 +138,17 @@ function NotesPage() {
         createTagMutation={createTagMutation}
         updateTagMutation={updateTagMutation}
         deleteTagMutation={deleteTagMutation}
+      />
+
+      {/* Search Modal */}
+
+      <SearchModal
+        isShow={isOpenSearchModal}
+        onHide={closeSearchModal}
+        handleSearchChange={handleSearchChange}
+        isLoading={isLoadingNotes}
+        localSearch={localSearch}
+        closeOrClearSearchModal={closeOrClearSearchModal}
       />
     </div>
   );

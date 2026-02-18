@@ -34,9 +34,10 @@ export const useNotes = ({
     sortOrder: "desc",
     noteType: "active",
   });
-  const [localSearch, setLocalSearch] = useState(filterState.search);
+  const [localSearch, setLocalSearch] = useState<string>(filterState.search);
   const [isOpenNoteModal, setIsOpenNoteModal] = useState<boolean>(false);
   const [isOpenTagModal, setIsOpenTagModal] = useState<boolean>(false);
+  const [isOpenSearchModal, setIsOpenSearchModal] = useState<boolean>(false);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [deletingNoteTagIds, setDeletingNoteTagIds] = useState<
     Map<string, string[]>
@@ -105,6 +106,25 @@ export const useNotes = ({
       noteType: type as NoteType,
       tagId: null,
     }));
+  };
+
+  const clearSearchModal = () => {
+    setLocalSearch("");
+  };
+
+  const openSearchModal = () => {
+    setIsOpenSearchModal(true);
+  };
+  const closeSearchModal = () => {
+    setIsOpenSearchModal(false);
+  };
+
+  const closeOrClearSearchModal = () => {
+    if (localSearch) {
+      clearSearchModal();
+    } else {
+      setIsOpenSearchModal(false);
+    }
   };
 
   const notes = useInfiniteQuery<
@@ -398,9 +418,14 @@ export const useNotes = ({
     selectedNote,
     handleSearchChange,
     handleTagSelect,
+    closeSearchModal,
+    openSearchModal,
+    clearSearchModal,
+    closeOrClearSearchModal,
     filterState,
     localSearch,
     isOpenTagModal,
+    isOpenSearchModal,
     openTagModal,
     closeTagModal,
     handleNoteType,
