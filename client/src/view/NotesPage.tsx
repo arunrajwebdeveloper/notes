@@ -38,6 +38,7 @@ function NotesPage() {
     emptyTrashMutation,
     removeNoteTagMutation,
     deletingNoteTagIds,
+    archivingNoteIds,
   } = useNotes({
     enabled: true,
   });
@@ -88,6 +89,7 @@ function NotesPage() {
           isFetchingNextPage={isFetchingNextPage}
           onEdit={(note) => openNoteModal(note)}
           deletingNoteTagIds={deletingNoteTagIds}
+          archivingNoteIds={archivingNoteIds}
           filterState={filterState}
           deleteNoteMutation={deleteNoteMutation}
           archiveNoteMutation={archiveNoteMutation}

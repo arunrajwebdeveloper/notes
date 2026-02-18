@@ -27,6 +27,7 @@ export interface BaseProps {
     { id: string; payload: { tagId: string } }
   >;
   deletingNoteTagIds: Map<string, string[]>;
+  archivingNoteIds: Set<string>;
 }
 export interface InfiniteMatchListProps extends BaseProps {
   data: InfiniteData<NotesResponse, number> | undefined;
@@ -54,6 +55,7 @@ function NoteList({
   emptyTrashMutation,
   removeNoteTagMutation,
   deletingNoteTagIds,
+  archivingNoteIds,
 }: InfiniteMatchListProps) {
   // Intersection Observer Hook
   const { ref, inView } = useInView();
@@ -202,6 +204,7 @@ function NoteList({
                   deleteTrashNote={deleteTrashNote}
                   onRemoveNoteTag={onRemoveNoteTag}
                   deletingNoteTagIds={deletingNoteTagIds}
+                  archivingNoteIds={archivingNoteIds}
                 />
               );
             })

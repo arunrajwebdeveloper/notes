@@ -41,6 +41,9 @@ export const useNotes = ({
   const [deletingNoteTagIds, setDeletingNoteTagIds] = useState<
     Map<string, string[]>
   >(new Map());
+  const [archivingNoteIds, setArchivingNoteIds] = useState<Set<string>>(
+    new Set(),
+  );
 
   const debouncedSearch = useDebounce(localSearch, 500);
 
@@ -279,25 +282,6 @@ export const useNotes = ({
     },
   });
 
-  // const removeNoteTagMutation = useMutation({
-  //   mutationFn: notesAPI.removeNoteTag,
-  //   onMutate: ({ payload: { tagId } }) => {
-  //     setDeletingNoteTagIds((prev) => new Set([...prev, String(tagId)]));
-  //   },
-  //   onSuccess: async () => {
-  //     await queryClient.invalidateQueries({
-  //       queryKey: ["get_notes", filterState],
-  //     });
-  //   },
-  //   onSettled: (_, __, { payload: { tagId } }) => {
-  //     setDeletingNoteTagIds((prev) => {
-  //       const next = new Set(prev);
-  //       next.delete(String(tagId));
-  //       return next;
-  //     });
-  //   },
-  // });
-
   const removeNoteTagMutation = useMutation({
     mutationFn: notesAPI.removeNoteTag,
     onMutate: ({ id: noteId, payload: { tagId } }) => {
@@ -367,17 +351,56 @@ export const useNotes = ({
     },
   });
 
+  // const removeNoteTagMutation = useMutation({
+  //   mutationFn: notesAPI.removeNoteTag,
+  //   onMutate: ({ payload: { tagId } }) => {
+  //     setDeletingNoteTagIds((prev) => new Set([...prev, String(tagId)]));
+  //   },
+  //   onSuccess: async () => {
+  //     await queryClient.invalidateQueries({
+  //       queryKey: ["get_notes", filterState],
+  //     });
+  //   },
+  //   onSettled: (_, __, { payload: { tagId } }) => {
+  //     setDeletingNoteTagIds((prev) => {
+  //       const next = new Set(prev);
+  //       next.delete(String(tagId));
+  //       return next;
+  //     });
+  //   },
+  // });
+
   const archiveNoteMutation = useMutation({
     mutationFn: notesAPI.archiveNote,
+    onMutate: ({ id }) => {
+      setArchivingNoteIds((prev) => new Set([...prev, String(id)]));
+    },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+    },
+    onSettled: (_, __, { id }) => {
+      setArchivingNoteIds((prev) => {
+        const next = new Set(prev);
+        next.delete(String(id));
+        return next;
+      });
     },
   });
 
   const unarchiveNoteMutation = useMutation({
     mutationFn: notesAPI.unarchiveNote,
+    onMutate: ({ id }) => {
+      setArchivingNoteIds((prev) => new Set([...prev, String(id)]));
+    },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+    },
+    onSettled: (_, __, { id }) => {
+      setArchivingNoteIds((prev) => {
+        const next = new Set(prev);
+        next.delete(String(id));
+        return next;
+      });
     },
   });
 
@@ -410,5 +433,6 @@ export const useNotes = ({
     emptyTrashMutation,
     removeNoteTagMutation,
     deletingNoteTagIds,
+    archivingNoteIds,
   };
 };

@@ -25,6 +25,7 @@ function NoteItem({
   deleteTrashNote,
   onRemoveNoteTag,
   deletingNoteTagIds,
+  archivingNoteIds,
 }: {
   note: Note;
   onEdit: (note: Note) => void;
@@ -47,6 +48,7 @@ function NoteItem({
     type: "archive" | "unarchive";
   }) => void;
   deletingNoteTagIds: Map<string, string[]>;
+  archivingNoteIds: Set<string>;
 }) {
   const currentSearch = searchText;
   const {
@@ -148,11 +150,11 @@ function NoteItem({
                         type: isArchived ? "unarchive" : "archive",
                       })
                     }
-                    disabled={isArchiving}
+                    disabled={isArchiving && archivingNoteIds.has(noteId)}
                     className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900 `}
                   >
-                    {isArchiving ? (
+                    {isArchiving && archivingNoteIds.has(noteId) ? (
                       <CircleSpinner size={20} className="text-slate-400" />
                     ) : (
                       <>
