@@ -217,8 +217,11 @@ function NoteList({
 
       <div ref={ref} className="text-center my-10 select-none">
         {isFetchingNextPage ? (
-          <div>
-            <p className="text-sm text-slate-500 m-0">Fetching data...</p>
+          <div className="w-full flex justify-center">
+            <div className="text-slate-500 flex gap-x-2">
+              <CircleSpinner size={22} type="fetch" />
+              <p className="text-sm text-slate-500 m-0">Fetching notes...</p>
+            </div>
           </div>
         ) : hasNextPage ? (
           <button
