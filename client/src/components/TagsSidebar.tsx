@@ -99,7 +99,10 @@ const TagsSidebar = ({
           <>
             <button
               disabled={isLoadingNotes}
-              onClick={() => handleNoteType("active")}
+              onClick={() => {
+                handleNoteType("active");
+                closeSidebarOnSmDevice();
+              }}
               className={`flex items-center justify-between gap-4 h-14 px-6 w-full cursor-pointer text-base text-black transition duration-300 ${
                 filterState?.noteType === "active" &&
                 !filterState?.search &&
