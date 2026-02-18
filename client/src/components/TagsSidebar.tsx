@@ -9,11 +9,13 @@ function TagRowComponent({
   isLoadingNotes,
   handleTagSelect,
   filterState,
+  closeSidebarOnSmDevice,
 }: RowComponentProps<{
   tags: TagItem[];
   isLoadingNotes: boolean;
   handleTagSelect: (tagId: string) => void;
   filterState: NoteFilterState;
+  closeSidebarOnSmDevice: () => void;
 }>) {
   const tag = tags[index];
 
@@ -21,7 +23,10 @@ function TagRowComponent({
     <button
       disabled={isLoadingNotes}
       style={style}
-      onClick={() => handleTagSelect(tag._id)}
+      onClick={() => {
+        handleTagSelect(tag._id);
+        closeSidebarOnSmDevice();
+      }}
       className={`flex items-center justify-between gap-4 px-6 w-full cursor-pointer text-base text-black transition duration-300 ${
         filterState?.tagId === tag?._id
           ? "bg-emerald-200"
@@ -52,6 +57,7 @@ const TagsSidebar = ({
   filterState,
   openTagModal,
   handleNoteType,
+  closeSidebarOnSmDevice,
 }: {
   tags: TagItem[];
   isLoadingTags: boolean;
@@ -60,6 +66,7 @@ const TagsSidebar = ({
   filterState: NoteFilterState;
   openTagModal: () => void;
   handleNoteType: (type: string) => void;
+  closeSidebarOnSmDevice: () => void;
 }) => {
   return (
     <div className="w-[240px] lg:w-[300px] h-full border-r border-r-slate-200">
@@ -117,6 +124,7 @@ const TagsSidebar = ({
                 isLoadingNotes,
                 filterState,
                 handleTagSelect,
+                closeSidebarOnSmDevice,
               }}
               style={{ height: "calc(100dvh - 138px)", width: "100%" }}
             />

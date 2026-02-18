@@ -240,7 +240,7 @@ function NoteModal({
 
             {!selectedNote?.isTrash && (
               <>
-                <div className="flex gap-3 items-center">
+                <div className="flex gap-1 sm:gap-3 items-center">
                   <div className="flex-none">
                     <ColorMenu
                       currentColor={newNote?.color}

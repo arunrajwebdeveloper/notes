@@ -23,7 +23,13 @@ function Sidebar({
   handleNoteType: (type: string) => void;
   openNoteModal: (note: Note | null) => void;
 }) {
-  const { isOpenSidebar } = useSidebarContext();
+  const { isOpenSidebar, windowWidth, closeSidebar } = useSidebarContext();
+
+  const closeSidebarOnSmDevice = () => {
+    if (windowWidth < 1024) {
+      closeSidebar();
+    }
+  };
 
   return (
     <aside className={`h-dvh w-auto ${isOpenSidebar ? "flex" : "hidden"}`}>
@@ -36,7 +42,10 @@ function Sidebar({
           </p>
 
           <button
-            onClick={() => openNoteModal(null)}
+            onClick={() => {
+              openNoteModal(null);
+              closeSidebarOnSmDevice();
+            }}
             className="w-12 h-12 lg:w-16 lg:h-16 mt-14 rounded-full group relative bg-black flex items-center cursor-pointer text-base text-white transition duration-300"
           >
             <Plus className="m-auto transition duration-300 origin-center group-hover:rotate-90" />
@@ -45,14 +54,20 @@ function Sidebar({
         </div>
         <div className="space-y-4">
           <button
-            onClick={() => handleNoteType("archive")}
+            onClick={() => {
+              handleNoteType("archive");
+              closeSidebarOnSmDevice();
+            }}
             className={`w-14 h-14 group relative rounded-full bg-white flex items-center cursor-pointer text-base text-black transition duration-300 hover:bg-slate-100`}
           >
             <Archive size={20} className="m-auto" />
             <Tooltip content="Archive" position="right" />
           </button>
           <button
-            onClick={() => handleNoteType("trash")}
+            onClick={() => {
+              handleNoteType("trash");
+              closeSidebarOnSmDevice;
+            }}
             className={`w-14 h-14 group relative rounded-full bg-white flex items-center cursor-pointer text-base text-black transition duration-300 hover:bg-slate-100`}
           >
             <Trash2 size={20} className="m-auto" />
@@ -71,6 +86,7 @@ function Sidebar({
         filterState={filterState}
         openTagModal={openTagModal}
         handleNoteType={handleNoteType}
+        closeSidebarOnSmDevice={closeSidebarOnSmDevice}
       />
     </aside>
   );
