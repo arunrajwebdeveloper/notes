@@ -26,9 +26,10 @@ const SidebarContext = createContext<SidebarContextTypes | undefined>(
 const SidebarContextProvider = ({ children }: SidebarContextProps) => {
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const windowWidth = useWindowWidth();
+  const isSmallDevice = windowWidth < 1024;
 
   useEffect(() => {
-    if (windowWidth < 1024) {
+    if (isSmallDevice) {
       setIsOpenSidebar(false);
     } else {
       setIsOpenSidebar(true);

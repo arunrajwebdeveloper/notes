@@ -12,6 +12,7 @@ import SearchModal from "../components/modal/SearchModal";
 function NotesPage() {
   const { user } = useAppSelector((state) => state.auth);
   const { isOpenSidebar, windowWidth } = useSidebarContext();
+  const isSmallDevice = windowWidth < 1024;
 
   const {
     notes: notesData,
@@ -88,7 +89,7 @@ function NotesPage() {
     [&::-webkit-scrollbar-track]:bg-gray-100
     [&::-webkit-scrollbar-thumb]:bg-gray-400
     dark:[&::-webkit-scrollbar-track]:bg-neutral-400
-    dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 ${isOpenSidebar && windowWidth < 1024 ? "flex-none" : "flex-1"}`}
+    dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 ${isOpenSidebar && isSmallDevice ? "flex-none" : "flex-1"}`}
       >
         <Header
           user={user}

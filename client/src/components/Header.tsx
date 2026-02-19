@@ -23,6 +23,7 @@ function Header({
 }) {
   const { logout } = useAuth();
   const { isOpenSidebar, toggleSidebar, windowWidth } = useSidebarContext();
+  const isSmallDevice = windowWidth < 1024;
 
   return (
     <header className="w-full h-16 md:h-20 top-0 sticky bg-white flex items-center justify-between z-50 gap-4">
@@ -45,7 +46,7 @@ function Header({
         </div>
 
         {/* Search bar */}
-        {windowWidth > 1023 && (
+        {!isSmallDevice && (
           <SearchBar
             handleSearchChange={handleSearchChange}
             isLoading={isLoading}
@@ -58,7 +59,7 @@ function Header({
 
       {/* User Menu */}
       <div className="flex flex-none items-center relative gap-x-4">
-        {windowWidth < 1024 && (
+        {isSmallDevice && (
           <button
             onClick={openSearchModal}
             className="w-10 h-10 flex outline-0 border-0 cursor-pointer select-none"

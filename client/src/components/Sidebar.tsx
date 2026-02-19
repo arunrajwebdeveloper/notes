@@ -24,9 +24,9 @@ function Sidebar({
   openNoteModal: (note: Note | null) => void;
 }) {
   const { isOpenSidebar, windowWidth, closeSidebar } = useSidebarContext();
-
+  const isSmallDevice = windowWidth < 1024;
   const closeSidebarOnSmDevice = () => {
-    if (windowWidth < 1024) {
+    if (isSmallDevice) {
       closeSidebar();
     }
   };
@@ -66,7 +66,7 @@ function Sidebar({
           <button
             onClick={() => {
               handleNoteType("trash");
-              closeSidebarOnSmDevice;
+              closeSidebarOnSmDevice();
             }}
             className={`w-14 h-14 group relative rounded-full bg-white flex items-center cursor-pointer text-base text-black transition duration-300 hover:bg-slate-100`}
           >
