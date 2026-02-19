@@ -1,6 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../store/store";
+import { useAppSelector } from "../../hooks";
 
 interface ProtectedRouteProps {
   children?: React.ReactNode;
@@ -11,7 +10,7 @@ export const ProtectedRoute = ({
   children,
 }: // requiredRole,
 ProtectedRouteProps) => {
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -25,9 +24,10 @@ ProtectedRouteProps) => {
   return children ? <>{children}</> : <Outlet />;
 };
 
-// Alternative: Public Route (redirects to dashboard if already logged in)
+// Public Route (redirects to dashboard if already logged in)
 export const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  // const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   if (isAuthenticated) {
     return <Navigate to="/notes" replace />;
