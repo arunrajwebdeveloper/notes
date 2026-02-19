@@ -1,3 +1,4 @@
+import CircleSpinner from "../common/CircleSpinner";
 import { Button, Modal } from "../common/Modal";
 
 interface ConfirmModalProps {
@@ -32,7 +33,8 @@ function ConfirmModal({
           Cancel
         </Button>
         <Button variant="primary" onClick={onConfirm} disabled={isLoading}>
-          Yes, I'm sure
+          {isLoading && <CircleSpinner size={20} className="text-white me-2" />}
+          {isLoading ? "Working..." : "Yes, I'm sure"}
         </Button>
       </Modal.Footer>
     </Modal>
