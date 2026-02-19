@@ -12,8 +12,10 @@ import type {
   NoteFilterState,
   NotesResponse,
   NoteType,
+  ToggleArchiveType,
 } from "../types/note.types";
 import { useDebounce } from "../utils/useDebounce";
+import { useDelete } from "./useDelete";
 
 type NoteQueryKey = ["get_notes", NoteFilterState];
 
@@ -47,6 +49,7 @@ export const useNotes = ({
   );
 
   const debouncedSearch = useDebounce(localSearch, 500);
+  const { deleteInfo, onDelete, resetDeleteInfo } = useDelete();
 
   useEffect(() => {
     if (debouncedSearch !== filterState.search) {
@@ -125,6 +128,54 @@ export const useNotes = ({
     } else {
       setIsOpenSearchModal(false);
     }
+  };
+
+  const onDeleteNote = (id: string) => {
+    onDelete({
+      id,
+      action: "note",
+    });
+  };
+
+  const handleDelete = (id: string | null) => {
+    if (id) {
+      deleteNoteMutation.mutate(
+        { id },
+        {
+          onSettled: () => {
+            resetDeleteInfo();
+          },
+        },
+      );
+    }
+  };
+
+  const toggleArchive = ({ id, type }: ToggleArchiveType) => {
+    if (type === "archive") {
+      archiveNoteMutation.mutate({ id });
+    } else {
+      unarchiveNoteMutation.mutate({ id });
+    }
+  };
+
+  const restoreNote = (id: string) => {
+    restoreNoteMutation.mutate({ id });
+  };
+
+  const deleteTrashNote = (id: string) => {
+    deleteNoteFromTrashMutation.mutate({ id });
+  };
+
+  const emptyTrash = () => {
+    emptyTrashMutation.mutate(undefined, {
+      onSettled: () => {
+        resetDeleteInfo();
+      },
+    });
+  };
+
+  const onRemoveNoteTag = (id: string, tagId: string) => {
+    removeNoteTagMutation.mutate({ id, payload: { tagId } });
   };
 
   const notes = useInfiniteQuery<
@@ -440,5 +491,16 @@ export const useNotes = ({
     removeNoteTagMutation,
     deletingNoteTagIds,
     archivingNoteIds,
+
+    deleteInfo,
+    onDelete,
+    resetDeleteInfo,
+    onDeleteNote,
+    handleDelete,
+    toggleArchive,
+    restoreNote,
+    deleteTrashNote,
+    emptyTrash,
+    onRemoveNoteTag,
   };
 };

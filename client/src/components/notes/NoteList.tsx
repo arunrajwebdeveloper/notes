@@ -1,8 +1,11 @@
 import type { InfiniteData, UseMutationResult } from "@tanstack/react-query";
 import type {
+  DeleteInfoStateTypes,
   Note,
   NoteFilterState,
   NotesResponse,
+  OnDeleteTypes,
+  ToggleArchiveType,
 } from "../../types/note.types";
 import NoteItem from "./NoteItem";
 import { useEffect } from "react";
@@ -10,7 +13,6 @@ import { useInView } from "react-intersection-observer"; // Used for scroll dete
 import { Trash2 } from "lucide-react";
 import ConfirmModal from "../modal/ConfirmModal";
 import CircleSpinner from "../common/CircleSpinner";
-import { useDelete } from "../../hooks/useDelete";
 
 export interface BaseProps {
   onEdit: (note: Note) => void;
@@ -28,6 +30,16 @@ export interface BaseProps {
   >;
   deletingNoteTagIds: Map<string, string[]>;
   archivingNoteIds: Set<string>;
+  deleteInfo: DeleteInfoStateTypes;
+  onDelete: (info: OnDeleteTypes) => void;
+  resetDeleteInfo: () => void;
+  onDeleteNote: (id: string) => void;
+  handleDelete: (id: string | null) => void;
+  toggleArchive: ({ id, type }: ToggleArchiveType) => void;
+  restoreNote: (id: string) => void;
+  deleteTrashNote: (id: string) => void;
+  emptyTrash: () => void;
+  onRemoveNoteTag: (id: string, tagId: string) => void;
 }
 export interface InfiniteMatchListProps extends BaseProps {
   data: InfiniteData<NotesResponse, number> | undefined;
@@ -56,11 +68,19 @@ function NoteList({
   removeNoteTagMutation,
   deletingNoteTagIds,
   archivingNoteIds,
+  deleteInfo,
+  onDelete,
+  resetDeleteInfo,
+  onDeleteNote,
+  handleDelete,
+  toggleArchive,
+  restoreNote,
+  deleteTrashNote,
+  emptyTrash,
+  onRemoveNoteTag,
 }: InfiniteMatchListProps) {
   // Intersection Observer Hook
   const { ref, inView } = useInView();
-
-  const { deleteInfo, onDelete, resetDeleteInfo } = useDelete();
 
   // Auto-fetch logic
   useEffect(() => {
@@ -69,60 +89,6 @@ function NoteList({
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const onDeleteNote = (id: string) => {
-    onDelete({
-      id,
-      action: "note",
-    });
-  };
-
-  const handleDelete = (id: string | null) => {
-    if (id) {
-      deleteNoteMutation.mutate(
-        { id },
-        {
-          onSettled: () => {
-            resetDeleteInfo();
-          },
-        },
-      );
-    }
-  };
-
-  const toggleArchive = ({
-    id,
-    type,
-  }: {
-    id: string;
-    type: "archive" | "unarchive";
-  }) => {
-    if (type === "archive") {
-      archiveNoteMutation.mutate({ id });
-    } else {
-      unarchiveNoteMutation.mutate({ id });
-    }
-  };
-
-  const restoreNote = (id: string) => {
-    restoreNoteMutation.mutate({ id });
-  };
-
-  const deleteTrashNote = (id: string) => {
-    deleteNoteFromTrashMutation.mutate({ id });
-  };
-
-  const emptyTrash = () => {
-    emptyTrashMutation.mutate(undefined, {
-      onSettled: () => {
-        resetDeleteInfo();
-      },
-    });
-  };
-
-  const onRemoveNoteTag = (id: string, tagId: string) => {
-    removeNoteTagMutation.mutate({ id, payload: { tagId } });
-  };
 
   // Flatten the array of pages into a single array of notes
   const allNotes: Note[] =

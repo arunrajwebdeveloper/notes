@@ -108,6 +108,7 @@ function NoteItem({
                     }
                     isTrash={isTrash}
                     isLoading={isRemovingNoteTag && isDeleting}
+                    isDisabled={isTrash}
                   />
                 );
               })}

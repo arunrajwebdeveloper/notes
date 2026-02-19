@@ -1,19 +1,14 @@
 import { useState } from "react";
-
-type InfoTypes = "note" | "trash" | "tag" | null;
+import type { DeleteInfoStateTypes, OnDeleteTypes } from "../types/note.types";
 
 export const useDelete = () => {
-  const [deleteInfo, setDeleteInfo] = useState<{
-    isOpen: boolean;
-    id: string | null;
-    action: InfoTypes;
-  }>({
+  const [deleteInfo, setDeleteInfo] = useState<DeleteInfoStateTypes>({
     isOpen: false,
     id: null,
     action: null,
   });
 
-  const onDelete = (info: { id: string | null; action: InfoTypes }) => {
+  const onDelete = (info: OnDeleteTypes) => {
     const { id, action } = info;
     setDeleteInfo({
       isOpen: true,

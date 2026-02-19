@@ -1,5 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from "react";
-import { Archive, Pin, Redo2, Trash2 } from "lucide-react";
+import { Archive, Pin } from "lucide-react";
 import { isEqual } from "lodash";
 import type { NewNoteState, Note, Tag } from "../../types/note.types";
 import { Modal } from "../common/Modal";
@@ -209,112 +209,81 @@ function NoteModal({
 
         {/* Note Modal Footer */}
 
-        <div className="rounded-b-lg">
-          <div className="flex gap-2 items-center justify-between px-6 py-4 border-t border-t-slate-800/10">
-            {selectedNote?.isTrash && (
-              <div className="flex-none flex items-center  gap-2">
+        {!selectedNote?.isTrash && (
+          <div className="rounded-b-lg">
+            <div className="flex gap-2 items-center justify-between px-6 py-4 border-t border-t-slate-800/10">
+              <div className="flex gap-1 sm:gap-3 items-center">
                 <div className="flex-none">
-                  <button
-                    onClick={() => {}}
-                    disabled={false}
-                    className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
-                   text-slate-900 `}
-                  >
-                    <Redo2 size={20} />
-                    <Tooltip content="Restore" position="top" />
-                  </button>
+                  <ColorMenu
+                    currentColor={newNote?.color}
+                    onSelect={onSelectColor}
+                    isLoading={isLoading}
+                  />
+                </div>
+                <div className="flex-none">
+                  <TagsMenu
+                    tags={tags}
+                    selectedTags={newNote?.tags}
+                    onChange={onSelectTags}
+                    isLoading={isLoading}
+                  />
                 </div>
                 <div className="flex-none">
                   <button
-                    onClick={() => {}}
-                    disabled={false}
-                    className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
-                   text-slate-900 `}
-                  >
-                    <Trash2 size={20} />
-                    <Tooltip content="Delete Forever" position="top" />
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {!selectedNote?.isTrash && (
-              <>
-                <div className="flex gap-1 sm:gap-3 items-center">
-                  <div className="flex-none">
-                    <ColorMenu
-                      currentColor={newNote?.color}
-                      onSelect={onSelectColor}
-                      isLoading={isLoading}
-                    />
-                  </div>
-                  <div className="flex-none">
-                    <TagsMenu
-                      tags={tags}
-                      selectedTags={newNote?.tags}
-                      onChange={onSelectTags}
-                      isLoading={isLoading}
-                    />
-                  </div>
-                  <div className="flex-none">
-                    <button
-                      onClick={toggleArchived}
-                      disabled={isLoading}
-                      className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
+                    onClick={toggleArchived}
+                    disabled={isLoading}
+                    className={`w-12 h-12 relative group flex items-center justify-center rounded-full cursor-pointer transition duration-300
                 ${newNote?.isArchived ? " bg-emerald-200" : " text-slate-900"}`}
-                    >
-                      <Archive size={20} />
-                      {!isLoading && (
-                        <Tooltip
-                          content={
-                            newNote?.isArchived ? "Unarchive" : "Archive"
-                          }
-                          position="top"
-                        />
-                      )}
-                    </button>
-                  </div>
-                  <div className="flex-none">
-                    <button
-                      onClick={togglePinned}
-                      disabled={isLoading}
-                      className={`w-12 h-12 relative  group flex items-center justify-center rounded-full cursor-pointer transition duration-300
-                ${newNote?.isPinned ? " bg-emerald-200" : " text-slate-900"}`}
-                    >
-                      <Pin size={20} />
-                      {!isLoading && (
-                        <Tooltip
-                          content={newNote?.isPinned ? "Unpin" : "Pin"}
-                          position="top"
-                        />
-                      )}
-                    </button>
-                  </div>
-                </div>
-                <div className="flex items-center justify-end">
-                  <button
-                    onClick={handleSubmit}
-                    disabled={
-                      isLoading || !isValid || (mode === "edit" && !isChanged)
-                    }
-                    className="disabled:opacity-70 disabled:hover:bg-transparent hover:bg-black/5 disabled:cursor-default transition duration-300 text-slate-900 h-12 px-4 rounded-md cursor-pointer text-sm font-normal"
                   >
-                    {isLoading ? (
-                      <div className="flex items-center gap-2">
-                        <CircleSpinner size={20} className="text-slate-800" />
-                        <span>
-                          {mode === "edit" ? "Updating..." : "Creating..."}
-                        </span>
-                      </div>
-                    ) : (
-                      <span>{mode === "edit" ? "Update" : "Create"}</span>
+                    <Archive size={20} />
+                    {!isLoading && (
+                      <Tooltip
+                        content={newNote?.isArchived ? "Unarchive" : "Archive"}
+                        position="top"
+                      />
                     )}
                   </button>
                 </div>
-              </>
-            )}
+                <div className="flex-none">
+                  <button
+                    onClick={togglePinned}
+                    disabled={isLoading}
+                    className={`w-12 h-12 relative  group flex items-center justify-center rounded-full cursor-pointer transition duration-300
+                ${newNote?.isPinned ? " bg-emerald-200" : " text-slate-900"}`}
+                  >
+                    <Pin size={20} />
+                    {!isLoading && (
+                      <Tooltip
+                        content={newNote?.isPinned ? "Unpin" : "Pin"}
+                        position="top"
+                      />
+                    )}
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center justify-end">
+                <button
+                  onClick={handleSubmit}
+                  disabled={
+                    isLoading || !isValid || (mode === "edit" && !isChanged)
+                  }
+                  className="disabled:opacity-70 disabled:hover:bg-transparent hover:bg-black/5 disabled:cursor-default transition duration-300 text-slate-900 h-12 px-4 rounded-md cursor-pointer text-sm font-normal"
+                >
+                  {isLoading ? (
+                    <div className="flex items-center gap-2">
+                      <CircleSpinner size={20} className="text-slate-800" />
+                      <span>
+                        {mode === "edit" ? "Updating..." : "Creating..."}
+                      </span>
+                    </div>
+                  ) : (
+                    <span>{mode === "edit" ? "Update" : "Create"}</span>
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </Modal.Body>
     </Modal>
   );

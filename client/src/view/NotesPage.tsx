@@ -49,6 +49,16 @@ function NotesPage() {
     removeNoteTagMutation,
     deletingNoteTagIds,
     archivingNoteIds,
+    deleteInfo,
+    onDelete,
+    resetDeleteInfo,
+    onDeleteNote,
+    handleDelete,
+    toggleArchive,
+    restoreNote,
+    deleteTrashNote,
+    emptyTrash,
+    onRemoveNoteTag,
   } = useNotes({
     enabled: true,
   });
@@ -117,6 +127,16 @@ function NotesPage() {
           deleteNoteFromTrashMutation={deleteNoteFromTrashMutation}
           emptyTrashMutation={emptyTrashMutation}
           removeNoteTagMutation={removeNoteTagMutation}
+          deleteInfo={deleteInfo}
+          onDelete={onDelete}
+          resetDeleteInfo={resetDeleteInfo}
+          onDeleteNote={onDeleteNote}
+          handleDelete={handleDelete}
+          toggleArchive={toggleArchive}
+          restoreNote={restoreNote}
+          deleteTrashNote={deleteTrashNote}
+          emptyTrash={emptyTrash}
+          onRemoveNoteTag={onRemoveNoteTag}
         />
       </div>
       {/* NOTE MODAL */}

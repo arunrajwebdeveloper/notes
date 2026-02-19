@@ -49,3 +49,18 @@ export interface NoteFilterState {
   sortOrder: "asc" | "desc";
   noteType: NoteType;
 }
+
+export type DeleteInfoTypes = "note" | "trash" | "tag" | null;
+
+export type DeleteInfoStateTypes = {
+  isOpen: boolean;
+  id: string | null;
+  action: DeleteInfoTypes;
+};
+
+export type OnDeleteTypes = { id: string | null; action: DeleteInfoTypes };
+
+export type ToggleArchiveType = {
+  id: string;
+  type: "archive" | "unarchive";
+};
