@@ -28,7 +28,7 @@ const AdminPage = () => {
               onClick={() => navigate("/notes")}
               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
             >
-              Dashboard
+              Notes
             </button>
           </div>
         </div>
