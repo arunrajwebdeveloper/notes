@@ -8,6 +8,7 @@ import StoreProvider from "./providers/StoreProvider";
 import { SessionHandler } from "./components/auth/SessionHandler";
 import { useCookieSupport } from "./hooks/useCookieSupport";
 import CookieDisabledModal from "./components/modal/CookieDisabledModal";
+import NoteFound from "./view/NoteFound";
 
 // Lazy load pages
 const NotesPage = lazy(() => import("./view/NotesPage"));
@@ -65,7 +66,7 @@ function App() {
                 {/* Error routes */}
                 <Route path="/unauthorized" element={<UnauthorizedPage />} />
                 <Route path="/" element={<Navigate to="/notes" replace />} />
-                <Route path="*" element={<Navigate to="/notes" replace />} />
+                <Route path="*" element={<NoteFound />} />
               </Routes>
             </Suspense>
           </BrowserRouter>

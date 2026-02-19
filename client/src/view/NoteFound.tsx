@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/common/Modal";
 
-const UnauthorizedPage = () => {
+const NoteFound = () => {
   const navigate = useNavigate();
 
   return (
@@ -17,23 +17,33 @@ const UnauthorizedPage = () => {
             className="m-auto"
           >
             <path
-              d="M14.5 9.5L9.50002 14.5M9.5 9.49998L14.5 14.5"
+              d="M2 8L8 10"
               stroke="#1C274C"
               strokeWidth="1.5"
               strokeLinecap="round"
             />
             <path
-              d="M3 10.4167C3 7.21907 3 5.62028 3.37752 5.08241C3.75503 4.54454 5.25832 4.02996 8.26491 3.00079L8.83772 2.80472C10.405 2.26824 11.1886 2 12 2C12.8114 2 13.595 2.26824 15.1623 2.80472L15.7351 3.00079C18.7417 4.02996 20.245 4.54454 20.6225 5.08241C21 5.62028 21 7.21907 21 10.4167C21 10.8996 21 11.4234 21 11.9914C21 14.4963 20.1632 16.4284 19 17.9041M3.19284 14C4.05026 18.2984 7.57641 20.5129 9.89856 21.5273C10.62 21.8424 10.9807 22 12 22C13.0193 22 13.38 21.8424 14.1014 21.5273C14.6796 21.2747 15.3324 20.9478 16 20.5328"
-              stroke="#ff4e4e"
+              d="M6 4L8 7"
+              stroke="#1C274C"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M11 6.56252L14.7001 2.93755C16.1597 1.50753 18.7629 1.73938 20.5145 3.4554C22.266 5.17142 22.5027 7.72176 21.043 9.15178L18.1358 12"
+              stroke="#f3c72d"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M15 15.5866L10.9653 20.001C9.57254 21.5247 7.0887 21.2777 5.41744 19.4492C3.74618 17.6207 3.52038 14.9032 4.91309 13.3795L6.17395 12"
+              stroke="#f3c72d"
               strokeWidth="1.5"
               strokeLinecap="round"
             />
           </svg>
         </div>
-        <h1 className="text-3xl font-bold text-gray-900">Access Denied</h1>
-        <p className="text-gray-600">
-          You don't have permission to access this page.
-        </p>
+        <h1 className="text-3xl font-bold text-gray-900">Page Not Found</h1>
+        <p className="text-gray-600">Sorry, we can't find that page.</p>
         <div className="flex justify-center">
           <Button onClick={() => navigate("/notes")} variant="primary">
             Go back
@@ -44,4 +54,4 @@ const UnauthorizedPage = () => {
   );
 };
 
-export default UnauthorizedPage;
+export default NoteFound;
