@@ -16,8 +16,6 @@ function NoteItem({
   isDeleting,
   deleteingNoteId,
   isArchiving,
-  isRestoring,
-  isTrashNoteDeleting,
   isRemovingNoteTag,
   onDeleteNote,
   toggleArchive,
@@ -26,6 +24,10 @@ function NoteItem({
   onRemoveNoteTag,
   deletingNoteTagIds,
   archivingNoteIds,
+  deletetingTrashNoteIds,
+  restoringTrashNoteIds,
+  isDeletetingTrashNote,
+  isRestoringTrashNote,
 }: {
   note: Note;
   onEdit: (note: Note) => void;
@@ -33,8 +35,8 @@ function NoteItem({
   isDeleting: boolean;
   deleteingNoteId: string | null;
   isArchiving: boolean;
-  isRestoring: boolean;
-  isTrashNoteDeleting: boolean;
+  isRestoringTrashNote: boolean;
+  isDeletetingTrashNote: boolean;
   isRemovingNoteTag: boolean;
   onDeleteNote: (id: string) => void;
   restoreNote: (id: string) => void;
@@ -49,6 +51,8 @@ function NoteItem({
   }) => void;
   deletingNoteTagIds: Map<string, string[]>;
   archivingNoteIds: Set<string>;
+  deletetingTrashNoteIds: Set<string>;
+  restoringTrashNoteIds: Set<string>;
 }) {
   const currentSearch = searchText;
   const {
@@ -181,23 +185,43 @@ function NoteItem({
                   <div className="flex-none">
                     <button
                       onClick={() => restoreNote(noteId)}
-                      disabled={isRestoring}
+                      disabled={
+                        isRestoringTrashNote &&
+                        restoringTrashNoteIds.has(String(noteId))
+                      }
                       className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900 `}
                     >
-                      <Redo2 size={20} />
-                      <Tooltip content="Restore" position="top" />
+                      {isRestoringTrashNote &&
+                      restoringTrashNoteIds.has(String(noteId)) ? (
+                        <CircleSpinner size={20} className="text-slate-400" />
+                      ) : (
+                        <>
+                          <Redo2 size={20} />
+                          <Tooltip content="Restore" position="top" />
+                        </>
+                      )}
                     </button>
                   </div>
                   <div className="flex-none">
                     <button
                       onClick={() => deleteTrashNote(noteId)}
-                      disabled={isTrashNoteDeleting}
+                      disabled={
+                        isDeletetingTrashNote &&
+                        deletetingTrashNoteIds.has(String(noteId))
+                      }
                       className={`w-12 h-12 relative group flex items-center gap-1 justify-center rounded-full cursor-pointer transition duration-300
                    text-slate-900 `}
                     >
-                      <Trash2 size={20} />
-                      <Tooltip content="Delete Forever" position="top" />
+                      {isDeletetingTrashNote &&
+                      deletetingTrashNoteIds.has(String(noteId)) ? (
+                        <CircleSpinner size={20} className="text-slate-400" />
+                      ) : (
+                        <>
+                          <Trash2 size={20} />
+                          <Tooltip content="Delete Forever" position="top" />
+                        </>
+                      )}
                     </button>
                   </div>
                 </>

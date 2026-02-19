@@ -49,6 +49,8 @@ function NotesPage() {
     removeNoteTagMutation,
     deletingNoteTagIds,
     archivingNoteIds,
+    deletetingTrashNoteIds,
+    restoringTrashNoteIds,
     deleteInfo,
     onDelete,
     resetDeleteInfo,
@@ -119,6 +121,8 @@ function NotesPage() {
           onEdit={(note) => openNoteModal(note)}
           deletingNoteTagIds={deletingNoteTagIds}
           archivingNoteIds={archivingNoteIds}
+          deletetingTrashNoteIds={deletetingTrashNoteIds}
+          restoringTrashNoteIds={restoringTrashNoteIds}
           filterState={filterState}
           deleteNoteMutation={deleteNoteMutation}
           archiveNoteMutation={archiveNoteMutation}

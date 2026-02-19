@@ -47,6 +47,12 @@ export const useNotes = ({
   const [archivingNoteIds, setArchivingNoteIds] = useState<Set<string>>(
     new Set(),
   );
+  const [deletetingTrashNoteIds, setDeletetingTrashNoteIds] = useState<
+    Set<string>
+  >(new Set());
+  const [restoringTrashNoteIds, setRestoringTrashNoteIds] = useState<
+    Set<string>
+  >(new Set());
 
   const debouncedSearch = useDebounce(localSearch, 500);
   const { deleteInfo, onDelete, resetDeleteInfo } = useDelete();
@@ -397,18 +403,38 @@ export const useNotes = ({
 
   const restoreNoteMutation = useMutation({
     mutationFn: notesAPI.restoreNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onMutate: ({ id }) => {
+      setRestoringTrashNoteIds((prev) => new Set([...prev, String(id)]));
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ["get_notes", filterState],
+      });
+    },
+    onSettled: (_, __, { id }) => {
+      setRestoringTrashNoteIds((prev) => {
+        const next = new Set(prev);
+        next.delete(String(id));
+        return next;
       });
     },
   });
 
   const deleteNoteFromTrashMutation = useMutation({
     mutationFn: notesAPI.deleteNoteFromTrash,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onMutate: ({ id }) => {
+      setDeletetingTrashNoteIds((prev) => new Set([...prev, String(id)]));
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ["get_notes", filterState],
+      });
+    },
+    onSettled: (_, __, { id }) => {
+      setDeletetingTrashNoteIds((prev) => {
+        const next = new Set(prev);
+        next.delete(String(id));
+        return next;
       });
     },
   });
@@ -428,7 +454,9 @@ export const useNotes = ({
       setArchivingNoteIds((prev) => new Set([...prev, String(id)]));
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["get_notes", filterState],
+      });
     },
     onSettled: (_, __, { id }) => {
       setArchivingNoteIds((prev) => {
@@ -445,7 +473,9 @@ export const useNotes = ({
       setArchivingNoteIds((prev) => new Set([...prev, String(id)]));
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["get_notes"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["get_notes", filterState],
+      });
     },
     onSettled: (_, __, { id }) => {
       setArchivingNoteIds((prev) => {
@@ -491,7 +521,8 @@ export const useNotes = ({
     removeNoteTagMutation,
     deletingNoteTagIds,
     archivingNoteIds,
-
+    deletetingTrashNoteIds,
+    restoringTrashNoteIds,
     deleteInfo,
     onDelete,
     resetDeleteInfo,

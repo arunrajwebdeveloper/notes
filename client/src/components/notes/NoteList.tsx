@@ -30,6 +30,8 @@ export interface BaseProps {
   >;
   deletingNoteTagIds: Map<string, string[]>;
   archivingNoteIds: Set<string>;
+  deletetingTrashNoteIds: Set<string>;
+  restoringTrashNoteIds: Set<string>;
   deleteInfo: DeleteInfoStateTypes;
   onDelete: (info: OnDeleteTypes) => void;
   resetDeleteInfo: () => void;
@@ -68,6 +70,8 @@ function NoteList({
   removeNoteTagMutation,
   deletingNoteTagIds,
   archivingNoteIds,
+  deletetingTrashNoteIds,
+  restoringTrashNoteIds,
   deleteInfo,
   onDelete,
   resetDeleteInfo,
@@ -161,8 +165,8 @@ function NoteList({
                     archiveNoteMutation.isPending ||
                     unarchiveNoteMutation.isPending
                   }
-                  isRestoring={restoreNoteMutation.isPending}
-                  isTrashNoteDeleting={deleteNoteFromTrashMutation.isPending}
+                  isRestoringTrashNote={restoreNoteMutation.isPending}
+                  isDeletetingTrashNote={deleteNoteFromTrashMutation.isPending}
                   isRemovingNoteTag={removeNoteTagMutation.isPending}
                   onDeleteNote={onDeleteNote}
                   toggleArchive={toggleArchive}
@@ -171,6 +175,8 @@ function NoteList({
                   onRemoveNoteTag={onRemoveNoteTag}
                   deletingNoteTagIds={deletingNoteTagIds}
                   archivingNoteIds={archivingNoteIds}
+                  deletetingTrashNoteIds={deletetingTrashNoteIds}
+                  restoringTrashNoteIds={restoringTrashNoteIds}
                 />
               );
             })
