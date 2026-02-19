@@ -226,7 +226,7 @@ function NoteList({
 
       <ConfirmModal
         isShow={deleteInfo?.isOpen && deleteInfo?.action === "trash"}
-        isLoading={deleteNoteMutation.isPending}
+        isLoading={emptyTrashMutation.isPending}
         title="Empty trash confirm?"
         description="Are you sure you want to empty trash?"
         onClose={() => resetDeleteInfo()}
