@@ -50,16 +50,18 @@ const OfflineModal: FC = () => {
 
   return (
     <div className="fixed inset-0 bg-gray-900/50 flex items-center justify-center z-[99999] select-none">
-      <div className="bg-white px-8 py-12 rounded-lg shadow-xl max-w-sm w-full mx-4 max-h-[90vh] overflow-hidden">
-        <div className="mb-6 text-center text-yellow-400">
-          <Unlink size={60} className="mx-auto" />
+      <div className="bg-white flex px-8 py-12 rounded-lg shadow-xl max-w-sm w-full mx-4 max-h-[90vh] min-h-96 overflow-hidden">
+        <div className="m-auto">
+          <div className="mb-6 text-center text-yellow-400">
+            <Unlink size={80} className="mx-auto" />
+          </div>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 text-center mb-4 lg:mb-6">
+            You're Offline
+          </h2>
+          <p className="text-gray-900 text-base m-0 text-center">
+            Please check your internet connection and try again.
+          </p>
         </div>
-        <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 text-center mb-2 lg:mb-4">
-          You're Offline
-        </h2>
-        <p className="text-gray-900 text-base m-0 text-center">
-          Please check your internet connection and try again.
-        </p>
       </div>
     </div>
   );
