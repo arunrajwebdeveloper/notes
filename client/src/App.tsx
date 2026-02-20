@@ -6,10 +6,10 @@ import CircleSpinner from "./components/common/CircleSpinner";
 import { SessionHandler } from "./components/auth/SessionHandler";
 import { useCookieSupport } from "./hooks/useCookieSupport";
 import CookieDisabledModal from "./components/modal/CookieDisabledModal";
-import NoteFound from "./view/NoteFound";
 import { useAppDispatch } from "./hooks/hooks";
 import useWindowWidth from "./hooks/useWindowWidth";
 import { setWindowWidth } from "./store/features/windowSlice";
+import CommonLayout from "./components/layout/CommonLayout";
 
 // Lazy load pages
 const NotesPage = lazy(() => import("./view/NotesPage"));
@@ -17,6 +17,7 @@ const LoginPage = lazy(() => import("./view/LoginPage"));
 const RegisterPage = lazy(() => import("./view/RegisterPage"));
 const ProfilePage = lazy(() => import("./view/ProfilePage"));
 const UnauthorizedPage = lazy(() => import("./view/UnauthorizedPage"));
+const NoteFound = lazy(() => import("./view/NoteFound"));
 // const AdminPage = lazy(() => import("./view/AdminPage"));
 
 function App() {
@@ -60,7 +61,14 @@ function App() {
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
               <Route path="/notes" element={<NotesPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route
+                path="/profile"
+                element={
+                  <CommonLayout>
+                    <ProfilePage />
+                  </CommonLayout>
+                }
+              />
             </Route>
 
             {/* Admin only route */}
