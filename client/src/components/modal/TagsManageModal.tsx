@@ -40,33 +40,33 @@ function TagsManageModal({
 
   const { deleteInfo, onDelete, resetDeleteInfo } = useDelete();
 
-  /** Focus input when editing starts */
+  // Focus input when editing starts
   useEffect(() => {
     if (editingId && inputRefs.current[editingId]) {
       inputRefs.current[editingId]?.focus();
     }
   }, [editingId]);
 
-  /** Start edit mode */
+  // Start edit mode
   const handleEdit = (id: string, currentName: string) => {
     setEditingId(id);
     setEditingValue(currentName);
     setOriginalValue(currentName);
   };
 
-  /** Handle name input change */
+  // Handle name input change
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEditingValue(e.target.value);
   };
 
-  /** Cancel editing */
+  // Cancel editing
   const handleCancelEdit = () => {
     setEditingId(null);
     setEditingValue("");
     setOriginalValue("");
   };
 
-  /** Save edited tag only if changed */
+  // Save edited tag only if changed
   const handleSaveEdit = (id: string) => {
     if (
       !isEqual(editingValue.trim(), originalValue.trim()) &&
@@ -82,7 +82,7 @@ function TagsManageModal({
           onSettled: () => {
             setUpdatingId(null);
           },
-        }
+        },
       );
     }
     setEditingId(null);
@@ -90,7 +90,7 @@ function TagsManageModal({
     setOriginalValue("");
   };
 
-  /** Delete a tag */
+  // Delete a tag
   const handleDelete = (id: string | null) => {
     if (id) {
       deleteTagMutation.mutate(
@@ -99,12 +99,12 @@ function TagsManageModal({
           onSettled: () => {
             resetDeleteInfo();
           },
-        }
+        },
       );
     }
   };
 
-  /** Create new tag */
+  // Create new tag
   const handleCreateTag = () => {
     const name = newTagValue.trim();
     if (!name) return;
@@ -114,7 +114,7 @@ function TagsManageModal({
         onSuccess: () => {
           setNewTagValue("");
         },
-      }
+      },
     );
     setNewTagValue("");
   };
@@ -146,17 +146,17 @@ function TagsManageModal({
                 tags.map((t) => (
                   <div
                     key={t._id}
-                    className="flex justify-between items-center gap-4 py-2 ps-6 pe-3 group transition duration-300 hover:bg-slate-100"
+                    className="flex justify-between items-center gap-4 py-2 ps-6 pe-3 h-[38px] group transition duration-300 hover:bg-slate-100"
                   >
                     {editingId === t._id ? (
-                      <div className="flex-1">
+                      <div className="flex-1 h-6">
                         <input
                           ref={(el) => {
                             inputRefs.current[t._id] = el;
                           }}
                           type="text"
                           placeholder="Edit Tag"
-                          className="ring-0 outline-0 w-full text-gray-600 text-sm font-normal"
+                          className="!ring-0 !outline-0 !border-0 w-full text-gray-600 text-sm font-normal h-6"
                           value={editingValue}
                           onChange={handleChange}
                           onKeyDown={(e) => {
@@ -168,7 +168,7 @@ function TagsManageModal({
                     ) : (
                       <div
                         onClick={() => handleEdit(t._id, t.name)}
-                        className="flex-1 text-sm font-normal whitespace-nowrap overflow-hidden text-ellipsis text-gray-600 cursor-pointer"
+                        className="flex-1 text-sm h-6 flex items-center font-normal whitespace-nowrap overflow-hidden text-ellipsis text-gray-600 cursor-pointer"
                       >
                         {t.name}
                       </div>
@@ -182,7 +182,7 @@ function TagsManageModal({
                             className="cursor-pointer text-gray-600"
                           >
                             <CircleX
-                              size={26}
+                              size={24}
                               stroke="white"
                               fill="currentColor"
                             />
@@ -200,7 +200,7 @@ function TagsManageModal({
                               <CircleSpinner size={26} />
                             ) : (
                               <CircleCheck
-                                size={26}
+                                size={24}
                                 stroke="white"
                                 fill="currentColor"
                               />
