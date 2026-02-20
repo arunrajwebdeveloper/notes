@@ -60,19 +60,19 @@ function UserDropdown({ user, logout }: { user: User | null; logout: any }) {
       {/* User dropdown */}
 
       {isShow && (
-        <div className="absolute w-80 -top-2 -right-2 bg-white shadow-sm border border-slate-100 rounded-2xl rounded-tr-3xl z-50">
-          <div className="px-8 py-4 leading-1">
-            <span className="text-2xl text-black mb-0 block whitespace-nowrap overflow-hidden text-ellipsis max-w-full">{`${
+        <div className="absolute w-72 -top-2 -right-2 bg-white shadow-sm border border-slate-100 rounded-2xl rounded-tr-3xl z-50">
+          <div className="px-8 py-2 leading-1">
+            <span className="text-xl text-black mb-0 block whitespace-nowrap overflow-hidden text-ellipsis max-w-full">{`${
               user?.firstName
             } ${user?.lastName || ""}`}</span>
-            <span className="text-lg text-slate-600 m-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-full block">
+            <span className="text-sm text-slate-600 m-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-full block">
               {user?.email}
             </span>
           </div>
           <div className="space-y-1 py-2 mt-1 border-t border-t-slate-200">
             <Link
               to="/profile"
-              className="flex w-full text-lg text-slate-700 h-16 cursor-pointer items-center gap-3 px-6 hover:bg-slate-100"
+              className="flex w-full text-sm text-slate-700 h-12 cursor-pointer items-center gap-3 px-6 hover:bg-slate-100"
             >
               <UserIcon size={20} />
               <span>Profile</span>
@@ -84,7 +84,7 @@ function UserDropdown({ user, logout }: { user: User | null; logout: any }) {
             </button> */}
             <button
               onClick={logoutUser}
-              className="flex w-full text-lg text-slate-700 h-16 cursor-pointer items-center gap-3 px-6 hover:bg-slate-100"
+              className="flex w-full text-sm text-slate-700 h-12 cursor-pointer items-center gap-3 px-6 hover:bg-slate-100"
             >
               <LogOut size={20} />
               <span>Logout</span>
