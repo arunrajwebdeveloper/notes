@@ -3,8 +3,9 @@ import type { ChangeEvent } from "react";
 import UserDropdown from "./user/UserDropdown";
 import SearchBar from "./SearchBar";
 import { Menu, Search, X } from "lucide-react";
-import { useSidebarContext } from "../context/SidebarContext";
 import { useAuth } from "../hooks/useAuth";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { toggleSidebar } from "../store/features/sidebarSlice";
 
 function Header({
   user,
@@ -21,8 +22,10 @@ function Header({
   openSearchModal: () => void;
   clearSearchModal: () => void;
 }) {
+  const dispatch = useAppDispatch();
   const { logout } = useAuth();
-  const { isOpenSidebar, toggleSidebar, windowWidth } = useSidebarContext();
+  const { isOpenSidebar } = useAppSelector((state) => state.sidebar);
+  const { windowWidth } = useAppSelector((state) => state.window);
   const isSmallDevice = windowWidth < 1024;
 
   return (
@@ -31,7 +34,7 @@ function Header({
         {/* Logo */}
         <div className="flex items-center gap-x-3 lg:hidden">
           <button
-            onClick={toggleSidebar}
+            onClick={() => dispatch(toggleSidebar())}
             className="w-10 h-10 flex cursor-pointer bg-slate-50 rounded-sm"
           >
             {isOpenSidebar ? (

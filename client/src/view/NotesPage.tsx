@@ -3,15 +3,14 @@ import Sidebar from "../components/Sidebar";
 import NoteList from "../components/notes/NoteList";
 import { useNotes } from "../hooks/useNotes";
 import NoteModal from "../components/modal/NoteModal";
-import { useAppSelector } from "../hooks";
 import TagsManageModal from "../components/modal/TagsManageModal";
-import { useSidebarContext } from "../context/SidebarContext";
 import SearchModal from "../components/modal/SearchModal";
-// import { useEffect } from "react";
+import { useAppSelector } from "../hooks/hooks";
 
 function NotesPage() {
   const { user } = useAppSelector((state) => state.auth);
-  const { isOpenSidebar, windowWidth } = useSidebarContext();
+  const { windowWidth } = useAppSelector((state) => state.window);
+  const { isOpenSidebar } = useAppSelector((state) => state.sidebar);
   const isSmallDevice = windowWidth < 1024;
 
   const {
@@ -72,15 +71,7 @@ function NotesPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    // isSuccess,
   } = notesData;
-
-  // Close search modal after fetch data
-  // useEffect(() => {
-  //   if (isOpenSearchModal && isSuccess && data) {
-  //     closeSearchModal();
-  //   }
-  // }, [isSuccess, data]);
 
   return (
     <div className="flex h-dvh w-full overflow-hidden">

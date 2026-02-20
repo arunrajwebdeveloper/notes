@@ -2,7 +2,8 @@ import { Archive, Plus, Trash2 } from "lucide-react";
 import type { Note, NoteFilterState, TagItem } from "../types/note.types";
 import TagsSidebar from "./TagsSidebar";
 import Tooltip from "./common/Tooltip";
-import { useSidebarContext } from "../context/SidebarContext";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { closeSidebar } from "../store/features/sidebarSlice";
 
 function Sidebar({
   tags,
@@ -23,11 +24,15 @@ function Sidebar({
   handleNoteType: (type: string) => void;
   openNoteModal: (note: Note | null) => void;
 }) {
-  const { isOpenSidebar, windowWidth, closeSidebar } = useSidebarContext();
+  const dispatch = useAppDispatch();
+  const { windowWidth } = useAppSelector((state) => state.window);
+  const { isOpenSidebar } = useAppSelector((state) => state.sidebar);
+
   const isSmallDevice = windowWidth < 1024;
+
   const closeSidebarOnSmDevice = () => {
     if (isSmallDevice) {
-      closeSidebar();
+      dispatch(closeSidebar());
     }
   };
 

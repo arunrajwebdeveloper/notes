@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks";
 import { userAPI } from "../../api/endpoints/user.api";
 import {
   setAuthenticationData,
   logout as logoutAction,
   setLoading,
 } from "../../store/features/authSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 
 export const SessionHandler = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();

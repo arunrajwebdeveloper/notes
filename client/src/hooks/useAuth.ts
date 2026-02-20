@@ -6,9 +6,8 @@ import {
   setAuthenticationData,
   setLoading,
 } from "../store/features/authSlice";
-import { useAppDispatch } from "./hooks";
-import { useAppSelector } from "../hooks";
 import { userAPI } from "../api/endpoints/user.api";
+import { useAppDispatch, useAppSelector } from "./hooks";
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
