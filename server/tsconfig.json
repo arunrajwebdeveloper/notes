@@ -19,5 +19,6 @@
     "noFallthroughCasesInSwitch": false,
     "ignoreDeprecations": "5.0",
     "strictPropertyInitialization": false /* Keep this false for your Mongoose classes */
-  }
+  },
+  "exclude": ["node_modules", "dist"]
 }
