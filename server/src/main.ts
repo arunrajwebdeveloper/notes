@@ -12,13 +12,13 @@ async function bootstrap() {
   const origin = configService.get<string>('CORS_ORIGIN')!;
 
   // app.enableCors();
+
   app.enableCors({
     origin: ['http://localhost:5173', 'http://localhost:3000', origin],
     credentials: true, // Allow cookies
   });
 
   app.use(cookieParser());
-
   app.setGlobalPrefix('api');
 
   // Global exception filter for consistent error responses
